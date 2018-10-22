@@ -8,19 +8,18 @@
 import '@stencil/core';
 
 
+import {
+  BruitConfig,
+} from './models/bruit-config.model';
 
 
 export namespace Components {
 
   interface BruitModal {
-    'first': string;
-    'last': string;
-    'middle': string;
+    'config': BruitConfig;
   }
   interface BruitModalAttributes extends StencilHTMLAttributes {
-    'first'?: string;
-    'last'?: string;
-    'middle'?: string;
+    'config'?: BruitConfig;
   }
 }
 

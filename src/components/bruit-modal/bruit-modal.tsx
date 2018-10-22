@@ -1,4 +1,5 @@
 import { Component, Prop } from '@stencil/core';
+import { BruitConfig } from '../../models/bruit-config.model';
 
 @Component({
   tag: 'bruit-modal',
@@ -7,17 +8,17 @@ import { Component, Prop } from '@stencil/core';
 })
 export class BruitModal {
   @Prop()
-  first: string;
-  @Prop()
-  middle: string;
-  @Prop()
-  last: string;
+  config: BruitConfig;
+
+  componentDidLoad() {
+    console.log(this);
+  }
 
   format(): string {
-    return (this.first || '') + (this.middle ? ` ${this.middle}` : '') + (this.last ? ` ${this.last}` : '');
+    return this.config.title || '';
   }
 
   render() {
-    return <div>Hello, World! I'm {this.format()}</div>;
+    return <div>Hello, World! I'm Bruit, my title is {this.format()}</div>;
   }
 }
