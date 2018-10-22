@@ -10,8 +10,8 @@ export class BruitModal {
   @Prop()
   config: BruitConfig;
 
-  componentDidLoad() {
-    console.log(this);
+  componentWillLoad() {
+    console.log('bruit started ...');
   }
 
   format(): string {
