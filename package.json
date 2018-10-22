@@ -1,7 +1,7 @@
 {
-  "name": "my-component",
+  "name": "bruit-modal",
   "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "description": "send your feedbacks whith bruit.io component",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "types": "dist/types/components.d.ts",
@@ -15,18 +15,24 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "0.14.1"
+    "@stencil/core": "0.14.1",
+    "@types/puppeteer": "1.9.0",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "puppeteer": "1.8.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ionic-team/stencil-component-starter.git"
   },
-  "author": "Ionic Team",
+  "author": {
+    "name": "moventes",
+    "email": "dev@moventes.com"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ionic-team/stencil"
+    "url": "https://github.com/moventes/bruit"
   },
-  "homepage": "https://github.com/ionic-team/stencil"
+  "homepage": "https://bruit.io/"
 }

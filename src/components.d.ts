@@ -12,12 +12,12 @@ import '@stencil/core';
 
 export namespace Components {
 
-  interface MyComponent {
+  interface BruitModal {
     'first': string;
     'last': string;
     'middle': string;
   }
-  interface MyComponentAttributes extends StencilHTMLAttributes {
+  interface BruitModalAttributes extends StencilHTMLAttributes {
     'first'?: string;
     'last'?: string;
     'middle'?: string;
@@ -26,26 +26,26 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
-    'MyComponent': Components.MyComponent;
+    'BruitModal': Components.BruitModal;
   }
 
   interface StencilIntrinsicElements {
-    'my-component': Components.MyComponentAttributes;
+    'bruit-modal': Components.BruitModalAttributes;
   }
 
 
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  interface HTMLBruitModalElement extends Components.BruitModal, HTMLStencilElement {}
+  var HTMLBruitModalElement: {
+    prototype: HTMLBruitModalElement;
+    new (): HTMLBruitModalElement;
   };
 
   interface HTMLElementTagNameMap {
-    'my-component': HTMLMyComponentElement
+    'bruit-modal': HTMLBruitModalElement
   }
 
   interface ElementTagNameMap {
-    'my-component': HTMLMyComponentElement;
+    'bruit-modal': HTMLBruitModalElement;
   }
 
 
