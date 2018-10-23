@@ -94,6 +94,10 @@ export class ConsoleTool {
 
       (<any>console).overloaded = true;
 
+      (<any>console).click = function() {
+        return ConsoleTool.handleLogMessage('click', arguments);
+      };
+
       (<any>console).http = function() {
         return ConsoleTool.handleLogMessage('http', arguments);
       };

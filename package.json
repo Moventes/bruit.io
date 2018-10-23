@@ -36,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/moventes/bruit"
   },
-  "homepage": "https://bruit.io/"
+  "homepage": "https://bruit.io/",
+  "dependencies": {
+    "html2canvas": "^1.0.0-alpha.12"
+  }
 }
