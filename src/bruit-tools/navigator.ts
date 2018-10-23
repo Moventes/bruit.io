@@ -1,3 +1,4 @@
+import { Cookies } from './../models/cookies.model';
 import { NavigatorInfo } from './../models/navigator-info.model';
 
 export class NavigatorTool {
@@ -11,7 +12,7 @@ export class NavigatorTool {
     };
   }
 
-  static getCookies(): object {
+  static getCookies(): Cookies {
     return document.cookie
       .split('; ')
       .map(c => c.split('='))

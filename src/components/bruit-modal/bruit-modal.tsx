@@ -26,7 +26,7 @@ export class BruitModal {
   }
 
   format(): string {
-    return this.config.title || '';
+    return this.config.apiKey || '';
   }
 
   allLog() {
@@ -36,7 +36,7 @@ export class BruitModal {
   render() {
     return (
       <span>
-        <div>Hello, World! I'm Bruit, my title is {this.format()}</div>
+        <div>Hello, World! I'm Bruit, my apiKey is {this.format()}</div>
         <a onClick={this.allLog} innerHTML={this.innerBruitElement} />
       </span>
     );
