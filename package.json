@@ -22,7 +22,8 @@
     "@types/puppeteer": "1.9.0",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
-    "puppeteer": "1.8.0"
+    "puppeteer": "1.8.0",
+    "@stencil/sass": "^0.1.1"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,6 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
-    "@stencil/sass": "^0.1.1",
     "html2canvas": "^1.0.0-alpha.12"
   }
 }

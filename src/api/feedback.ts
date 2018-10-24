@@ -20,12 +20,8 @@ export class Feedback implements FeedbackModel {
   logs: Array<Log>;
   fields: Array<Field>;
 
-  //class Feedback:
-  private _data: Array<Field>;
-
-  constructor(apiKey: string, data: Array<Field> = []) {
+  constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this._data = data;
     this.url = NavigatorTool.getUrl();
     this.cookies = NavigatorTool.getCookies();
     this.navigator = NavigatorTool.getInfo();
@@ -33,51 +29,48 @@ export class Feedback implements FeedbackModel {
     this.logs = (<any>console).logArray();
   }
 
-  init(dataFn: () => Array<Field> | Promise<Array<Field>>): Promise<void> {
+  init(): Promise<void> {
     // take screenShot
-    const promises = [
-      ScreenTool.getScreenshot().then(screenshot => {
-        this.canvas = screenshot;
-        return;
-      })
-    ];
-
-    // call dataFn (function or promise)
-    if (dataFn) {
-      if (typeof dataFn === 'function') {
-        this.pushNewData((<() => Array<Field>>dataFn)());
-      } else if (typeof dataFn === 'object' && (<Promise<Array<Field>>>dataFn).then) {
-        promises.push(
-          (<Promise<Array<Field>>>dataFn).then(newData => {
-            this.pushNewData(newData);
-            return;
-          })
-        );
-      }
-    }
-
-    return Promise.all(promises).then(() => {
+    return ScreenTool.getScreenshot().then(screenshot => {
+      this.canvas = screenshot;
       return;
     });
   }
 
-  send(formData: Array<FormField>): Promise<void> {
-    this.fields = [...formData.map(ff => <Field>{ type: ff.type, value: ff.value, label: ff.label }), ...this._data];
-    return Api.postFeedback({
-      apiKey: this.apiKey,
-      canvas: this.canvas,
-      url: this.url,
-      cookies: this.cookies,
-      navigator: this.navigator,
-      display: this.display,
-      logs: this.logs,
-      fields: this.fields
+  send(
+    formData: Array<FormField>,
+    data: Array<Field> = [],
+    dataFn?: () => Array<Field> | Promise<Array<Field>>
+  ): Promise<void> {
+    return this.getDataFromFn(dataFn).then((dataFromFn: Array<Field>) => {
+      this.fields = [
+        ...formData.map(ff => <Field>{ type: ff.type, value: ff.value, label: ff.label }),
+        ...data,
+        ...dataFromFn
+      ];
+      return Api.postFeedback({
+        apiKey: this.apiKey,
+        canvas: this.canvas,
+        url: this.url,
+        cookies: this.cookies,
+        navigator: this.navigator,
+        display: this.display,
+        logs: this.logs,
+        fields: this.fields
+      });
     });
   }
 
-  private pushNewData(newData: Array<Field>) {
-    if (Array.isArray(newData)) {
-      this._data.push(...newData);
+  private getDataFromFn(dataFn?: () => Array<Field> | Promise<Array<Field>>): Promise<Array<Field>> {
+    // dataFn (function or promise)
+    if (dataFn) {
+      if (typeof dataFn === 'function') {
+        Promise.resolve((<() => Array<Field>>dataFn)());
+      } else if (typeof dataFn === 'object' && (<Promise<Array<Field>>>dataFn).then) {
+        return <Promise<Array<Field>>>dataFn;
+      }
+    } else {
+      return Promise.resolve([]);
     }
   }
 }

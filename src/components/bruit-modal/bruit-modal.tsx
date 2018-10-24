@@ -37,13 +37,13 @@ export class BruitModal {
   }
 
   newFeedback() {
-    const feedback = new Feedback(this.config.apiKey, this.data);
+    const feedback = new Feedback(this.config.apiKey);
     feedback
-      .init(this.dataFn)
+      .init()
       .then(() => {
         console.log('feedback is initialized! open form');
         const res = [{ label: 'test form', value: 'youhoooo', type: 'text' }];
-        return feedback.send(res);
+        return feedback.send(res, this.data, this.dataFn);
       })
       .then(() => {
         console.log('feedback is send!');
@@ -54,6 +54,22 @@ export class BruitModal {
     return (
       <span>
         <a onClick={() => this.newFeedback()} innerHTML={this._innerBruitElement} />
+
+        <div class="modal-wrapper">
+          <div class="modal">
+            <div class="head">
+              <a class="btn-close trigger" href="#">
+                <i class="fa fa-times" aria-hidden="true" />
+              </a>
+            </div>
+            <div class="content">
+              <div class="good-job">
+                <i class="fa fa-thumbs-o-up" aria-hidden="true" />
+                <h1>Good Job!</h1>
+              </div>
+            </div>
+          </div>
+        </div>
       </span>
     );
   }
