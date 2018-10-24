@@ -18,6 +18,16 @@
     bruitCmp.config = {
       apiKey: '456789123'
     };
+    bruitCmp.data = [{
+      label: "verion",
+      value: "0.1.54"
+    }];
+    bruitCmp.dataFn = new Promise(resolve => {
+      resolve([{
+        label: "user",
+        data: "lamstutz"
+      }])
+    })
 
   </script>
 
