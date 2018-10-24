@@ -11,15 +11,22 @@ import '@stencil/core';
 import {
   BruitConfig,
 } from './models/bruit-config.model';
+import {
+  Field,
+} from './models/field.model';
 
 
 export namespace Components {
 
   interface BruitModal {
     'config': BruitConfig;
+    'data': Array<Field>;
+    'dataFn': () => Array<Field> | Promise<Array<Field>>;
   }
   interface BruitModalAttributes extends StencilHTMLAttributes {
     'config'?: BruitConfig;
+    'data'?: Array<Field>;
+    'dataFn'?: () => Array<Field> | Promise<Array<Field>>;
   }
 }
 

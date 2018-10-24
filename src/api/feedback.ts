@@ -1,3 +1,5 @@
+import { Api } from './api';
+import { FormField } from './../models/form-field.model';
 import { FeedbackModel } from './../models/feedback.model';
 import { Cookies } from '../models/cookies.model';
 import { NavigatorInfo } from '../models/navigator-info.model';
@@ -8,16 +10,17 @@ import { ScreenTool } from '../bruit-tools/screen';
 import { NavigatorTool } from '../bruit-tools/navigator';
 
 export class Feedback implements FeedbackModel {
+  //FeedbackModel:
   apiKey: string;
   canvas: string;
   url: string;
   cookies: Cookies;
   navigator: NavigatorInfo;
   display: ScreenInfo;
-  additionnalInfosEnabled: boolean;
   logs: Array<Log>;
   fields: Array<Field>;
 
+  //class Feedback:
   private _data: Array<Field>;
 
   constructor(apiKey: string, data: Array<Field> = []) {
@@ -30,8 +33,7 @@ export class Feedback implements FeedbackModel {
     this.logs = (<any>console).logArray();
   }
 
-  // dataFn :((()=>Array<Field>>)|Promise<Array<Field>>)
-  initAsync(dataFn: any): Promise<void> {
+  init(dataFn: () => Array<Field> | Promise<Array<Field>>): Promise<void> {
     // take screenShot
     const promises = [
       ScreenTool.getScreenshot().then(screenshot => {
@@ -40,13 +42,13 @@ export class Feedback implements FeedbackModel {
       })
     ];
 
-    // call dataFn
+    // call dataFn (function or promise)
     if (dataFn) {
       if (typeof dataFn === 'function') {
-        this.pushNewData(dataFn());
-      } else if (typeof dataFn === 'object' && dataFn.then) {
+        this.pushNewData((<() => Array<Field>>dataFn)());
+      } else if (typeof dataFn === 'object' && (<Promise<Array<Field>>>dataFn).then) {
         promises.push(
-          dataFn().then(newData => {
+          (<Promise<Array<Field>>>dataFn).then(newData => {
             this.pushNewData(newData);
             return;
           })
@@ -56,6 +58,20 @@ export class Feedback implements FeedbackModel {
 
     return Promise.all(promises).then(() => {
       return;
+    });
+  }
+
+  send(formData: Array<FormField>): Promise<void> {
+    this.fields = [...formData.map(ff => <Field>{ type: ff.type, value: ff.value, label: ff.label }), ...this._data];
+    return Api.postFeedback({
+      apiKey: this.apiKey,
+      canvas: this.canvas,
+      url: this.url,
+      cookies: this.cookies,
+      navigator: this.navigator,
+      display: this.display,
+      logs: this.logs,
+      fields: this.fields
     });
   }
 

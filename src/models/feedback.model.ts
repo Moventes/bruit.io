@@ -11,7 +11,6 @@ export interface FeedbackModel {
   cookies: Cookies;
   navigator: NavigatorInfo;
   display: ScreenInfo;
-  additionnalInfosEnabled: boolean;
   logs: Array<Log>;
   fields: Array<Field>;
 }
