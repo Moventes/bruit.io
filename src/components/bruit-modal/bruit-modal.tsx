@@ -13,17 +13,11 @@ import { Feedback } from '../../api/feedback';
 })
 export class BruitModal {
   // attributs on bruit-modal component
-  @Prop({
-    reflectToAttr: true
-  })
+  @Prop()
   config: BruitConfig;
-  @Prop({
-    reflectToAttr: true
-  })
+  @Prop()
   data: Array<Field>;
-  @Prop({
-    reflectToAttr: true
-  })
+  @Prop()
   dataFn: () => Array<Field> | Promise<Array<Field>>;
 
   // dom element of bruit-modal component
