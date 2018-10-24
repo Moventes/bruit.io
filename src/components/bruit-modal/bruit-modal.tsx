@@ -36,10 +36,6 @@ export class BruitModal {
     ClickTool.init();
   }
 
-  format(): string {
-    return this.config.apiKey || '';
-  }
-
   newFeedback() {
     const feedback = new Feedback(this.config.apiKey, this.data);
     feedback
@@ -57,7 +53,6 @@ export class BruitModal {
   render() {
     return (
       <span>
-        <div>Hello, World! I'm Bruit, my apiKey is {this.format()}</div>
         <a onClick={() => this.newFeedback()} innerHTML={this._innerBruitElement} />
       </span>
     );
