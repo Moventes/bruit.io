@@ -38,6 +38,7 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
+    "@stencil/sass": "^0.1.1",
     "html2canvas": "^1.0.0-alpha.12"
   }
 }

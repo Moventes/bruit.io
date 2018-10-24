@@ -8,7 +8,7 @@ import { Feedback } from '../../api/feedback';
 
 @Component({
   tag: 'bruit-modal',
-  styleUrl: 'bruit-modal.css',
+  styleUrl: 'bruit-modal.scss',
   shadow: false
 })
 export class BruitModal {
