@@ -64,29 +64,47 @@ export class BruitModal {
   render() {
     return (
       <span>
-        <a onClick={() => this.newFeedback()} innerHTML={this._innerBruitElement} />
-        <div class={'modal-wrapper ' + (this.modalOpened ? 'open' : 'close')} onClick={() => this.cancelFeedback()}>
-          <div
-            class="modal"
-            onClick={event => {
-              event.stopPropagation();
-            }}
-          >
-            <div class="head">
-              <a class="btn-close trigger" onClick={() => this.cancelFeedback()}>
-                close
-                <i class="fa fa-times" aria-hidden="true" />
-              </a>
-            </div>
-            <div class="content">
-              <div class="good-job">
-                <i class="fa fa-thumbs-o-up" aria-hidden="true" />
-                <h1>Good Job!</h1>
-              </div>
+        {this.principalButton()}
+        {this.modal()}
+      </span>
+    );
+  }
+
+  principalButton() {
+    return <a onClick={() => this.newFeedback()} innerHTML={this._innerBruitElement} />;
+  }
+
+  modal() {
+    return (
+      <div class={'modal-wrapper ' + (this.modalOpened ? 'open' : 'close')} onClick={() => this.cancelFeedback()}>
+        <div
+          class="modal"
+          onClick={event => {
+            event.stopPropagation();
+          }}
+        >
+          <div class="head">
+            <a class="btn-close" onClick={() => this.cancelFeedback()}>
+              <svg
+                width="24"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                fill="white"
+              >
+                <path d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z" />
+              </svg>
+            </a>
+          </div>
+          <div class="content">
+            <div class="good-job">
+              <i class="fa fa-thumbs-o-up" aria-hidden="true" />
+              <h1>Good Job!</h1>
             </div>
           </div>
         </div>
-      </span>
+      </div>
     );
   }
 }

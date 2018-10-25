@@ -36,6 +36,10 @@ bruit-modal {
     background: #fff;
     opacity: 0;
     transition: all 0.5s ease-in-out;
+
+    .btn-close {
+      cursor: pointer;
+    }
   }
 
 
