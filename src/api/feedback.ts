@@ -41,7 +41,7 @@ export class Feedback implements FeedbackModel {
     formData: Array<FormField>,
     data: Array<Field> = [],
     dataFn?: () => Array<Field> | Promise<Array<Field>>
-  ): Promise<void> {
+  ): Promise<Response> {
     return this.getDataFromFn(dataFn).then((dataFromFn: Array<Field>) => {
       this.fields = [
         ...formData.map(ff => <Field>{ type: ff.type, value: ff.value, label: ff.label }),

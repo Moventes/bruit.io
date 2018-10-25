@@ -49,8 +49,8 @@ export class BruitModal {
       .then(() => {
         console.log('feedback is initialized! open form');
         this.modalOpened = true;
-        // const res = [{ label: 'test form', value: 'youhoooo', type: 'text' }];
-        // return feedback.send(res, this.data, this.dataFn);
+        const res = [{ label: 'test form', value: 'youhoooo', type: 'text' }];
+        return feedback.send(res, this.data, this.dataFn);
       })
       .then(() => {
         console.log('feedback is send!');

@@ -11,7 +11,9 @@
     "dist/"
   ],
   "scripts": {
+    "prebuild": "node config/set_config.js prod",
     "build": "stencil build",
+    "prestart": "node config/set_config.js dev",
     "start": "stencil build --dev --watch --serve --port 3332",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
