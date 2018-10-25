@@ -29,6 +29,8 @@ export class BruitModal {
   @State()
   modalOpened: boolean = false;
 
+  private _currentFeedback: Feedback;
+
   componentWillLoad() {
     console.log('bruit started ...');
     this._innerBruitElement = this.bruitElement.innerHTML;
@@ -39,7 +41,8 @@ export class BruitModal {
   }
 
   newFeedback() {
-    this.modalOpened = false;
+    if (this._currentFeedback) {
+    }
     const feedback = new Feedback(this.config.apiKey);
     feedback
       .init()
@@ -54,16 +57,24 @@ export class BruitModal {
       });
   }
 
+  cancelFeedback() {
+    this.modalOpened = false;
+  }
+
   render() {
     return (
       <span>
         <a onClick={() => this.newFeedback()} innerHTML={this._innerBruitElement} />
-        {/* <div class={'page-wrapper ' + (this.modalOpened ? 'open blur-it' : 'close')} /> */}
-        <p>{this.modalOpened ? 'true' : 'false'}</p>
-        <div class={'modal-wrapper ' + (this.modalOpened ? 'open' : 'close')}>
-          <div class="modal">
+        <div class={'modal-wrapper ' + (this.modalOpened ? 'open' : 'close')} onClick={() => this.cancelFeedback()}>
+          <div
+            class="modal"
+            onClick={event => {
+              event.stopPropagation();
+            }}
+          >
             <div class="head">
-              <a class="btn-close trigger" href="#">
+              <a class="btn-close trigger" onClick={() => this.cancelFeedback()}>
+                close
                 <i class="fa fa-times" aria-hidden="true" />
               </a>
             </div>
