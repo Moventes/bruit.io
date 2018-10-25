@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "name": "bruit-io-build-prod",
+      "script": "npm",
+      "args": [
+        "run",
+        "build"
+      ],
+      "env": {
+        "BRUIT_IO_API_URL": "https://api.bruit.io"
+      },
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "out_file": "bruit-io-build-prod.log",
+      "error_file": "bruit-io-build-prod.log"
+    }
+  ]
+}
