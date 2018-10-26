@@ -25,7 +25,10 @@ export class BruitConfig implements BruitConfigModel {
 
   constructor(config: BruitConfigModel) {
     this.apiKey = config.apiKey;
-    this.form = config.form;
+    this.form = config.form.map((field, index) => {
+      field.id = index + '-' + field.type;
+      return field;
+    });
     if (config.logs) {
       if (config.logs.levels) {
         this.logs.levels = {

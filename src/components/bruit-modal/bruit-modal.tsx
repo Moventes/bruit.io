@@ -202,7 +202,14 @@ export class BruitModal {
       return (
         <span>
           <label>{field.label}</label>
-          <input type={field.type} />
+          <input
+            name={field.id}
+            value={field.value}
+            onChange={evt => {
+              console.log(evt.returnValue);
+            }}
+            type={field.type}
+          />
         </span>
       );
     });
