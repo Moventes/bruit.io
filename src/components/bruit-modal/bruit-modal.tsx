@@ -1,5 +1,6 @@
-import { Component, Prop, Element, State } from '@stencil/core';
-import { BruitConfig } from '../../models/bruit-config.model';
+import { Component, Prop, Element, State, Watch } from '@stencil/core';
+import { BruitConfigModel } from '../../models/bruit-config.model';
+import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
 import { HttpTool } from '../../bruit-tools/http';
 import { ClickTool } from '../../bruit-tools/click';
@@ -14,9 +15,22 @@ import { Feedback } from '../../api/feedback';
 export class BruitModal {
   // attributs on bruit-modal component
   @Prop()
-  config: BruitConfig;
+  config: BruitConfigModel;
+
+  @Watch('config')
+  initConfig(newConfig: BruitConfigModel) {
+    let configError = BruitConfig.haveError(newConfig);
+    if (!configError) {
+      this._config = new BruitConfig(newConfig);
+    } else {
+      //emit error
+      console.error(configError);
+    }
+  }
+
   @Prop()
   data: Array<Field>;
+
   @Prop()
   dataFn: () => Array<Field> | Promise<Array<Field>>;
 
@@ -26,10 +40,13 @@ export class BruitModal {
 
   // private properties of bruit-modal class
   private _innerBruitElement: string = '';
+
   @State()
   modalOpened: boolean = false;
 
   private _currentFeedback: Feedback;
+  @State()
+  _config: BruitConfig;
 
   componentWillLoad() {
     console.log('bruit started ...');
@@ -38,10 +55,13 @@ export class BruitModal {
     ConsoleTool.init();
     HttpTool.init();
     ClickTool.init();
+    //first init
+    this.initConfig(this.config);
   }
 
   newFeedback() {
     if (this._currentFeedback) {
+      this._currentFeedback = undefined;
     }
     const feedback = new Feedback(this.config.apiKey);
     feedback
@@ -59,15 +79,25 @@ export class BruitModal {
 
   cancelFeedback() {
     this.modalOpened = false;
+    if (this._currentFeedback) {
+      this._currentFeedback = undefined;
+    }
   }
 
+  // --------------------- TSX - HTML ------------------
+  // "render()" is called after "componentWillLoad()" and when the state change
+
   render() {
-    return (
-      <span>
-        {this.principalButton()}
-        {this.modal()}
-      </span>
-    );
+    if (this._config) {
+      return (
+        <span>
+          {this.principalButton()}
+          {this.modal()}
+        </span>
+      );
+    } else {
+      return <p class="error">missing config</p>;
+    }
   }
 
   principalButton() {
@@ -83,26 +113,39 @@ export class BruitModal {
             event.stopPropagation();
           }}
         >
-          <div class="head">
-            <a class="btn-close" onClick={() => this.cancelFeedback()}>
-              <svg
-                width="24"
-                height="24"
-                xmlns="http://www.w3.org/2000/svg"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                fill="white"
-              >
-                <path d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z" />
-              </svg>
-            </a>
-          </div>
-          <div class="content">
-            <div class="good-job">
-              <i class="fa fa-thumbs-o-up" aria-hidden="true" />
-              <h1>Good Job!</h1>
-            </div>
-          </div>
+          {this.modalHeader()}
+          {this.modalContent()}
+        </div>
+      </div>
+    );
+  }
+
+  modalHeader() {
+    return (
+      <div class="head">
+        <h1 class="title">{this._config.labels.title}</h1>
+        <a class="btn-close" onClick={() => this.cancelFeedback()}>
+          <svg
+            width="24"
+            height="24"
+            xmlns="http://www.w3.org/2000/svg"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            fill="white"
+          >
+            <path d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z" />
+          </svg>
+        </a>
+      </div>
+    );
+  }
+
+  modalContent() {
+    return (
+      <div class="content">
+        <div class="good-job">
+          <i class="fa fa-thumbs-o-up" aria-hidden="true" />
+          <h1>Good Job!</h1>
         </div>
       </div>
     );

@@ -5,6 +5,6 @@ export class Api {
     return fetch(ComponentConfig.BRUIT_IO_API_URL, {
       method: 'POST',
       body: JSON.stringify(feedback)
-    })
+    });
   }
 }

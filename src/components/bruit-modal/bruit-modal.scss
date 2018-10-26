@@ -1,4 +1,10 @@
 bruit-modal {
+  @import './reset';
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+
+  .error {
+    color: red;
+  }
 
   .modal-wrapper {
     width: 100%;
@@ -21,60 +27,74 @@ bruit-modal {
         opacity: 1;
       }
     }
-  }
 
+    .modal {
+      z-index: 91000;
+      width: 600px;
+      height: 400px;
+      display: block;
+      margin: 50% 0 0 -300px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      background: #fff;
+      opacity: 0;
+      transition: all 0.5s ease-in-out;
 
-  .modal {
-    z-index: 91000;
-    width: 600px;
-    height: 400px;
-    display: block;
-    margin: 50% 0 0 -300px;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    background: #fff;
-    opacity: 0;
-    transition: all 0.5s ease-in-out;
+      .head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        height: 3em;
+        padding: 1em 30px;
+        overflow: hidden;
+        background: #e2525c;
+        color: #fff;
 
-    .btn-close {
-      cursor: pointer;
+        h1 {
+          font-size: 2em;
+        }
+
+        .btn-close {
+          font-size: 2em;
+          display: block;
+          float: right;
+          cursor: pointer;
+        }
+      }
+
+      .content {
+        padding: 10%;
+
+        .good-job {
+          text-align: center;
+          color: #e2525c;
+
+          .fa-thumbs-o-up {
+            font-size: 60px;
+          }
+
+          h1 {
+            font-size: 45px;
+          }
+        }
+      }
     }
   }
 
 
 
-  .head {
-    width: 90%;
-    height: 32px;
-    padding: 12px 30px;
-    overflow: hidden;
-    background: #e2525c;
-  }
 
-  .btn-close {
-    font-size: 28px;
-    display: block;
-    float: right;
-    color: #fff;
-  }
 
-  .content {
-    padding: 10%;
-  }
 
-  .good-job {
-    text-align: center;
-    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-    color: #e2525c;
 
-    .fa-thumbs-o-up {
-      font-size: 60px;
-    }
 
-    h1 {
-      font-size: 45px;
-    }
-  }
+
+
+
+
+
 
 }

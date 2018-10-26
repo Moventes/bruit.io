@@ -16,7 +16,11 @@
   <script>
     var bruitCmp = document.querySelector('bruit-modal');
     bruitCmp.config = {
-      apiKey: '456789123'
+      apiKey: '456789123',
+      form: [{
+        label: 'form-test',
+        type: 'text'
+      }]
     };
     bruitCmp.data = [{
       label: "verion",
