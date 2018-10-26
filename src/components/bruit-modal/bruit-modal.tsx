@@ -186,10 +186,25 @@ export class BruitModal {
     return (
       <div class="content">
         <div class="good-job">
-          <h1>Good Job!</h1>
-          <button id="bruit-modal-button-send">{this._config.labels.send}</button>
+          <form>
+            <fieldset id="bruit-modal-fieldset">
+              {this.modalFields()}
+              <button id="bruit-modal-button-send">{this._config.labels.send}</button>
+            </fieldset>
+          </form>
         </div>
       </div>
     );
+  }
+
+  modalFields() {
+    return this._config.form.map(field => {
+      return (
+        <span>
+          <label>{field.label}</label>
+          <input type={field.type} />
+        </span>
+      );
+    });
   }
 }

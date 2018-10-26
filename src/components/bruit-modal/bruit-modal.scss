@@ -100,13 +100,11 @@ bruit-modal {
       .content {
         padding: 10%;
 
-        .good-job {
-          text-align: center;
-          color: #e2525c;
-
-          h1 {
-            font-size: 45px;
-          }
+        #bruit-modal-fieldset {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: baseline;
         }
 
       }
