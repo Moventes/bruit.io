@@ -1,14 +1,17 @@
+@import './devices';
+
 bruit-modal {
   @import './reset';
+
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 
   .error {
     color: red;
   }
 
-  .modal-wrapper {
-    width: 100%;
-    height: 100%;
+  #bruit-modal-wrapper {
+    width: 100vw;
+    min-height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,49 +21,78 @@ bruit-modal {
     transition: all 0.25s ease-in-out;
     z-index: 90000;
 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    @media #{$mobile} {
+      align-items: flex-start;
+    }
+
+    @media #{$tablet} {
+      align-items: center;
+    }
+
+    @media #{$laptop} {
+      align-items: center;
+    }
+
     &.open {
       opacity: 1;
       visibility: visible;
 
       .modal {
-        margin-top: -200px;
+        margin-top: 0;
         opacity: 1;
       }
     }
 
     .modal {
+
+      margin-top: 100vh;
+
+      @media #{$mobile} {
+        width: 100vw;
+        min-height: 100vh;
+
+      }
+
+      @media #{$tablet} {
+        min-width: 70vw;
+        max-width: 100vw;
+        min-height: 70vh;
+      }
+
+      @media #{$laptop} {
+        min-width: 50vw;
+        max-width: 100vw;
+        min-height: 60vh;
+      }
+
+
+
       z-index: 91000;
-      width: 600px;
-      height: 400px;
-      display: block;
-      margin: 50% 0 0 -300px;
-      position: relative;
-      top: 50%;
-      left: 50%;
       background: #fff;
       opacity: 0;
       transition: all 0.5s ease-in-out;
 
+
+
       .head {
+        height: 3rem;
+        padding: .5em 1em;
+        overflow: hidden;
+        background: #e2525c;
+        color: #fff;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        width: 90%;
-        height: 3em;
-        padding: 1em 30px;
-        overflow: hidden;
-        background: #e2525c;
-        color: #fff;
 
-        h1 {
-          font-size: 2em;
-        }
 
-        .btn-close {
-          font-size: 2em;
-          display: block;
-          float: right;
+        font-size: 2em;
+
+        #bruit-modal-btn-close {
           cursor: pointer;
         }
       }
@@ -72,14 +104,11 @@ bruit-modal {
           text-align: center;
           color: #e2525c;
 
-          .fa-thumbs-o-up {
-            font-size: 60px;
-          }
-
           h1 {
             font-size: 45px;
           }
         }
+
       }
     }
   }

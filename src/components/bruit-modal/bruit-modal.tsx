@@ -6,6 +6,7 @@ import { HttpTool } from '../../bruit-tools/http';
 import { ClickTool } from '../../bruit-tools/click';
 import { Field } from '../../models/field.model';
 import { Feedback } from '../../api/feedback';
+import { FormField } from '../../models/form-field.model';
 
 @Component({
   tag: 'bruit-modal',
@@ -67,21 +68,62 @@ export class BruitModal {
     feedback
       .init()
       .then(() => {
-        console.log('feedback is initialized! open form');
-        this.modalOpened = true;
-        const res = [{ label: 'test form', value: 'youhoooo', type: 'text' }];
-        return feedback.send(res, this.data, this.dataFn);
+        console.log('feedback is initialized! open modal');
+        return this.openModal();
+      })
+      .then(dataFromModal => {
+        console.log('feedback is initialized! modal closed, res = ', dataFromModal);
+        return feedback.send(dataFromModal, this.data, this.dataFn);
       })
       .then(() => {
+        this.modalOpened = false;
+        if (this._currentFeedback) {
+          this._currentFeedback = undefined;
+        }
         console.log('feedback is send!');
+      })
+      .catch(err => {
+        if (err === 'close') {
+          if (this._currentFeedback) {
+            this._currentFeedback = undefined;
+          }
+          console.log('feedback canceled');
+        } else {
+          //error !!!
+          console.error(err);
+        }
       });
   }
 
-  cancelFeedback() {
-    this.modalOpened = false;
-    if (this._currentFeedback) {
-      this._currentFeedback = undefined;
-    }
+  openModal(): Promise<Array<FormField>> {
+    this.modalOpened = true;
+
+    return new Promise((resolve, reject) => {
+      // ----------- validation du formulaire -------------
+      const button_send = document.getElementById('bruit-modal-button-send');
+      const sendFormFn = () => {
+        this.modalOpened = false;
+        if (true) {
+          button_send.removeEventListener('click', sendFormFn, false);
+          resolve([{ label: 'field in form', value: 'youhoooo', type: 'text' }]);
+        }
+      };
+      button_send.removeEventListener('click', sendFormFn, false);
+      button_send.addEventListener('click', sendFormFn, false);
+
+      //------------------ close modal ----------------------
+      const button_close = document.getElementById('bruit-modal-btn-close');
+      const modal_wrapper = document.getElementById('bruit-modal-wrapper');
+      const closeModalFn = () => {
+        this.modalOpened = false;
+        console.log('ho!');
+        reject('close');
+      };
+      button_close.removeEventListener('click', closeModalFn, false);
+      button_close.addEventListener('click', closeModalFn, { once: true });
+      modal_wrapper.removeEventListener('click', closeModalFn, false);
+      modal_wrapper.addEventListener('click', closeModalFn, { once: true });
+    });
   }
 
   // --------------------- TSX - HTML ------------------
@@ -106,7 +148,7 @@ export class BruitModal {
 
   modal() {
     return (
-      <div class={'modal-wrapper ' + (this.modalOpened ? 'open' : 'close')} onClick={() => this.cancelFeedback()}>
+      <div id="bruit-modal-wrapper" class={this.modalOpened ? 'open' : 'close'}>
         <div
           class="modal"
           onClick={event => {
@@ -124,7 +166,7 @@ export class BruitModal {
     return (
       <div class="head">
         <h1 class="title">{this._config.labels.title}</h1>
-        <a class="btn-close" onClick={() => this.cancelFeedback()}>
+        <a id="bruit-modal-btn-close">
           <svg
             width="24"
             height="24"
@@ -144,8 +186,8 @@ export class BruitModal {
     return (
       <div class="content">
         <div class="good-job">
-          <i class="fa fa-thumbs-o-up" aria-hidden="true" />
           <h1>Good Job!</h1>
+          <button id="bruit-modal-button-send">{this._config.labels.send}</button>
         </div>
       </div>
     );
