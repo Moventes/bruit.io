@@ -16,16 +16,17 @@
     "prestart": "node config/set_config.js dev",
     "start": "stencil build --dev --watch --serve --port 3332",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "docs": "stencil build --docs"
   },
   "devDependencies": {
-    "@stencil/core": "0.14.2",
+    "@stencil/core": "0.15.0",
+    "@stencil/sass": "^0.1.1",
     "@types/jest": "^23.3.5",
     "@types/puppeteer": "1.9.0",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "puppeteer": "1.8.0",
-    "@stencil/sass": "^0.1.1",
     "tslint": "^5.11.0"
   },
   "repository": {

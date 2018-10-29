@@ -1,4 +1,4 @@
-import { Component, Prop, Element, State, Watch } from '@stencil/core';
+import { Component, Prop, State, Watch } from '@stencil/core';
 import { BruitConfigModel } from '../../models/bruit-config.model';
 import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
@@ -35,13 +35,6 @@ export class BruitModal {
   @Prop()
   dataFn: () => Array<Field> | Promise<Array<Field>>;
 
-  // dom element of bruit-modal component
-  @Element()
-  bruitElement: HTMLElement;
-
-  // private properties of bruit-modal class
-  private _innerBruitElement: string = '';
-
   @State()
   modalOpened: boolean = false;
 
@@ -51,8 +44,7 @@ export class BruitModal {
 
   componentWillLoad() {
     console.log('bruit started ...');
-    this._innerBruitElement = this.bruitElement.innerHTML;
-    this.bruitElement.innerHTML = '';
+
     ConsoleTool.init();
     HttpTool.init();
     ClickTool.init();
@@ -143,7 +135,11 @@ export class BruitModal {
   }
 
   principalButton() {
-    return <a onClick={() => this.newFeedback()} innerHTML={this._innerBruitElement} />;
+    return (
+      <a onClick={() => this.newFeedback()}>
+        <slot />
+      </a>
+    );
   }
 
   modal() {
