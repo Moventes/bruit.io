@@ -1,15 +1,17 @@
 /* form starting stylings ------------------------------- */
 .group {
   position: relative;
-  margin-bottom: 45px;
+  margin: 0 auto 45px auto;
+  width: 100%;
+  max-width: 400px;
 }
 
 input,
 textarea {
   font-size: 18px;
-  padding: 10px 10px 10px 5px;
+  padding: 10px 0 10px 0;
   display: block;
-  width: 300px;
+  width: 100%;
   border: none;
   border-bottom: 1px solid #757575;
 
@@ -42,13 +44,19 @@ textarea {
     font-size: 14px;
     color: #5264AE;
   }
+
+  &:required~label:after {
+    content: " *";
+    color: rgb(175, 42, 42);
+    font-weight: bold;
+  }
 }
 
 /* BOTTOM BARS ================================= */
 .bar {
   position: relative;
   display: block;
-  width: 300px;
+  width: 100%;
 
   &:before,
   &:after {
@@ -80,61 +88,5 @@ textarea {
   &:focus~.bar:before,
   &:focus~.bar:after {
     width: 50%;
-  }
-}
-
-/* HIGHLIGHTER ================================== */
-.highlight {
-  position: absolute;
-  height: 60%;
-  width: 100px;
-  top: 25%;
-  left: 0;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-/* active state */
-input,
-textarea {
-
-  &:focus~.highlight {
-    -webkit-animation: inputHighlighter 0.3s ease;
-    -moz-animation: inputHighlighter 0.3s ease;
-    animation: inputHighlighter 0.3s ease;
-  }
-}
-
-/* ANIMATIONS ================ */
-@-webkit-keyframes inputHighlighter {
-  from {
-    background: #5264AE;
-  }
-
-  to {
-    width: 0;
-    background: transparent;
-  }
-}
-
-@-moz-keyframes inputHighlighter {
-  from {
-    background: #5264AE;
-  }
-
-  to {
-    width: 0;
-    background: transparent;
-  }
-}
-
-@keyframes inputHighlighter {
-  from {
-    background: #5264AE;
-  }
-
-  to {
-    width: 0;
-    background: transparent;
   }
 }

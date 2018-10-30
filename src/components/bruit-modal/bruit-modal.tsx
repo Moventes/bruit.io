@@ -234,8 +234,8 @@ export class BruitModal {
           type={field.type}
           value={field.value}
           class={!!field.value ? 'has-value' : ''}
+          required={!!field.required}
         />
-        <span class="highlight" />
         <span class="bar" />
         <label htmlFor={field.id}>{field.label}</label>
       </div>
@@ -258,8 +258,8 @@ export class BruitModal {
           }}
           value={field.value}
           class={!!field.value ? 'has-value' : ''}
+          required={!!field.required}
         />
-        <span class="highlight" />
         <span class="bar" />
         <label htmlFor={field.id}>{field.label}</label>
       </div>

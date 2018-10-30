@@ -89,9 +89,8 @@ bruit-modal {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-
-
         font-size: 2em;
+
 
         #bruit-modal-btn-close {
           cursor: pointer;
@@ -102,9 +101,11 @@ bruit-modal {
         padding: 10%;
 
         #bruit-modal-fieldset {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
+          // display: flex;
+          // flex-direction: column;
+          // justify-content: flex-start;
+          position: relative;
+          width: 100%;
         }
 
       }
