@@ -37,6 +37,8 @@ export class BruitModal {
 
   @State()
   modalOpened: boolean = false;
+  @State()
+  modalForm: Array<FormField> = [];
 
   private _currentFeedback: Feedback;
   @State()
@@ -88,16 +90,19 @@ export class BruitModal {
   }
 
   openModal(): Promise<Array<FormField>> {
+    this.modalForm = JSON.parse(JSON.stringify(this._config.form));
     this.modalOpened = true;
 
     return new Promise((resolve, reject) => {
       // ----------- validation du formulaire -------------
       const button_send = document.getElementById('bruit-modal-button-send');
-      const sendFormFn = () => {
+      const sendFormFn = e => {
+        e.preventDefault();
         this.modalOpened = false;
         if (true) {
+          //add spinner
           button_send.removeEventListener('click', sendFormFn, false);
-          resolve([{ label: 'field in form', value: 'youhoooo', type: 'text' }]);
+          resolve(this.modalForm);
         }
       };
       button_send.removeEventListener('click', sendFormFn, false);
@@ -108,6 +113,7 @@ export class BruitModal {
       const modal_wrapper = document.getElementById('bruit-modal-wrapper');
       const closeModalFn = () => {
         this.modalOpened = false;
+        this.modalForm = [];
         console.log('ho!');
         reject('close');
       };
@@ -185,7 +191,7 @@ export class BruitModal {
           <form>
             <fieldset id="bruit-modal-fieldset">
               {this.modalFields()}
-              <button id="bruit-modal-button-send">{this._config.labels.send}</button>
+              <button id="bruit-modal-button-send">{this._config.labels.button}</button>
             </fieldset>
           </form>
         </div>
@@ -194,20 +200,69 @@ export class BruitModal {
   }
 
   modalFields() {
-    return this._config.form.map(field => {
-      return (
-        <span>
-          <label>{field.label}</label>
-          <input
-            name={field.id}
-            value={field.value}
-            onChange={evt => {
-              console.log(evt.returnValue);
-            }}
-            type={field.type}
-          />
-        </span>
-      );
+    return this.modalForm.map(field => {
+      switch (field.type) {
+        case 'text':
+        case 'email': {
+          return this.inputField(field);
+        }
+        case 'textarea': {
+          return this.textareaField(field);
+        }
+        default: {
+          // emit error
+          break;
+        }
+      }
     });
+  }
+
+  inputField(field: FormField) {
+    return (
+      <div class="group">
+        <input
+          id={field.id}
+          name={field.id}
+          onInput={e => {
+            field.value = e.target['value'];
+            if (!!field.value) {
+              e.srcElement.classList.add('has-value');
+            } else {
+              e.srcElement.classList.remove('has-value');
+            }
+          }}
+          type={field.type}
+          value={field.value}
+          class={!!field.value ? 'has-value' : ''}
+        />
+        <span class="highlight" />
+        <span class="bar" />
+        <label htmlFor={field.id}>{field.label}</label>
+      </div>
+    );
+  }
+
+  textareaField(field: FormField) {
+    return (
+      <div class="group">
+        <textarea
+          id={field.id}
+          name={field.id}
+          onInput={e => {
+            field.value = e.target['value'];
+            if (!!field.value) {
+              e.srcElement.classList.add('has-value');
+            } else {
+              e.srcElement.classList.remove('has-value');
+            }
+          }}
+          value={field.value}
+          class={!!field.value ? 'has-value' : ''}
+        />
+        <span class="highlight" />
+        <span class="bar" />
+        <label htmlFor={field.id}>{field.label}</label>
+      </div>
+    );
   }
 }

@@ -3,9 +3,8 @@ export interface BruitConfigModel {
   apiKey: string;
   labels?: {
     title?: string;
-    subTitle?: string;
-    send?: string;
-    cancel?: string;
+    introduction?: string;
+    button?: string;
   };
   logs?: {
     levels?: {
@@ -16,7 +15,15 @@ export interface BruitConfigModel {
       network?: boolean;
       click?: boolean;
     };
-    lines?: number;
+    maxLines?: number;
   };
+  colors?: {
+    header?: string;
+    body?: string;
+    background?: string;
+    errors?: string;
+    focus?: string;
+  };
+  closeModalOnSubmit?: boolean;
   form: Array<FormField>;
 }

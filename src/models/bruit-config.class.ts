@@ -6,9 +6,8 @@ export class BruitConfig implements BruitConfigModel {
   apiKey: string;
   labels = {
     title: 'bruit.io',
-    subTitle: 'send a feedback',
-    send: 'send',
-    cancel: 'cancel'
+    introduction: 'send a feedback',
+    button: 'send'
   };
   logs = {
     levels: {
@@ -19,8 +18,16 @@ export class BruitConfig implements BruitConfigModel {
       network: true,
       click: true
     },
-    lines: 100
+    maxLines: 100
   };
+  colors = {
+    header: '#123',
+    body: '#123456',
+    background: '#78956',
+    errors: '#456123',
+    focus: '#741258'
+  };
+  closeModalOnSubmit = false;
   form: Array<FormField>;
 
   constructor(config: BruitConfigModel) {
@@ -36,8 +43,8 @@ export class BruitConfig implements BruitConfigModel {
           ...config.logs.levels
         };
       }
-      if (config.logs.lines) {
-        this.logs.lines = config.logs.lines;
+      if (config.logs.maxLines) {
+        this.logs.maxLines = config.logs.maxLines;
       }
     }
     if (config.labels) {
@@ -45,6 +52,15 @@ export class BruitConfig implements BruitConfigModel {
         ...this.labels,
         ...config.labels
       };
+    }
+    if (config.colors) {
+      this.colors = {
+        ...this.colors,
+        ...config.colors
+      };
+    }
+    if (config.closeModalOnSubmit !== undefined) {
+      this.closeModalOnSubmit = config.closeModalOnSubmit;
     }
   }
 
@@ -71,6 +87,7 @@ export class BruitConfig implements BruitConfigModel {
   }
 
   private static haveFormError(form: Array<FormField>): BruitError | void {
+    //test if checkbox
     if (!Array.isArray(form)) {
       return {
         code: 3,

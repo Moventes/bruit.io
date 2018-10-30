@@ -15,17 +15,35 @@
 
   <script>
     var bruitCmp = document.querySelector('bruit-modal');
+
     bruitCmp.config = {
-      apiKey: '456789123',
-      form: [{
-        label: 'form-test',
-        type: 'text'
-      }]
+      apiKey: '456789123', // => TUTORIEL
+      form: [{ // => TUTORIEL
+          label: 'email',
+          type: 'email',
+          value: 'pkloj'
+        },
+        {
+          label: 'firstname',
+          type: 'text',
+        },
+        {
+          label: 'lastname',
+          type: 'text',
+        },
+        {
+          label: 'message',
+          type: 'textarea',
+          value: 'explain your issue'
+        },
+      ]
     };
+
     bruitCmp.data = [{
       label: "verion",
       value: "0.1.54"
     }];
+
     bruitCmp.dataFn = new Promise(resolve => {
       resolve([{
         label: "user",
