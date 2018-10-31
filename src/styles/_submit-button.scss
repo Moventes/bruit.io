@@ -29,6 +29,8 @@ button#bruit-modal-submit-button {
   color: $green;
   letter-spacing: 1px;
   text-shadow: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
 
   .svg-icon {
     display: none;
@@ -39,22 +41,14 @@ button#bruit-modal-submit-button {
     weight: bold;
   }
 
-  cursor: pointer;
-  transition: all 0.25s ease;
-
   &:hover {
     color: white;
     background: $green;
   }
 
   &:active {
-    //letter-spacing: 2px;
     letter-spacing: 2px;
   }
-
-  // &:after {
-  //   content: "SUBMIT";
-  // }
 
   &.onClick {
     width: 40px;
