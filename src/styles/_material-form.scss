@@ -66,6 +66,14 @@ textarea {
     color: rgb(175, 42, 42);
     font-weight: bold;
   }
+
+  &:disabled {
+    background-color: initial;
+
+    &~label {
+      color: #999;
+    }
+  }
 }
 
 /* BOTTOM BARS ================================= */

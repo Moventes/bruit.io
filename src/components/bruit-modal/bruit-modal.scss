@@ -4,6 +4,7 @@ bruit-modal {
   @import './../../styles/reset';
   @import './../../styles/material-form';
   @import './../../styles/submit-button';
+  @import './../../styles/icon';
 
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 
@@ -47,7 +48,9 @@ bruit-modal {
         margin-top: 0;
         opacity: 1;
       }
+
     }
+
 
     .modal {
 

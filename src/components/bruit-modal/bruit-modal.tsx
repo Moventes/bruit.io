@@ -38,7 +38,7 @@ export class BruitModal {
   @State()
   modalOpened: boolean = false;
   @State()
-  modalForm: Array<FormField> = [];
+  modalFormField: Array<FormField> = [];
 
   private _currentFeedback: Feedback;
   @State()
@@ -90,7 +90,8 @@ export class BruitModal {
   }
 
   openModal(): Promise<Array<FormField>> {
-    this.modalForm = JSON.parse(JSON.stringify(this._config.form));
+    document.getElementById('bruit-modal-submit-button').classList.remove('validate', 'onClick');
+    this.modalFormField = JSON.parse(JSON.stringify(this._config.form));
     this.modalOpened = true;
 
     return new Promise((resolve, reject) => {
@@ -98,14 +99,21 @@ export class BruitModal {
       const form = document.getElementById('bruit-modal-form');
       const onSubmit = e => {
         e.preventDefault();
+        this.disabledFormField();
         console.log('--->', e);
+        document.getElementById('bruit-modal-submit-button').classList.add('onClick');
         setTimeout(() => {
-          this.modalOpened = false;
-          if (true) {
-            //add spinner
-            form.removeEventListener('submit', onSubmit, false);
-            resolve(this.modalForm);
-          }
+          document.getElementById('bruit-modal-submit-button').classList.remove('onClick');
+          document.getElementById('bruit-modal-submit-button').classList.add('validate');
+
+          setTimeout(() => {
+            //this.modalOpened = false;
+            if (true) {
+              //add spinner
+              form.removeEventListener('submit', onSubmit, false);
+              resolve(this.modalFormField);
+            }
+          }, 1000);
         }, 2000);
       };
       form.removeEventListener('submit', onSubmit, false);
@@ -116,7 +124,7 @@ export class BruitModal {
       const modal_wrapper = document.getElementById('bruit-modal-wrapper');
       const closeModalFn = () => {
         this.modalOpened = false;
-        this.modalForm = [];
+        this.modalFormField = [];
         console.log('ho!');
         reject('close');
       };
@@ -124,6 +132,12 @@ export class BruitModal {
       button_close.addEventListener('click', closeModalFn, { once: true });
       modal_wrapper.removeEventListener('click', closeModalFn, false);
       modal_wrapper.addEventListener('click', closeModalFn, { once: true });
+    });
+  }
+
+  disabledFormField() {
+    this.modalFormField.map(field => document.getElementById(field.id)).forEach(domField => {
+      domField.setAttribute('disabled', 'true');
     });
   }
 
@@ -196,7 +210,13 @@ export class BruitModal {
               {this.modalFields()}
               <div class="button-container">
                 <button type="submit" id="bruit-modal-submit-button">
-                  {this._config.labels.button}
+                  <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path
+                      fill="none"
+                      d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
+                    />
+                  </svg>
+                  <span id="button-submit-label">{this._config.labels.button}</span>
                 </button>
               </div>
             </fieldset>
@@ -207,7 +227,7 @@ export class BruitModal {
   }
 
   modalFields() {
-    return this.modalForm.map(field => {
+    return this.modalFormField.map(field => {
       switch (field.type) {
         case 'text':
         case 'email': {
