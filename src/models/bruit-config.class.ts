@@ -28,6 +28,7 @@ export class BruitConfig implements BruitConfigModel {
     focus: '#741258'
   };
   closeModalOnSubmit = false;
+  durationBeforeClosing = 1500;
   form: Array<FormField>;
 
   constructor(config: BruitConfigModel) {
@@ -61,6 +62,9 @@ export class BruitConfig implements BruitConfigModel {
     }
     if (config.closeModalOnSubmit !== undefined) {
       this.closeModalOnSubmit = config.closeModalOnSubmit;
+    }
+    if (config.durationBeforeClosing !== undefined) {
+      this.durationBeforeClosing = config.durationBeforeClosing;
     }
   }
 

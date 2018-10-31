@@ -1,4 +1,4 @@
-import { Component, Prop, State, Watch } from '@stencil/core';
+import { Component, Prop, State, Watch, EventEmitter, Event } from '@stencil/core';
 import { BruitConfigModel } from '../../models/bruit-config.model';
 import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
@@ -7,43 +7,84 @@ import { ClickTool } from '../../bruit-tools/click';
 import { Field } from '../../models/field.model';
 import { Feedback } from '../../api/feedback';
 import { FormField } from '../../models/form-field.model';
+import { BruitError } from '../../models/bruit-error.model';
 
 @Component({
   tag: 'bruit-modal',
   styleUrl: 'bruit-modal.scss',
-  shadow: false
+  shadow: false // set to true when all browser support shadowDom
 })
 export class BruitModal {
   // attributs on bruit-modal component
+
+  // configuration
   @Prop()
   config: BruitConfigModel;
 
+  /**
+   * test validity of config and assign to internal config
+   * @param newConfig the new value of config
+   */
   @Watch('config')
   initConfig(newConfig: BruitConfigModel) {
     let configError = BruitConfig.haveError(newConfig);
     if (!configError) {
       this._config = new BruitConfig(newConfig);
+      console.log(this._config);
     } else {
-      //emit error
+      this.sendError.emit(configError);
       console.error(configError);
     }
   }
 
+  /**
+   * field array to add in feedback
+   */
   @Prop()
   data: Array<Field>;
 
+  /**
+   * FN or PROMISE
+   * return field array to add in feedback
+   */
   @Prop()
   dataFn: () => Array<Field> | Promise<Array<Field>>;
 
+  /**
+   * emit bruit-error on internal error or config error
+   * ex : bruitModal.addEventListener('onError',error=>...)
+   */
+  @Event({
+    eventName: 'onError'
+  })
+  sendError: EventEmitter<BruitError>;
+
+  /**
+   * modalOpened boolean manages the modal opening/closing action
+   */
   @State()
   modalOpened: boolean = false;
+
+  /**
+   * field array to display in current modal (copy of config form)
+   */
   @State()
   modalFormField: Array<FormField> = [];
 
+  /**
+   * the current feedback (created when the modal opens)
+   */
   private _currentFeedback: Feedback;
+
+  /**
+   * the current and complete config
+   */
   @State()
   _config: BruitConfig;
 
+  /**
+   * fired on component loading before render()
+   */
   componentWillLoad() {
     console.log('bruit started ...');
 
@@ -54,91 +95,165 @@ export class BruitModal {
     this.initConfig(this.config);
   }
 
+  /**
+   * called on click on component
+   * init a feedback, wait user submit, send feedback
+   */
   newFeedback() {
+    //if there's already a current feedback, we have a probleme!!! => destroy it
     if (this._currentFeedback) {
-      this._currentFeedback = undefined;
+      this.destroyFeedback();
     }
+    //create a new feedback
     const feedback = new Feedback(this.config.apiKey);
+    // init feedback (screenshot) -> open modal =>  wait user submit
     feedback
       .init()
-      .then(() => {
-        console.log('feedback is initialized! open modal');
-        return this.openModal();
-      })
+      .then(() => this.openModal())
+      .then(() => this.waitOnSubmit())
       .then(dataFromModal => {
-        console.log('feedback is initialized! modal closed, res = ', dataFromModal);
-        return feedback.send(dataFromModal, this.data, this.dataFn);
+        //user submit with data dataFromModal
+        const sendFeedback = feedback.send(dataFromModal, this.data, this.dataFn);
+        // if the configuration says that the modal must be closed directly
+        if (this._config.closeModalOnSubmit) {
+          // close the modal and send feedback
+          this.closeModal();
+          return sendFeedback;
+        } else {
+          // else, we display de loader
+          this.submitButtonState(1);
+          // send feedback
+          return sendFeedback.then(() => {
+            // we display the "validation" for <durationBeforeClosing> milliseconds
+            this.submitButtonState(2);
+            return new Promise(resolve => {
+              setTimeout(() => resolve(), this._config.durationBeforeClosing);
+            });
+          });
+        }
       })
       .then(() => {
-        this.modalOpened = false;
-        if (this._currentFeedback) {
-          this._currentFeedback = undefined;
-        }
-        console.log('feedback is send!');
+        // feedback is send !
+        this.destroyFeedback();
+        // end
       })
       .catch(err => {
+        this.destroyFeedback();
         if (err === 'close') {
-          if (this._currentFeedback) {
-            this._currentFeedback = undefined;
-          }
-          console.log('feedback canceled');
+          //console.log('feedback canceled');
         } else {
-          //error !!!
-          console.error(err);
+          this.sendError.emit(err);
+          console.error('BRUIT.IO error : ', err);
         }
       });
   }
 
-  openModal(): Promise<Array<FormField>> {
-    document.getElementById('bruit-modal-submit-button').classList.remove('validate', 'onClick');
+  /**
+   * close the modal and destroy the _currentFeedback
+   */
+  destroyFeedback() {
+    this.closeModal();
+    if (this._currentFeedback) {
+      this._currentFeedback = undefined;
+    }
+  }
+
+  /**
+   * reset the modal values and open it
+   */
+  openModal() {
+    this.submitButtonState(0);
     this.modalFormField = JSON.parse(JSON.stringify(this._config.form));
     this.modalOpened = true;
+  }
+
+  /**
+   * empties values and close the feedback;
+   */
+  closeModal() {
+    this.modalOpened = false;
+    this.modalFormField = [];
+  }
+
+  /**
+   * awaits the closure or submission of the modal by user
+   */
+  waitOnSubmit(): Promise<Array<FormField>> {
+    //getting the three clickable dom element (for submit or close modal)
+    const form = document.getElementById('bruit-modal-form');
+    const button_close = document.getElementById('bruit-modal-btn-close');
+    const modal_wrapper = document.getElementById('bruit-modal-wrapper');
+    //show the close button
+    button_close.hidden = false;
 
     return new Promise((resolve, reject) => {
       // ----------- validation du formulaire -------------
-      const form = document.getElementById('bruit-modal-form');
-      const onSubmit = e => {
+      const _onSubmit = e => {
         e.preventDefault();
-        this.disabledFormField();
-        console.log('--->', e);
-        document.getElementById('bruit-modal-submit-button').classList.add('onClick');
-        setTimeout(() => {
-          document.getElementById('bruit-modal-submit-button').classList.remove('onClick');
-          document.getElementById('bruit-modal-submit-button').classList.add('validate');
 
-          setTimeout(() => {
-            //this.modalOpened = false;
-            if (true) {
-              //add spinner
-              form.removeEventListener('submit', onSubmit, false);
-              resolve(this.modalFormField);
-            }
-          }, 1000);
-        }, 2000);
+        //disable modal
+        this.disabledFormField();
+        button_close.hidden = true;
+        // remove event listeners (for memory leaks and disable form)
+        button_close.removeEventListener('click', _closeModalFn, false);
+        modal_wrapper.removeEventListener('click', _closeModalFn, false);
+        form.removeEventListener('submit', _onSubmit, false);
+
+        resolve(this.modalFormField);
       };
-      form.removeEventListener('submit', onSubmit, false);
-      form.addEventListener('submit', onSubmit, false);
+      form.addEventListener('submit', _onSubmit, { once: true });
 
       //------------------ close modal ----------------------
-      const button_close = document.getElementById('bruit-modal-btn-close');
-      const modal_wrapper = document.getElementById('bruit-modal-wrapper');
-      const closeModalFn = () => {
-        this.modalOpened = false;
-        this.modalFormField = [];
-        console.log('ho!');
+
+      const _closeModalFn = () => {
+        this.closeModal();
+
+        // remove event listeners (for memory leaks and disable form)
+        button_close.removeEventListener('click', _closeModalFn, false);
+        modal_wrapper.removeEventListener('click', _closeModalFn, false);
+        form.removeEventListener('submit', _onSubmit, false);
+
         reject('close');
       };
-      button_close.removeEventListener('click', closeModalFn, false);
-      button_close.addEventListener('click', closeModalFn, { once: true });
-      modal_wrapper.removeEventListener('click', closeModalFn, false);
-      modal_wrapper.addEventListener('click', closeModalFn, { once: true });
+      button_close.addEventListener('click', _closeModalFn, { once: true });
+      modal_wrapper.addEventListener('click', _closeModalFn, { once: true });
     });
   }
 
+  /**
+   * set all form field to disabled
+   */
   disabledFormField() {
     this.modalFormField.map(field => document.getElementById(field.id)).forEach(domField => {
       domField.setAttribute('disabled', 'true');
     });
+  }
+
+  /**
+   * change submit button state
+   * state 0 = button send
+   * state 1 = loader
+   * state 2 = button checked
+   * @param state state of the submit button (0|1|2)
+   */
+  submitButtonState(state: number) {
+    const buttonClassList = document.getElementById('bruit-modal-submit-button').classList;
+    switch (state) {
+      case 2: {
+        buttonClassList.remove('onClick');
+        buttonClassList.add('validate');
+        break;
+      }
+      case 1: {
+        buttonClassList.add('onClick');
+        buttonClassList.remove('validate');
+        break;
+      }
+      default: {
+        buttonClassList.remove('validate', 'onClick');
+        break;
+      }
+    }
   }
 
   // --------------------- TSX - HTML ------------------
@@ -237,8 +352,10 @@ export class BruitModal {
           return this.textareaField(field);
         }
         default: {
-          // emit error
-          break;
+          const err = { code: 4, text: `"${field.type}" field type is not supported` };
+          console.error('BRUIT.IO error : ', err);
+          this.sendError.emit(err);
+          return <span class="error">error</span>;
         }
       }
     });

@@ -25,5 +25,6 @@ export interface BruitConfigModel {
     focus?: string;
   };
   closeModalOnSubmit?: boolean;
+  durationBeforeClosing?: number;
   form: Array<FormField>;
 }

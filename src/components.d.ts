@@ -14,19 +14,41 @@ import {
 import {
   Field,
 } from './models/field.model';
+import {
+  EventEmitter,
+} from '@stencil/core';
+import {
+  BruitError,
+} from './models/bruit-error.model';
 
 
 export namespace Components {
 
   interface BruitModal {
     'config': BruitConfigModel;
+    /**
+    * field array to add in feedback
+    */
     'data': Array<Field>;
+    /**
+    * FN or PROMISE return field array to add in feedback
+    */
     'dataFn': () => Array<Field> | Promise<Array<Field>>;
   }
   interface BruitModalAttributes extends StencilHTMLAttributes {
     'config'?: BruitConfigModel;
+    /**
+    * field array to add in feedback
+    */
     'data'?: Array<Field>;
+    /**
+    * FN or PROMISE return field array to add in feedback
+    */
     'dataFn'?: () => Array<Field> | Promise<Array<Field>>;
+    /**
+    * emit bruit-error on internal error or config error ex : bruitModal.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent<BruitError>) => void;
   }
 }
 
