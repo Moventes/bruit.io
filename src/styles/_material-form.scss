@@ -6,7 +6,7 @@
   max-width: 400px;
 
 
-  input,
+  input:not([type="checkbox"]),
   textarea {
     font-size: 18px;
     padding: 10px 0 10px 0;
@@ -39,7 +39,7 @@
   }
 
   /* active state */
-  input,
+  input:not([type="checkbox"]),
   textarea {
 
     &:focus,
@@ -104,7 +104,7 @@
 
 
   /* active state */
-  input,
+  input:not([type="checkbox"]),
   textarea {
 
     &:focus~.bar {
@@ -125,4 +125,53 @@
     }
   }
 
+
+  $green: #22b573;
+  $grey: #555;
+  $transitionSpeed: 200ms;
+
+  input[type="checkbox"]+label {
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    border: 3px solid $grey;
+    border-radius: 100%;
+    top: 50%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    transition: all ease-out $transitionSpeed;
+    text-indent: 90px;
+    font: normal normal 1.5em "Helvetica";
+    white-space: nowrap;
+    color: $grey;
+    user-select: none;
+
+    &:after {
+      content: "";
+      position: absolute;
+      width: 0px;
+      height: 1em;
+      border-bottom: 3px solid $green;
+      border-left: 3px solid $green;
+      top: 25%;
+      left: 50%;
+      transform-origin: bottom left;
+      transform: rotate(-45deg);
+      opacity: 0;
+      transition: all ease-out $transitionSpeed;
+    }
+  }
+
+  input[type="checkbox"]:checked+label {
+    border: 3px solid $green;
+
+    &:after {
+      opacity: 1;
+      width: 2em;
+    }
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
 }
