@@ -11,6 +11,7 @@ export class BruitConfig implements BruitConfigModel {
   };
   logs = {
     levels: {
+      log: true,
       debug: true,
       info: true,
       warn: true,
@@ -60,10 +61,10 @@ export class BruitConfig implements BruitConfigModel {
         ...config.colors
       };
     }
-    if (config.closeModalOnSubmit !== undefined) {
+    if (typeof config.closeModalOnSubmit === 'boolean') {
       this.closeModalOnSubmit = config.closeModalOnSubmit;
     }
-    if (config.durationBeforeClosing !== undefined) {
+    if (typeof config.durationBeforeClosing === 'number') {
       this.durationBeforeClosing = config.durationBeforeClosing;
     }
   }
@@ -91,7 +92,6 @@ export class BruitConfig implements BruitConfigModel {
   }
 
   private static haveFormError(form: Array<FormField>): BruitError | void {
-    //test if checkbox
     if (!Array.isArray(form)) {
       return {
         code: 3,
@@ -108,6 +108,19 @@ export class BruitConfig implements BruitConfigModel {
       return {
         code: 3,
         text: 'all config form field must have a label and a type'
+      };
+    }
+    const agreementField = form.find(field => field.id === 'agreement');
+    if (!agreementField) {
+      return {
+        code: 4,
+        text: 'agreement field is missing'
+      };
+    }
+    if (agreementField.type !== 'checkbox') {
+      return {
+        code: 4,
+        text: 'agreement field must be a checkbox'
       };
     }
     return;

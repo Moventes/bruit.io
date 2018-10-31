@@ -1,13 +1,15 @@
+import { BruitConfig } from './../models/bruit-config.class';
+import { LogLevels } from '../models/log-levels.model';
 export class ConsoleTool {
   private static BUFFER_SIZE = 100;
   private static logArray = [];
 
-  static init() {
-    ConsoleTool.BUFFER_SIZE = 100;
-    ConsoleTool.configure();
+  static init(config: BruitConfig) {
+    ConsoleTool.BUFFER_SIZE = config.logs.maxLines;
+    ConsoleTool.configure(config.logs.levels);
   }
 
-  private static configure() {
+  private static configure(levels: LogLevels) {
     if (typeof (<any>JSON).decycle !== 'function') {
       (<any>JSON).decycle = function decycle(object, replacer) {
         const objects = new WeakMap();
@@ -94,15 +96,6 @@ export class ConsoleTool {
 
       (<any>console).overloaded = true;
 
-      (<any>console).click = function() {
-        return ConsoleTool.handleLogMessage('click', arguments);
-      };
-
-      (<any>console).http = function() {
-        return ConsoleTool.handleLogMessage('http', arguments);
-      };
-
-      const _log = console.log;
       (<any>console).logArray = function() {
         return JSON.parse(JSON.stringify(ConsoleTool.logArray));
       };
@@ -111,32 +104,49 @@ export class ConsoleTool {
       //   !!(<any>window).cordova ||
       //   (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0)
       // ) {
-      console.log = function() {
-        return _log.apply(console, ConsoleTool.handleLogMessage('log', arguments));
-      };
+      if (levels.click) {
+        (<any>console).click = function() {
+          return ConsoleTool.handleLogMessage('click', arguments);
+        };
+      }
 
-      const _debug = console.debug;
-      console.debug = function() {
-        return _debug.apply(console, ConsoleTool.handleLogMessage('log', arguments));
-      };
-
-      const _error = console.error;
-      console.error = function() {
-        const args = ConsoleTool.handleLogMessage('error', arguments);
-        args.push(new Error().stack);
-        return _error.apply(console, args);
-      };
-
-      const _warn = console.warn;
-      console.warn = function() {
-        return _warn.apply(console, ConsoleTool.handleLogMessage('warn', arguments));
-      };
-
-      const _info = console.info;
-      console.info = function() {
-        return _info.apply(console, ConsoleTool.handleLogMessage('log', arguments));
-      };
-      // }
+      if (levels.network) {
+        (<any>console).network = function() {
+          return ConsoleTool.handleLogMessage('network', arguments);
+        };
+      }
+      if (levels.log) {
+        const _log = console.log;
+        console.log = function() {
+          return _log.apply(console, ConsoleTool.handleLogMessage('log', arguments));
+        };
+      }
+      if (levels.debug) {
+        const _debug = console.debug;
+        console.debug = function() {
+          return _debug.apply(console, ConsoleTool.handleLogMessage('debug', arguments));
+        };
+      }
+      if (levels.error) {
+        const _error = console.error;
+        console.error = function() {
+          const args = ConsoleTool.handleLogMessage('error', arguments);
+          args.push(new Error().stack);
+          return _error.apply(console, args);
+        };
+      }
+      if (levels.warn) {
+        const _warn = console.warn;
+        console.warn = function() {
+          return _warn.apply(console, ConsoleTool.handleLogMessage('warn', arguments));
+        };
+      }
+      if (levels.info) {
+        const _info = console.info;
+        console.info = function() {
+          return _info.apply(console, ConsoleTool.handleLogMessage('info', arguments));
+        };
+      }
     } else {
       console.log('[FeedlogService] - console already overloaded');
     }

@@ -88,9 +88,13 @@ export class BruitModal {
   componentWillLoad() {
     console.log('bruit started ...');
 
-    ConsoleTool.init();
-    HttpTool.init();
-    ClickTool.init();
+    ConsoleTool.init(this._config);
+    if (this._config.logs.levels.network) {
+      HttpTool.init();
+    }
+    if (this._config.logs.levels.click) {
+      ClickTool.init();
+    }
     //first init
     this.initConfig(this.config);
   }

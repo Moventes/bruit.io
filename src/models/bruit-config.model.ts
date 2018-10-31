@@ -1,3 +1,4 @@
+import { LogLevels } from './log-levels.model';
 import { FormField } from './form-field.model';
 export interface BruitConfigModel {
   apiKey: string;
@@ -7,14 +8,7 @@ export interface BruitConfigModel {
     button?: string;
   };
   logs?: {
-    levels?: {
-      debug?: boolean;
-      info?: boolean;
-      warn?: boolean;
-      error?: boolean;
-      network?: boolean;
-      click?: boolean;
-    };
+    levels?: LogLevels;
     maxLines?: number;
   };
   colors?: {
