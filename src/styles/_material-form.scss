@@ -14,9 +14,11 @@ textarea {
   width: 100%;
   border: none;
   border-bottom: 1px solid #757575;
+  box-shadow: none;
 
   &:focus {
     outline: none;
+    box-shadow: inherit;
   }
 }
 
@@ -43,6 +45,20 @@ textarea {
     top: -20px;
     font-size: 14px;
     color: #5264AE;
+  }
+
+  &:focus:invalid~label,
+  &.has-value:invalid~label {
+    color: rgb(175, 42, 42);
+  }
+
+  &:focus:invalid~.bar,
+  &.has-value:invalid~.bar {
+
+    &:before,
+    &:after {
+      background: rgb(175, 42, 42);
+    }
   }
 
   &:required~label:after {

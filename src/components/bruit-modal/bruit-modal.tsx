@@ -95,18 +95,21 @@ export class BruitModal {
 
     return new Promise((resolve, reject) => {
       // ----------- validation du formulaire -------------
-      const button_send = document.getElementById('bruit-modal-button-send');
-      const sendFormFn = e => {
+      const form = document.getElementById('bruit-modal-form');
+      const onSubmit = e => {
         e.preventDefault();
-        this.modalOpened = false;
-        if (true) {
-          //add spinner
-          button_send.removeEventListener('click', sendFormFn, false);
-          resolve(this.modalForm);
-        }
+        console.log('--->', e);
+        setTimeout(() => {
+          this.modalOpened = false;
+          if (true) {
+            //add spinner
+            form.removeEventListener('submit', onSubmit, false);
+            resolve(this.modalForm);
+          }
+        }, 2000);
       };
-      button_send.removeEventListener('click', sendFormFn, false);
-      button_send.addEventListener('click', sendFormFn, false);
+      form.removeEventListener('submit', onSubmit, false);
+      form.addEventListener('submit', onSubmit, false);
 
       //------------------ close modal ----------------------
       const button_close = document.getElementById('bruit-modal-btn-close');
@@ -188,10 +191,14 @@ export class BruitModal {
     return (
       <div class="content">
         <div class="good-job">
-          <form>
+          <form id="bruit-modal-form">
             <fieldset id="bruit-modal-fieldset">
               {this.modalFields()}
-              <button id="bruit-modal-button-send">{this._config.labels.button}</button>
+              <div class="button-container">
+                <button type="submit" id="bruit-modal-submit-button">
+                  {this._config.labels.button}
+                </button>
+              </div>
             </fieldset>
           </form>
         </div>
