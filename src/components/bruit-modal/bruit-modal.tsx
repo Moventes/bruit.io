@@ -72,6 +72,12 @@ export class BruitModal {
   modalFormField: Array<FormField> = [];
 
   /**
+   * bruit error to display on bottom of modal
+   */
+  @State()
+  modalError: BruitError;
+
+  /**
    * the current feedback (created when the modal opens)
    */
   private _currentFeedback: Feedback;
@@ -145,12 +151,21 @@ export class BruitModal {
         // end
       })
       .catch(err => {
-        this.destroyFeedback();
         if (err === 'close') {
+          this.destroyFeedback();
           //console.log('feedback canceled');
         } else {
           this.sendError.emit(err);
+          if (err && err.text) {
+            this.modalError = err;
+          } else {
+            this.modalError = {
+              code: 0,
+              text: 'An Unexpected Error Occurred'
+            };
+          }
           console.error('BRUIT.IO error : ', err);
+          // setTimeout(() => this.destroyFeedback(), 3000);
         }
       });
   }
@@ -330,22 +345,37 @@ export class BruitModal {
           <form id="bruit-modal-form">
             <div id="bruit-modal-fieldset">
               {this.modalFields()}
-              <div class="button-container">
-                <button type="submit" id="bruit-modal-submit-button">
-                  <svg class="svg-icon" viewBox="0 0 20 20">
-                    <path
-                      fill="none"
-                      d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
-                    />
-                  </svg>
-                  <span id="button-submit-label">{this._config.labels.button}</span>
-                </button>
-              </div>
+              <div class="button-container">{this.modalSubmitButtonOrError()}</div>
             </div>
           </form>
         </div>
       </div>
     );
+  }
+
+  modalSubmitButtonOrError() {
+    if (!this.modalError) {
+      return (
+        <button type="submit" id="bruit-modal-submit-button">
+          <svg class="svg-icon" viewBox="0 0 20 20">
+            <path
+              fill="none"
+              d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
+            />
+          </svg>
+          <span id="button-submit-label">{this._config.labels.button}</span>
+        </button>
+      );
+    } else {
+      return (
+        <div id="bruit-modal-footer-error" class="error">
+          <svg class="svg-icon" viewBox="0 0 20 20">
+            <path d="M18.344,16.174l-7.98-12.856c-0.172-0.288-0.586-0.288-0.758,0L1.627,16.217c0.339-0.543-0.603,0.668,0.384,0.682h15.991C18.893,16.891,18.167,15.961,18.344,16.174 M2.789,16.008l7.196-11.6l7.224,11.6H2.789z M10.455,7.552v3.561c0,0.244-0.199,0.445-0.443,0.445s-0.443-0.201-0.443-0.445V7.552c0-0.245,0.199-0.445,0.443-0.445S10.455,7.307,10.455,7.552M10.012,12.439c-0.733,0-1.33,0.6-1.33,1.336s0.597,1.336,1.33,1.336c0.734,0,1.33-0.6,1.33-1.336S10.746,12.439,10.012,12.439M10.012,14.221c-0.244,0-0.443-0.199-0.443-0.445c0-0.244,0.199-0.445,0.443-0.445s0.443,0.201,0.443,0.445C10.455,14.021,10.256,14.221,10.012,14.221" />
+          </svg>
+          <p>{this.modalError.text}</p>
+        </div>
+      );
+    }
   }
 
   modalFields() {

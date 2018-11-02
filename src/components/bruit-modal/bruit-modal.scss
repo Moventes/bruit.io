@@ -9,7 +9,11 @@ bruit-modal {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 
   .error {
-    color: red;
+    color: red !important;
+
+    svg.svg-icon path {
+      fill: red !important;
+    }
   }
 
   #bruit-modal-wrapper {
@@ -111,6 +115,12 @@ bruit-modal {
         #bruit-modal-fieldset {
           position: relative;
           width: 100%;
+        }
+
+        #bruit-modal-footer-error {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
       }
