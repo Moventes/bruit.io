@@ -6,4 +6,5 @@ export interface LogLevels {
   error?: boolean;
   network?: boolean;
   click?: boolean;
+  url?: boolean;
 }

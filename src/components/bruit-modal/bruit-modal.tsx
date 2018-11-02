@@ -8,7 +8,7 @@ import { Field } from '../../models/field.model';
 import { Feedback } from '../../api/feedback';
 import { FormField } from '../../models/form-field.model';
 import { BruitError } from '../../models/bruit-error.model';
-
+import { UrlTool } from '../../bruit-tools/url';
 @Component({
   tag: 'bruit-modal',
   styleUrl: 'bruit-modal.scss',
@@ -96,6 +96,9 @@ export class BruitModal {
     }
     if (this._config.logs.levels.click) {
       ClickTool.init();
+    }
+    if (this._config.logs.levels.url) {
+      UrlTool.init();
     }
   }
 

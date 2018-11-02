@@ -17,7 +17,8 @@ export class BruitConfig implements BruitConfigModel {
       warn: true,
       error: true,
       network: true,
-      click: true
+      click: true,
+      url: true
     },
     maxLines: 100
   };

@@ -109,6 +109,11 @@ export class ConsoleTool {
           return ConsoleTool.handleLogMessage('click', arguments);
         };
       }
+      if (levels.url) {
+        (<any>console).url = function() {
+          return ConsoleTool.handleLogMessage('url', arguments);
+        };
+      }
 
       if (levels.network) {
         (<any>console).network = function() {
