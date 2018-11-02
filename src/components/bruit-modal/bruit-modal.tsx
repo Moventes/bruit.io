@@ -8,7 +8,7 @@ import { Field } from '../../models/field.model';
 import { Feedback } from '../../api/feedback';
 import { FormField } from '../../models/form-field.model';
 import { BruitError } from '../../models/bruit-error.model';
-
+import { UrlTool } from '../../bruit-tools/url';
 @Component({
   tag: 'bruit-modal',
   styleUrl: 'bruit-modal.scss',
@@ -87,12 +87,19 @@ export class BruitModal {
    */
   componentWillLoad() {
     console.log('bruit started ...');
-
-    ConsoleTool.init();
-    HttpTool.init();
-    ClickTool.init();
     //first init
     this.initConfig(this.config);
+
+    ConsoleTool.init(this._config);
+    if (this._config.logs.levels.network) {
+      HttpTool.init();
+    }
+    if (this._config.logs.levels.click) {
+      ClickTool.init();
+    }
+    if (this._config.logs.levels.url) {
+      UrlTool.init();
+    }
   }
 
   /**
@@ -321,7 +328,7 @@ export class BruitModal {
       <div class="content">
         <div class="good-job">
           <form id="bruit-modal-form">
-            <fieldset id="bruit-modal-fieldset">
+            <div id="bruit-modal-fieldset">
               {this.modalFields()}
               <div class="button-container">
                 <button type="submit" id="bruit-modal-submit-button">
@@ -334,7 +341,7 @@ export class BruitModal {
                   <span id="button-submit-label">{this._config.labels.button}</span>
                 </button>
               </div>
-            </fieldset>
+            </div>
           </form>
         </div>
       </div>
@@ -348,11 +355,14 @@ export class BruitModal {
         case 'email': {
           return this.inputField(field);
         }
+        case 'checkbox': {
+          return this.checkboxField(field);
+        }
         case 'textarea': {
           return this.textareaField(field);
         }
         default: {
-          const err = { code: 4, text: `"${field.type}" field type is not supported` };
+          const err = { code: 6, text: `"${field.type}" field type is not supported` };
           console.error('BRUIT.IO error : ', err);
           this.sendError.emit(err);
           return <span class="error">error</span>;
@@ -405,6 +415,23 @@ export class BruitModal {
           required={!!field.required}
         />
         <span class="bar" />
+        <label htmlFor={field.id}>{field.label}</label>
+      </div>
+    );
+  }
+
+  checkboxField(field: FormField) {
+    return (
+      <div class="group">
+        <input
+          id={field.id}
+          name={field.id}
+          onChange={e => (field.value = e.target['value'])}
+          value={field.value}
+          checked={field.value}
+          required={!!field.required}
+          type={field.type}
+        />
         <label htmlFor={field.id}>{field.label}</label>
       </div>
     );

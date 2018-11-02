@@ -90,8 +90,8 @@ export class HttpTool {
   }
 
   private static logHttp(requestLog) {
-    if ((<any>console).http) {
-      (<any>console).http((<any>JSON).decycle(requestLog));
+    if ((<any>console).network) {
+      (<any>console).network((<any>JSON).decycle(requestLog));
     } else {
       console.log(requestLog);
     }
