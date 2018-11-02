@@ -5,17 +5,22 @@ SVG Icons - svgicons.sparkk.fr
 .svg-icon {
   width: 2em;
   height: 2em;
-}
 
-.svg-icon path,
-.svg-icon polygon,
-.svg-icon rect {
-  fill: #ffffff;
-  stroke-width: 3;
+  &.big {
+    width: 3em;
+    height: 3em;
+  }
 
-}
+  path,
+  polygon,
+  rect {
+    fill: #ffffff;
+    stroke-width: 3;
 
-.svg-icon circle {
-  stroke: #ffffff;
-  stroke-width: 3;
+  }
+
+  circle {
+    stroke: #ffffff;
+    stroke-width: 3;
+  }
 }

@@ -16,6 +16,7 @@
     border: none;
     border-bottom: 1px solid #757575;
     box-shadow: none;
+    background-color: transparent;
 
     &:focus {
       outline: none;
@@ -49,14 +50,14 @@
       &~label {
         top: -20px;
         font-size: 14px;
-        color: #5264AE;
+        // color: #5264AE;
       }
 
-      &:invalid {
-        &~label {
-          color: rgb(175, 42, 42);
-        }
-      }
+      // &:invalid {
+      //   &~label {
+      //     color: rgb(175, 42, 42);
+      //   }
+      // }
 
     }
 
@@ -88,7 +89,7 @@
       width: 0;
       bottom: 1px;
       position: absolute;
-      background: #5264AE;
+      //background: #5264AE;
       transition: 0.2s ease all;
       -moz-transition: 0.2s ease all;
       -webkit-transition: 0.2s ease all;
@@ -116,14 +117,14 @@
       }
     }
 
-    &:focus,
-    &.has-value {
+    // &:focus,
+    // &.has-value {
 
-      &:invalid~.bar:before,
-      &:invalid~.bar:after {
-        background: rgb(175, 42, 42);
-      }
-    }
+    //   &:invalid~.bar:before,
+    //   &:invalid~.bar:after {
+    //     background: rgb(175, 42, 42);
+    //   }
+    // }
   }
 
 
@@ -136,22 +137,22 @@
     height: 1em;
     border: 3px solid $grey;
     border-radius: 100%;
-    transform: translate(-50%, -50%);
-    transition: all ease-out $transitionSpeed;
     text-indent: 2em;
     font: normal normal 1em "Helvetica";
     white-space: nowrap;
     color: $grey;
     user-select: none;
     pointer-events: initial;
+    cursor: pointer;
 
     &:after {
       content: "";
       position: absolute;
       width: 0px;
       height: .5em;
-      border-bottom: 3px solid $green;
-      border-left: 3px solid $green;
+      border-bottom: 3px solid;
+      border-left: 3px solid;
+      // border-color: $green;
       top: 25%;
       left: 50%;
       transform-origin: bottom left;
@@ -162,7 +163,8 @@
   }
 
   input[type="checkbox"]:checked+label {
-    border: 3px solid $green;
+    border: 3px solid;
+    // border-color: $green;
 
     &:after {
       opacity: 1;

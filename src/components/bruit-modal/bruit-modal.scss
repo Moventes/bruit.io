@@ -9,10 +9,10 @@ bruit-modal {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 
   .error {
-    color: red !important;
+    color: #c31313 !important;
 
     svg.svg-icon path {
-      fill: red !important;
+      fill: #c31313 !important;
     }
   }
 
@@ -22,7 +22,6 @@ bruit-modal {
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(41, 171, 164, 0.8);
     visibility: hidden;
     opacity: 0;
     transition: all 0.25s ease-in-out;
@@ -93,7 +92,6 @@ bruit-modal {
       .head {
         height: 3rem;
         padding: .5em 1em;
-        background: #e2525c;
         color: #fff;
         display: flex;
         flex-direction: row;
@@ -126,18 +124,5 @@ bruit-modal {
       }
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
