@@ -3,6 +3,7 @@
   position: relative;
   margin: 0 auto 45px auto;
   width: 100%;
+  min-height: 1.2em;
   max-width: 400px;
 
 
@@ -131,26 +132,24 @@
   $transitionSpeed: 200ms;
 
   input[type="checkbox"]+label {
-    position: absolute;
-    width: 2em;
-    height: 2em;
+    width: 1em;
+    height: 1em;
     border: 3px solid $grey;
     border-radius: 100%;
-    top: 50%;
-    left: 10%;
     transform: translate(-50%, -50%);
     transition: all ease-out $transitionSpeed;
-    text-indent: 90px;
-    font: normal normal 1.5em "Helvetica";
+    text-indent: 2em;
+    font: normal normal 1em "Helvetica";
     white-space: nowrap;
     color: $grey;
     user-select: none;
+    pointer-events: initial;
 
     &:after {
       content: "";
       position: absolute;
       width: 0px;
-      height: 1em;
+      height: .5em;
       border-bottom: 3px solid $green;
       border-left: 3px solid $green;
       top: 25%;
@@ -167,7 +166,7 @@
 
     &:after {
       opacity: 1;
-      width: 2em;
+      width: 1.1em;
     }
   }
 

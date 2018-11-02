@@ -55,6 +55,7 @@ bruit-modal {
     .modal {
 
       margin-top: 100vh;
+      max-height: 100vh;
 
       @media #{$mobile} {
         width: 100vw;
@@ -80,13 +81,14 @@ bruit-modal {
       background: #fff;
       opacity: 0;
       transition: all 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
 
 
 
       .head {
         height: 3rem;
         padding: .5em 1em;
-        overflow: hidden;
         background: #e2525c;
         color: #fff;
         display: flex;
@@ -94,6 +96,7 @@ bruit-modal {
         justify-content: space-between;
         align-items: center;
         font-size: 2em;
+        flex-shrink: 0;
 
 
         #bruit-modal-btn-close {
@@ -103,6 +106,7 @@ bruit-modal {
 
       .content {
         padding: 10%;
+        overflow-y: auto;
 
         #bruit-modal-fieldset {
           position: relative;
