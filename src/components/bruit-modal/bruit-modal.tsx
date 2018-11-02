@@ -1,4 +1,4 @@
-import { Component, Prop, State, Watch, EventEmitter, Event } from '@stencil/core';
+import { Component, Prop, State, Watch, EventEmitter, Event, Element } from '@stencil/core';
 import { BruitConfigModel } from '../../models/bruit-config.model';
 import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
@@ -88,6 +88,11 @@ export class BruitModal {
   @State()
   _config: BruitConfig;
 
+  // dom element of bruit-modal component
+  @Element()
+  bruitElement: HTMLElement;
+  private _haveInnerElement: boolean;
+
   /**
    * fired on component loading before render()
    */
@@ -106,6 +111,8 @@ export class BruitModal {
     if (this._config.logs.levels.url) {
       UrlTool.init();
     }
+
+    this._haveInnerElement = !!this.bruitElement.innerHTML;
   }
 
   /**
@@ -299,11 +306,26 @@ export class BruitModal {
   }
 
   principalButton() {
-    return (
-      <a onClick={() => this.newFeedback()}>
-        <slot />
-      </a>
-    );
+    if (this._haveInnerElement) {
+      return (
+        <a onClick={() => this.newFeedback()}>
+          <slot />
+        </a>
+      );
+    } else {
+      return (
+        <a onClick={() => this.newFeedback()}>
+          <svg viewBox="0 0 96 96" width="30" height="30">
+            <path
+              d="M73.3,35.3h-8.9c-1.4-2.5-3.4-4.6-5.8-6.2l5.2-5.2l-4.5-4.5l-6.9,6.9C51,26,49.6,25.8,48,25.8
+		s-3,0.2-4.5,0.5l-6.9-6.9L32.2,24l5.1,5.2c-2.3,1.6-4.3,3.7-5.7,6.2h-8.9v6.3h6.6c-0.2,1-0.3,2.1-0.3,3.2V48h-6.3v6.3H29v3.2
+		c0,1.1,0.1,2.1,0.3,3.2h-6.6V67h8.9c3.3,5.7,9.4,9.5,16.4,9.5s13.1-3.8,16.4-9.5h8.9v-6.3h-6.6c0.2-1,0.3-2.1,0.3-3.2v-3.2h6.3V48
+		H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,48H41.7v-6.3h12.7V48z"
+            />
+          </svg>
+        </a>
+      );
+    }
   }
 
   modal() {
