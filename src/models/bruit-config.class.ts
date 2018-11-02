@@ -23,11 +23,11 @@ export class BruitConfig implements BruitConfigModel {
     maxLines: 100
   };
   colors = {
-    header: '#123',
-    body: '#123456',
-    background: '#78956',
-    errors: '#456123',
-    focus: '#741258'
+    header: '#2D8297',
+    body: '#eee',
+    background: '#444444ee',
+    errors: '#c31313',
+    focus: '#1f5a69'
   };
   closeModalOnSubmit = false;
   durationBeforeClosing = 1500;
