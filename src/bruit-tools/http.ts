@@ -8,11 +8,19 @@ export class HttpTool {
     (function(open) {
       XMLHttpRequest.prototype.open = function() {
         const method = arguments[0];
-        HttpTool.logCall(method, arguments[1]);
-        this.addEventListener('load', function(evt: ProgressEvent) {
-          const target = <any>evt.target;
-          HttpTool.logResponse(method, target.responseURL, target.status, target.responseText);
-        });
+        const url = arguments[1];
+        HttpTool.logCall(method, url);
+        // this.addEventListener('load', function(evt: ProgressEvent) {
+        //   const target = <any>evt.target;
+        //   HttpTool.logResponse(method, target.responseURL, target.status, target.responseText);
+        // });
+        this.onreadystatechange = function(e) {
+          // console.log('-------------', e);
+
+          if (e.target.readyState === 4) {
+            HttpTool.logResponse(method, e.target.responseURL, e.target.status, e.target.responseText);
+          }
+        };
         open.apply(this, arguments);
       };
     })(XMLHttpRequest.prototype.open);
