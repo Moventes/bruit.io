@@ -10,13 +10,12 @@ export class HttpTool {
         const method = arguments[0];
         const url = arguments[1];
         HttpTool.logCall(method, url);
-        // this.addEventListener('load', function(evt: ProgressEvent) {
-        //   const target = <any>evt.target;
-        //   HttpTool.logResponse(method, target.responseURL, target.status, target.responseText);
-        // });
+
         this._oldonreadystatechange = this.onreadystatechange;
         this.onreadystatechange = function(e) {
-          // console.log('-------------', e);
+          if (this.readyState === 2 && this.status !== 200) {
+            HttpTool.logResponseHeaders(method, e.target.responseURL, e.target.status);
+          }
           if (this.readyState === 4) {
             HttpTool.logResponse(method, e.target.responseURL, e.target.status, e.target.responseText);
           }
@@ -96,6 +95,17 @@ export class HttpTool {
       url,
       status,
       response
+    };
+    HttpTool.logHttp(requestLog);
+  }
+
+  private static logResponseHeaders(method: string, url: string, status: any, timestamp?: Date) {
+    const requestLog = {
+      type: 'response-header',
+      timestamp: timestamp || new Date(),
+      method,
+      url,
+      status
     };
     HttpTool.logHttp(requestLog);
   }
