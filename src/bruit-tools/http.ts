@@ -14,11 +14,14 @@ export class HttpTool {
         //   const target = <any>evt.target;
         //   HttpTool.logResponse(method, target.responseURL, target.status, target.responseText);
         // });
+        this._oldonreadystatechange = this.onreadystatechange;
         this.onreadystatechange = function(e) {
           // console.log('-------------', e);
-
-          if (e.target.readyState === 4) {
+          if (this.readyState === 4) {
             HttpTool.logResponse(method, e.target.responseURL, e.target.status, e.target.responseText);
+          }
+          if (this._oldonreadystatechange) {
+            this._oldonreadystatechange.apply(arguments);
           }
         };
         open.apply(this, arguments);
