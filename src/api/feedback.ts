@@ -37,6 +37,12 @@ export class Feedback implements FeedbackModel {
     });
   }
 
+  /**
+   *
+   * @param formData
+   * @param data
+   * @param dataFn
+   */
   send(
     formData: Array<FormField>,
     data: Array<Field> = [],
@@ -63,6 +69,12 @@ export class Feedback implements FeedbackModel {
     });
   }
 
+  /**
+   *
+   * @param dataFn a function that return an Array<Field> or an Promise<Array<Field>>
+   *
+   * @return a promise of Array<Field>
+   */
   private getDataFromFn(dataFn?: () => Array<Field> | Promise<Array<Field>>): Promise<Array<Field>> {
     // dataFn (function or promise)
     if (dataFn) {
