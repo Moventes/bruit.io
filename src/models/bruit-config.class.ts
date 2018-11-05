@@ -1,6 +1,7 @@
 import { BruitConfigModel } from './bruit-config.model';
 import { FormField } from './form-field.model';
 import { BruitError } from './bruit-error.model';
+import { ComponentConfig } from '../config/config';
 
 export class BruitConfig implements BruitConfigModel {
   apiKey: string;
@@ -67,6 +68,9 @@ export class BruitConfig implements BruitConfigModel {
     }
     if (typeof config.durationBeforeClosing === 'number') {
       this.durationBeforeClosing = config.durationBeforeClosing;
+    }
+    if (config.api_url) {
+      ComponentConfig.BRUIT_IO_API_URL = config.api_url;
     }
   }
 
