@@ -42,6 +42,8 @@ export class Feedback implements FeedbackModel {
     data: Array<Field> = [],
     dataFn?: () => Array<Field> | Promise<Array<Field>>
   ): Promise<Response> {
+    const agreementField = formData.find(field => field.id === 'agreement');
+    const agreement = agreementField ? agreementField.value : true;
     return this.getDataFromFn(dataFn).then((dataFromFn: Array<Field>) => {
       this.fields = [
         ...formData.map(ff => <Field>{ type: ff.type, value: ff.value, label: ff.label }),
@@ -50,12 +52,12 @@ export class Feedback implements FeedbackModel {
       ];
       return Api.postFeedback({
         apiKey: this.apiKey,
-        canvas: this.canvas,
-        url: this.url,
-        cookies: this.cookies,
-        navigator: this.navigator,
-        display: this.display,
-        logs: this.logs,
+        canvas: agreement ? this.canvas : undefined,
+        url: agreement ? this.url : undefined,
+        cookies: agreement ? this.cookies : undefined,
+        navigator: agreement ? this.navigator : undefined,
+        display: agreement ? this.display : undefined,
+        logs: agreement ? this.logs : undefined,
         fields: this.fields
       });
     });
