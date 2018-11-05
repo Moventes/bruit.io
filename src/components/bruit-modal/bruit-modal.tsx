@@ -145,7 +145,7 @@ export class BruitModal {
           // send feedback
           return sendFeedback.then(() => {
             // we display the "validation" for <durationBeforeClosing> milliseconds
-            // this.submitButtonState(2);
+            this.submitButtonState(2);
             return new Promise(resolve => {
               setTimeout(() => resolve(), this._config.durationBeforeClosing);
             });
@@ -154,7 +154,7 @@ export class BruitModal {
       })
       .then(() => {
         // feedback is send !
-        //this.destroyFeedback();
+        this.destroyFeedback();
         // end
       })
       .catch(err => {
