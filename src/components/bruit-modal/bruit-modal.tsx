@@ -528,7 +528,7 @@ export class BruitModal {
           'bruit-modal button#bruit-modal-submit-button.onClick{' +
           'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
-          this._config.colors.focus +
+          this._config.colors.header +
           '!important;}' +
           'bruit-modal .group input[type="checkbox"]:checked+label, bruit-modal .group input[type="checkbox"]+label:after{' +
           'border-color: ' +
