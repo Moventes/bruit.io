@@ -145,7 +145,7 @@ export class BruitModal {
           // send feedback
           return sendFeedback.then(() => {
             // we display the "validation" for <durationBeforeClosing> milliseconds
-            this.submitButtonState(2);
+            // this.submitButtonState(2);
             return new Promise(resolve => {
               setTimeout(() => resolve(), this._config.durationBeforeClosing);
             });
@@ -154,7 +154,7 @@ export class BruitModal {
       })
       .then(() => {
         // feedback is send !
-        this.destroyFeedback();
+        //this.destroyFeedback();
         // end
       })
       .catch(err => {
@@ -391,7 +391,8 @@ export class BruitModal {
         >
           <svg class="svg-icon" viewBox="0 0 20 20">
             <path
-              fill="none"
+              class="no-color"
+              fill={this._config.colors.header}
               d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
             />
           </svg>
@@ -524,10 +525,11 @@ export class BruitModal {
           '!important ;' +
           'color: white !important;' +
           '}' +
-          'bruit-modal button#bruit-modal-submit-button:onClick{' +
+          'bruit-modal button#bruit-modal-submit-button.onClick{' +
+          'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
           this._config.colors.focus +
-          '}' +
+          '!important;}' +
           'bruit-modal .group input[type="checkbox"]:checked+label, bruit-modal .group input[type="checkbox"]+label:after{' +
           'border-color: ' +
           this._config.colors.focus +

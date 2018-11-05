@@ -72,7 +72,8 @@ button#bruit-modal-submit-button {
   }
 
   &.validate {
-    background: $green;
+    background: transparent;
+    border-color: $gray;
 
     #button-submit-label {
       display: none;
@@ -86,6 +87,11 @@ button#bruit-modal-submit-button {
       display: inline-block;
     }
 
+    &:hover {
+      background: transparent !important;
+    }
+
+    cursor: default;
   }
 }
 

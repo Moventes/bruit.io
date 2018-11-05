@@ -14,13 +14,19 @@ SVG Icons - svgicons.sparkk.fr
   path,
   polygon,
   rect {
-    fill: #ffffff;
+    &:not(.no-color) {
+      fill: #ffffff;
+    }
+
     stroke-width: 3;
 
   }
 
   circle {
-    stroke: #ffffff;
+    &:not(.no-color) {
+      stroke: #ffffff;
+    }
+
     stroke-width: 3;
   }
 }
