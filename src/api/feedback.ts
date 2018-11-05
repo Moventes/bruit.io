@@ -47,7 +47,7 @@ export class Feedback implements FeedbackModel {
     formData: Array<FormField>,
     data: Array<Field> = [],
     dataFn?: () => Array<Field> | Promise<Array<Field>>
-  ): Promise<Response> {
+  ): Promise<any> {
     const agreementField = formData.find(field => field.id === 'agreement');
     const agreement = agreementField ? agreementField.value : true;
     return this.getDataFromFn(dataFn).then((dataFromFn: Array<Field>) => {
