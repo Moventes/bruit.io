@@ -5,7 +5,7 @@ import { Cookies } from '../models/cookies.model';
 import { NavigatorInfo } from '../models/navigator-info.model';
 import { ScreenInfo } from '../models/screen-info.model';
 import { Log } from '../models/log.model';
-import { Field } from '../models/field.model';
+import { BrtData } from '../models/brt-data.model';
 import { ScreenTool } from '../bruit-tools/screen';
 import { NavigatorTool } from '../bruit-tools/navigator';
 
@@ -18,7 +18,7 @@ export class Feedback implements FeedbackModel {
   navigator: NavigatorInfo;
   display: ScreenInfo;
   logs: Array<Log>;
-  fields: Array<Field>;
+  data: Array<BrtData>;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -45,14 +45,14 @@ export class Feedback implements FeedbackModel {
    */
   send(
     formData: Array<BrtField>,
-    data: Array<Field> = [],
-    dataFn?: () => Array<Field> | Promise<Array<Field>>
+    data: Array<BrtData> = [],
+    dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
   ): Promise<any> {
     const agreementField = formData.find(field => field.id === 'agreement');
     const agreement = agreementField ? agreementField.value : true;
-    return this.getDataFromFn(dataFn).then((dataFromFn: Array<Field>) => {
-      this.fields = [
-        ...formData.map(ff => <Field>{ type: ff.type, value: ff.value, label: ff.label }),
+    return this.getDataFromFn(dataFn).then((dataFromFn: Array<BrtData>) => {
+      this.data = [
+        ...formData.map(ff => <BrtData>{ type: ff.type, value: ff.value, label: ff.label }),
         ...data,
         ...dataFromFn
       ];
@@ -64,7 +64,7 @@ export class Feedback implements FeedbackModel {
         navigator: agreement ? this.navigator : undefined,
         display: agreement ? this.display : undefined,
         logs: agreement ? this.logs : undefined,
-        fields: this.fields
+        data: this.data
       });
     });
   }
@@ -75,13 +75,13 @@ export class Feedback implements FeedbackModel {
    *
    * @return a promise of Array<Field>
    */
-  private getDataFromFn(dataFn?: () => Array<Field> | Promise<Array<Field>>): Promise<Array<Field>> {
+  private getDataFromFn(dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>): Promise<Array<BrtData>> {
     // dataFn (function or promise)
     if (dataFn) {
       if (typeof dataFn === 'function') {
-        Promise.resolve((<() => Array<Field>>dataFn)());
-      } else if (typeof dataFn === 'object' && (<Promise<Array<Field>>>dataFn).then) {
-        return <Promise<Array<Field>>>dataFn;
+        Promise.resolve((<() => Array<BrtData>>dataFn)());
+      } else if (typeof dataFn === 'object' && (<Promise<Array<BrtData>>>dataFn).then) {
+        return <Promise<Array<BrtData>>>dataFn;
       }
     } else {
       return Promise.resolve([]);

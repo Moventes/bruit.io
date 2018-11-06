@@ -4,7 +4,7 @@ import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
 import { HttpTool } from '../../bruit-tools/http';
 import { ClickTool } from '../../bruit-tools/click';
-import { Field } from '../../models/field.model';
+import { BrtData } from '../../models/brt-data.model';
 import { Feedback } from '../../api/feedback';
 import { BrtField } from '../../models/brt-field.model';
 import { BrtError } from '../../models/brt-error.model';
@@ -41,14 +41,14 @@ export class BruitIo {
    * field array to add in feedback
    */
   @Prop()
-  data: Array<Field>;
+  data: Array<BrtData>;
 
   /**
    * FN or PROMISE
    * return field array to add in feedback
    */
   @Prop()
-  dataFn: () => Array<Field> | Promise<Array<Field>>;
+  dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
   /**
    * emit bruit-error on internal error or config error

@@ -4,63 +4,50 @@
  * It contains typing information for all components that exist in this project.
  */
 
-
 import '@stencil/core';
 
-
-import {
-  BrtConfig,
-} from './models/brt-config.model';
-import {
-  Field,
-} from './models/field.model';
-import {
-  EventEmitter,
-} from '@stencil/core';
-import {
-  BrtError,
-} from './models/brt-error.model';
-
+import { BrtConfig } from './models/brt-config.model';
+import { BrtData } from './models/brt-data.model';
+import { EventEmitter } from '@stencil/core';
+import { BrtError } from './models/brt-error.model';
 
 export namespace Components {
-
   interface BruitIo {
-    'config': BrtConfig;
+    config: BrtConfig;
     /**
-    * field array to add in feedback
-    */
-    'data': Array<Field>;
+     * field array to add in feedback
+     */
+    data: Array<BrtData>;
     /**
-    * FN or PROMISE return field array to add in feedback
-    */
-    'dataFn': () => Array<Field> | Promise<Array<Field>>;
+     * FN or PROMISE return field array to add in feedback
+     */
+    dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
   }
   interface BruitIoAttributes extends StencilHTMLAttributes {
-    'config'?: BrtConfig;
+    config?: BrtConfig;
     /**
-    * field array to add in feedback
-    */
-    'data'?: Array<Field>;
+     * field array to add in feedback
+     */
+    data?: Array<BrtData>;
     /**
-    * FN or PROMISE return field array to add in feedback
-    */
-    'dataFn'?: () => Array<Field> | Promise<Array<Field>>;
+     * FN or PROMISE return field array to add in feedback
+     */
+    dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>;
     /**
-    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
-    */
-    'onOnError'?: (event: CustomEvent<BrtError>) => void;
+     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+     */
+    onOnError?: (event: CustomEvent<BrtError>) => void;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'BruitIo': Components.BruitIo;
+    BruitIo: Components.BruitIo;
   }
 
   interface StencilIntrinsicElements {
     'bruit-io': Components.BruitIoAttributes;
   }
-
 
   interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
   var HTMLBruitIoElement: {
@@ -69,13 +56,12 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'bruit-io': HTMLBruitIoElement
+    'bruit-io': HTMLBruitIoElement;
   }
 
   interface ElementTagNameMap {
     'bruit-io': HTMLBruitIoElement;
   }
-
 
   export namespace JSX {
     export interface Element {}
@@ -84,5 +70,4 @@ declare global {
     }
   }
   export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }

@@ -1,4 +1,4 @@
-import { Field } from './field.model';
+import { BrtData } from './brt-data.model';
 import { NavigatorInfo } from './navigator-info.model';
 import { ScreenInfo } from './screen-info.model';
 import { Cookies } from './cookies.model';
@@ -12,5 +12,5 @@ export interface FeedbackModel {
   navigator: NavigatorInfo;
   display: ScreenInfo;
   logs: Array<Log>;
-  fields: Array<Field>;
+  data: Array<BrtData>;
 }

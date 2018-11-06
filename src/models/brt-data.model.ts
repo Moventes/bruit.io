@@ -1,4 +1,4 @@
-export interface Field {
+export interface BrtData {
   label: string;
   type?: string;
   value: any;
