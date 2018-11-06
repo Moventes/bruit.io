@@ -24,16 +24,14 @@ Bruit is a webComponent for user review ...
 
 **[install](#install)**<br>
 **[usage](#usage)**<br>
-**configuration**
-
-- [BrtConfig](#BrtConfig)<br>
-- [BrtField](#BrtField)\*\*<br>
-- [BrtLabels](#BrtLabels)\*\*<br>
-- [BrtColors](#BrtColors)\*\*<br>
-- [BrtLogLevels](#BrtLogLevels)\*\*<br>
-- [BrtData](#BrtData)\*\*<br>
-- [BrtError](#BrtError)\*\*<br>
-
+<span style="color:#0366d6">**configuration**</span><br>
+&nbsp;&nbsp;**[BrtConfig](#BrtConfig)**<br>
+&nbsp;&nbsp;**[BrtField](#BrtField)**<br>
+&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
+&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
+&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
+&nbsp;&nbsp;**[BrtData](#BrtData)**<br>
+&nbsp;&nbsp;**[BrtError](#BrtError)**<br>
 **[Contributing](#Contributing)**<br>
 **[Having troubles ?](#Having-troubles-?)**<br>
 
