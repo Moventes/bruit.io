@@ -1,6 +1,6 @@
 @import './../../styles/devices';
 
-bruit-modal {
+bruit-io {
   @import './../../styles/reset';
   @import './../../styles/material-form';
   @import './../../styles/submit-button';
@@ -16,7 +16,7 @@ bruit-modal {
     }
   }
 
-  #bruit-modal-wrapper {
+  #bruit-io-wrapper {
     width: 100vw;
     min-height: 100vh;
     position: fixed;
@@ -101,7 +101,7 @@ bruit-modal {
         flex-shrink: 0;
 
 
-        #bruit-modal-btn-close {
+        #bruit-io-btn-close {
           cursor: pointer;
         }
       }
@@ -110,12 +110,12 @@ bruit-modal {
         padding: 10%;
         overflow-y: auto;
 
-        #bruit-modal-fieldset {
+        #bruit-io-fieldset {
           position: relative;
           width: 100%;
         }
 
-        #bruit-modal-footer-error {
+        #bruit-io-footer-error {
           display: flex;
           flex-direction: column;
           align-items: center;

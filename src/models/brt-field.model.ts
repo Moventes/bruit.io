@@ -1,4 +1,4 @@
-export interface FormField {
+export interface BrtField {
   id?: string;
   label: string;
   type: string;

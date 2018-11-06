@@ -16,7 +16,7 @@
 
 Bruit is a webComponent for user review ...
 
-# Getting Started
+# Getting started
 
 <a href="https://bruit.io/"><button>start on bruit.io</button></a>
 
@@ -28,9 +28,23 @@ Bruit is a webComponent for user review ...
 **[customization](#customization)**<br>
 **[about](#about)**<br>
 
+# install
+
+`npm install xxx --save`
+
 # usage
 
-# configuration
+`<bruit-io> element to click </bruit-io>`
+with properties:
+
+- config (required)
+- .. (optional)
+- ... (optional)
+
+Integration frameworks:
+Angular ... ReacJS
+
+## BrtConfig
 
 | attribute             | type           | about                                                                        | required | default value   |
 | --------------------- | -------------- | ---------------------------------------------------------------------------- | -------- | --------------- |
@@ -43,12 +57,26 @@ Bruit is a webComponent for user review ...
 | colors                | colors object  | modal theming                                                                | no       |
 | apiUrl                | string         | if you want use you own api for send feedback                                | no       | api.bruit.io    |
 
-# types
+If using Typescript : `import { BrtConfig } from '@moventes/bruit';`
 
-### field (formField)
+### BrtField
 
-### bruitConfig
+- description
+- format
+- default value
+- import if using Typescript : `import { BrtConfig } from '@moventes/bruit';`
 
-# customization
+### BrtLabels
 
-# about bruit.io
+### BrtColors
+
+### BrtLogLevels
+
+# Contributing
+
+xxx
+
+# Having troubles ?
+
+- issues Github
+- stackoverflow

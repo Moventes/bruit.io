@@ -1,32 +1,32 @@
 import { Component, Prop, State, Watch, EventEmitter, Event, Element } from '@stencil/core';
-import { BruitConfigModel } from '../../models/bruit-config.model';
+import { BrtConfig } from '../../models/brt-config.model';
 import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
 import { HttpTool } from '../../bruit-tools/http';
 import { ClickTool } from '../../bruit-tools/click';
 import { Field } from '../../models/field.model';
 import { Feedback } from '../../api/feedback';
-import { FormField } from '../../models/form-field.model';
-import { BruitError } from '../../models/bruit-error.model';
+import { BrtField } from '../../models/brt-field.model';
+import { BrtError } from '../../models/brt-error.model';
 import { UrlTool } from '../../bruit-tools/url';
 @Component({
-  tag: 'bruit-modal',
-  styleUrl: 'bruit-modal.scss',
+  tag: 'bruit-io',
+  styleUrl: 'bruit-io.scss',
   shadow: false // set to true when all browser support shadowDom
 })
-export class BruitModal {
-  // attributs on bruit-modal component
+export class BruitIo {
+  // attributs on bruit-io component
 
   // configuration
   @Prop()
-  config: BruitConfigModel;
+  config: BrtConfig;
 
   /**
    * test validity of config and assign to internal config
    * @param newConfig the new value of config
    */
   @Watch('config')
-  initConfig(newConfig: BruitConfigModel) {
+  initConfig(newConfig: BrtConfig) {
     let configError = BruitConfig.haveError(newConfig);
     if (!configError) {
       this._config = new BruitConfig(newConfig);
@@ -52,12 +52,12 @@ export class BruitModal {
 
   /**
    * emit bruit-error on internal error or config error
-   * ex : bruitModal.addEventListener('onError',error=>...)
+   * ex : BruitIo.addEventListener('onError',error=>...)
    */
   @Event({
     eventName: 'onError'
   })
-  sendError: EventEmitter<BruitError>;
+  sendError: EventEmitter<BrtError>;
 
   /**
    * modalOpened boolean manages the modal opening/closing action
@@ -69,13 +69,13 @@ export class BruitModal {
    * field array to display in current modal (copy of config form)
    */
   @State()
-  modalFormField: Array<FormField> = [];
+  modalBrtField: Array<BrtField> = [];
 
   /**
    * bruit error to display on bottom of modal
    */
   @State()
-  modalError: BruitError;
+  modalError: BrtError;
 
   /**
    * the current feedback (created when the modal opens)
@@ -88,7 +88,7 @@ export class BruitModal {
   @State()
   _config: BruitConfig;
 
-  // dom element of bruit-modal component
+  // dom element of bruit-io component
   @Element()
   bruitElement: HTMLElement;
   private _haveInnerElement: boolean;
@@ -102,13 +102,13 @@ export class BruitModal {
     this.initConfig(this.config);
 
     ConsoleTool.init(this._config);
-    if (this._config.logs.levels.network) {
+    if (this._config.logLevels.network) {
       HttpTool.init();
     }
-    if (this._config.logs.levels.click) {
+    if (this._config.logLevels.click) {
       ClickTool.init();
     }
-    if (this._config.logs.levels.url) {
+    if (this._config.logLevels.url) {
       UrlTool.init();
     }
 
@@ -192,7 +192,7 @@ export class BruitModal {
    */
   openModal() {
     this.submitButtonState(0);
-    this.modalFormField = JSON.parse(JSON.stringify(this._config.form));
+    this.modalBrtField = JSON.parse(JSON.stringify(this._config.form));
     this.modalOpened = true;
   }
 
@@ -202,7 +202,7 @@ export class BruitModal {
   closeModal() {
     this.modalOpened = false;
     setTimeout(() => {
-      this.modalFormField = [];
+      this.modalBrtField = [];
       this.modalError = undefined;
     }, 250);
   }
@@ -210,11 +210,11 @@ export class BruitModal {
   /**
    * awaits the closure or submission of the modal by user
    */
-  waitOnSubmit(): Promise<Array<FormField>> {
+  waitOnSubmit(): Promise<Array<BrtField>> {
     //getting the three clickable dom element (for submit or close modal)
-    const form = document.getElementById('bruit-modal-form');
-    const button_close = document.getElementById('bruit-modal-btn-close');
-    const modal_wrapper = document.getElementById('bruit-modal-wrapper');
+    const form = document.getElementById('bruit-io-form');
+    const button_close = document.getElementById('bruit-io-btn-close');
+    const modal_wrapper = document.getElementById('bruit-io-wrapper');
     //show the close button
     button_close.hidden = false;
 
@@ -224,14 +224,14 @@ export class BruitModal {
         e.preventDefault();
 
         //disable modal
-        this.disabledFormField();
+        this.disabledBrtField();
         button_close.hidden = true;
         // remove event listeners (for memory leaks and disable form)
         button_close.removeEventListener('click', _closeModalFn, false);
         modal_wrapper.removeEventListener('click', _closeModalFn, false);
         form.removeEventListener('submit', _onSubmit, false);
 
-        resolve(this.modalFormField);
+        resolve(this.modalBrtField);
       };
       form.addEventListener('submit', _onSubmit, { once: true });
 
@@ -255,8 +255,8 @@ export class BruitModal {
   /**
    * set all form field to disabled
    */
-  disabledFormField() {
-    this.modalFormField.map(field => document.getElementById(field.id)).forEach(domField => {
+  disabledBrtField() {
+    this.modalBrtField.map(field => document.getElementById(field.id)).forEach(domField => {
       domField.setAttribute('disabled', 'true');
     });
   }
@@ -269,7 +269,7 @@ export class BruitModal {
    * @param state state of the submit button (0|1|2)
    */
   submitButtonState(state: number) {
-    const buttonClassList = document.getElementById('bruit-modal-submit-button').classList;
+    const buttonClassList = document.getElementById('bruit-io-submit-button').classList;
     switch (state) {
       case 2: {
         buttonClassList.remove('onClick');
@@ -331,7 +331,7 @@ export class BruitModal {
   modal() {
     return (
       <div
-        id="bruit-modal-wrapper"
+        id="bruit-io-wrapper"
         class={this.modalOpened ? 'open' : 'close'}
         style={{ 'background-color': this._config.colors.background }}
       >
@@ -352,7 +352,7 @@ export class BruitModal {
     return (
       <div class="head" style={{ 'background-color': this._config.colors.header }}>
         <h1 class="title">{this._config.labels.title}</h1>
-        <a id="bruit-modal-btn-close">
+        <a id="bruit-io-btn-close">
           <svg
             width="24"
             height="24"
@@ -371,8 +371,8 @@ export class BruitModal {
   modalContent() {
     return (
       <div class="content" style={{ 'background-color': this._config.colors.body }}>
-        <form id="bruit-modal-form">
-          <div id="bruit-modal-fieldset">
+        <form id="bruit-io-form">
+          <div id="bruit-io-fieldset">
             {this.modalFields()}
             <div class="button-container">{this.modalSubmitButtonOrError()}</div>
           </div>
@@ -386,7 +386,7 @@ export class BruitModal {
       return (
         <button
           type="submit"
-          id="bruit-modal-submit-button"
+          id="bruit-io-submit-button"
           style={{ color: this._config.colors.header, 'border-color': this._config.colors.header }}
         >
           <svg class="svg-icon" viewBox="0 0 20 20">
@@ -401,7 +401,7 @@ export class BruitModal {
       );
     } else {
       return (
-        <div id="bruit-modal-footer-error" class="error">
+        <div id="bruit-io-footer-error" class="error">
           <svg class="svg-icon" viewBox="0 0 20 20">
             <path d="M18.344,16.174l-7.98-12.856c-0.172-0.288-0.586-0.288-0.758,0L1.627,16.217c0.339-0.543-0.603,0.668,0.384,0.682h15.991C18.893,16.891,18.167,15.961,18.344,16.174 M2.789,16.008l7.196-11.6l7.224,11.6H2.789z M10.455,7.552v3.561c0,0.244-0.199,0.445-0.443,0.445s-0.443-0.201-0.443-0.445V7.552c0-0.245,0.199-0.445,0.443-0.445S10.455,7.307,10.455,7.552M10.012,12.439c-0.733,0-1.33,0.6-1.33,1.336s0.597,1.336,1.33,1.336c0.734,0,1.33-0.6,1.33-1.336S10.746,12.439,10.012,12.439M10.012,14.221c-0.244,0-0.443-0.199-0.443-0.445c0-0.244,0.199-0.445,0.443-0.445s0.443,0.201,0.443,0.445C10.455,14.021,10.256,14.221,10.012,14.221" />
           </svg>
@@ -420,7 +420,7 @@ export class BruitModal {
   }
 
   modalFields() {
-    return this.modalFormField.map(field => {
+    return this.modalBrtField.map(field => {
       switch (field.type) {
         case 'text':
         case 'email': {
@@ -442,7 +442,7 @@ export class BruitModal {
     });
   }
 
-  inputField(field: FormField) {
+  inputField(field: BrtField) {
     return (
       <div class="group">
         <input
@@ -467,7 +467,7 @@ export class BruitModal {
     );
   }
 
-  textareaField(field: FormField) {
+  textareaField(field: BrtField) {
     return (
       <div class="group">
         <textarea
@@ -491,7 +491,7 @@ export class BruitModal {
     );
   }
 
-  checkboxField(field: FormField) {
+  checkboxField(field: BrtField) {
     return (
       <div class="group">
         <input
@@ -511,42 +511,42 @@ export class BruitModal {
   theming() {
     return (
       <style>
-        {'bruit-modal .group .bar:before, bruit-modal .group .bar:after{' +
+        {'bruit-io .group .bar:before, bruit-io .group .bar:after{' +
           'background-color: ' +
           this._config.colors.focus +
           '}' +
-          'bruit-modal .group input:not([type="checkbox"]):invalid ~.bar:before, bruit-modal .group input:not([type="checkbox"]):invalid ~.bar:after{' +
+          'bruit-io .group input:not([type="checkbox"]):invalid ~.bar:before, bruit-io .group input:not([type="checkbox"]):invalid ~.bar:after{' +
           'background-color: ' +
           this._config.colors.errors +
           '}' +
-          'bruit-modal button#bruit-modal-submit-button:hover{' +
+          'bruit-io button#bruit-io-submit-button:hover{' +
           'background-color: ' +
           this._config.colors.header +
           '!important ;' +
           'color: white !important;' +
           '}' +
-          'bruit-modal button#bruit-modal-submit-button.onClick{' +
+          'bruit-io button#bruit-io-submit-button.onClick{' +
           'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
           this._config.colors.header +
           '!important;}' +
-          'bruit-modal .group input[type="checkbox"]:checked+label, bruit-modal .group input[type="checkbox"]+label:after{' +
+          'bruit-io .group input[type="checkbox"]:checked+label, bruit-io .group input[type="checkbox"]+label:after{' +
           'border-color: ' +
           this._config.colors.focus +
           '}' +
-          'bruit-modal .group input:not([type="checkbox"]).has-value:invalid~label, bruit-modal .group input:not([type="checkbox"]):focus:invalid~label{' +
+          'bruit-io .group input:not([type="checkbox"]).has-value:invalid~label, bruit-io .group input:not([type="checkbox"]):focus:invalid~label{' +
           'color: ' +
           this._config.colors.errors +
           '}' +
-          'bruit-modal .group input:not([type="checkbox"]).has-value~label, bruit-modal .group input:not([type="checkbox"]):focus~label{' +
+          'bruit-io .group input:not([type="checkbox"]).has-value~label, bruit-io .group input:not([type="checkbox"]):focus~label{' +
           'color: ' +
           this._config.colors.focus +
           '}' +
-          'bruit-modal .group textarea.has-value~label, bruit-modal .group textarea:focus~label{' +
+          'bruit-io .group textarea.has-value~label, bruit-io .group textarea:focus~label{' +
           'color: ' +
           this._config.colors.focus +
           '}' +
-          'bruit-modal .group textarea.has-value:invalid~label{' +
+          'bruit-io .group textarea.has-value:invalid~label{' +
           'color: ' +
           this._config.colors.errors +
           '}'}

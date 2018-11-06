@@ -9,8 +9,8 @@ import '@stencil/core';
 
 
 import {
-  BruitConfigModel,
-} from './models/bruit-config.model';
+  BrtConfig,
+} from './models/brt-config.model';
 import {
   Field,
 } from './models/field.model';
@@ -18,14 +18,14 @@ import {
   EventEmitter,
 } from '@stencil/core';
 import {
-  BruitError,
-} from './models/bruit-error.model';
+  BrtError,
+} from './models/brt-error.model';
 
 
 export namespace Components {
 
-  interface BruitModal {
-    'config': BruitConfigModel;
+  interface BruitIo {
+    'config': BrtConfig;
     /**
     * field array to add in feedback
     */
@@ -35,8 +35,8 @@ export namespace Components {
     */
     'dataFn': () => Array<Field> | Promise<Array<Field>>;
   }
-  interface BruitModalAttributes extends StencilHTMLAttributes {
-    'config'?: BruitConfigModel;
+  interface BruitIoAttributes extends StencilHTMLAttributes {
+    'config'?: BrtConfig;
     /**
     * field array to add in feedback
     */
@@ -46,34 +46,34 @@ export namespace Components {
     */
     'dataFn'?: () => Array<Field> | Promise<Array<Field>>;
     /**
-    * emit bruit-error on internal error or config error ex : bruitModal.addEventListener('onError',error=>...)
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */
-    'onOnError'?: (event: CustomEvent<BruitError>) => void;
+    'onOnError'?: (event: CustomEvent<BrtError>) => void;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'BruitModal': Components.BruitModal;
+    'BruitIo': Components.BruitIo;
   }
 
   interface StencilIntrinsicElements {
-    'bruit-modal': Components.BruitModalAttributes;
+    'bruit-io': Components.BruitIoAttributes;
   }
 
 
-  interface HTMLBruitModalElement extends Components.BruitModal, HTMLStencilElement {}
-  var HTMLBruitModalElement: {
-    prototype: HTMLBruitModalElement;
-    new (): HTMLBruitModalElement;
+  interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
+  var HTMLBruitIoElement: {
+    prototype: HTMLBruitIoElement;
+    new (): HTMLBruitIoElement;
   };
 
   interface HTMLElementTagNameMap {
-    'bruit-modal': HTMLBruitModalElement
+    'bruit-io': HTMLBruitIoElement
   }
 
   interface ElementTagNameMap {
-    'bruit-modal': HTMLBruitModalElement;
+    'bruit-io': HTMLBruitIoElement;
   }
 
 

@@ -1,4 +1,4 @@
-export interface LogLevels {
+export interface BrtLogLevels {
   log?: boolean;
   debug?: boolean;
   info?: boolean;

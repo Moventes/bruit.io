@@ -1,15 +1,15 @@
 import { BruitConfig } from './../models/bruit-config.class';
-import { LogLevels } from '../models/log-levels.model';
+import { BrtLogLevels } from '../models/brt-log-levels.model';
 export class ConsoleTool {
   private static BUFFER_SIZE = 100;
   private static logArray = [];
 
   static init(config: BruitConfig) {
-    ConsoleTool.BUFFER_SIZE = config.logs.maxLines;
-    ConsoleTool.configure(config.logs.levels);
+    ConsoleTool.BUFFER_SIZE = config.maxLogLines;
+    ConsoleTool.configure(config.logLevels);
   }
 
-  private static configure(levels: LogLevels) {
+  private static configure(levels: BrtLogLevels) {
     if (typeof (<any>JSON).decycle !== 'function') {
       (<any>JSON).decycle = function decycle(object, replacer) {
         const objects = new WeakMap();

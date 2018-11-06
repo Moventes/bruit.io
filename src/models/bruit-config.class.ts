@@ -1,28 +1,26 @@
-import { BruitConfigModel } from './bruit-config.model';
-import { FormField } from './form-field.model';
-import { BruitError } from './bruit-error.model';
+import { BrtConfig } from './brt-config.model';
+import { BrtField } from './brt-field.model';
+import { BrtError } from './brt-error.model';
 import { ComponentConfig } from '../config/config';
 
-export class BruitConfig implements BruitConfigModel {
+export class BruitConfig implements BrtConfig {
   apiKey: string;
   labels = {
     title: 'bruit.io',
     introduction: 'send a feedback',
     button: 'send'
   };
-  logs = {
-    levels: {
-      log: true,
-      debug: true,
-      info: true,
-      warn: true,
-      error: true,
-      network: true,
-      click: true,
-      url: true
-    },
-    maxLines: 100
+  logLevels = {
+    log: true,
+    debug: true,
+    info: true,
+    warn: true,
+    error: true,
+    network: true,
+    click: true,
+    url: true
   };
+  maxLogLines = 100;
   colors = {
     header: '#2D8297',
     body: '#eee',
@@ -32,24 +30,22 @@ export class BruitConfig implements BruitConfigModel {
   };
   closeModalOnSubmit = false;
   durationBeforeClosing = 1500;
-  form: Array<FormField>;
+  form: Array<BrtField>;
 
-  constructor(config: BruitConfigModel) {
+  constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
     this.form = config.form.map((field, index) => {
       field.id = index + '-' + field.type;
       return field;
     });
-    if (config.logs) {
-      if (config.logs.levels) {
-        this.logs.levels = {
-          ...this.logs.levels,
-          ...config.logs.levels
-        };
-      }
-      if (config.logs.maxLines) {
-        this.logs.maxLines = config.logs.maxLines;
-      }
+    if (config.logLevels) {
+      this.logLevels = {
+        ...this.logLevels,
+        ...config.logLevels
+      };
+    }
+    if (config.maxLogLines) {
+      this.maxLogLines = config.maxLogLines;
     }
     if (config.labels) {
       this.labels = {
@@ -74,7 +70,7 @@ export class BruitConfig implements BruitConfigModel {
     }
   }
 
-  static haveError(config: BruitConfigModel): BruitError | void {
+  static haveError(config: BrtConfig): BrtError | void {
     if (!config) {
       return {
         code: 1,
@@ -96,7 +92,7 @@ export class BruitConfig implements BruitConfigModel {
     return this.haveFormError(config.form);
   }
 
-  private static haveFormError(form: Array<FormField>): BruitError | void {
+  private static haveFormError(form: Array<BrtField>): BrtError | void {
     if (!Array.isArray(form)) {
       return {
         code: 3,

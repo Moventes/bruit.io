@@ -1,5 +1,5 @@
 import { Api } from './api';
-import { FormField } from './../models/form-field.model';
+import { BrtField } from '../models/brt-field.model';
 import { FeedbackModel } from './../models/feedback.model';
 import { Cookies } from '../models/cookies.model';
 import { NavigatorInfo } from '../models/navigator-info.model';
@@ -44,7 +44,7 @@ export class Feedback implements FeedbackModel {
    * @param dataFn
    */
   send(
-    formData: Array<FormField>,
+    formData: Array<BrtField>,
     data: Array<Field> = [],
     dataFn?: () => Array<Field> | Promise<Array<Field>>
   ): Promise<any> {
