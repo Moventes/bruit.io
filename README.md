@@ -22,20 +22,20 @@ Bruit is a webComponent for user review ...
 
 # Table of Contents
 
-**[install](#install)**<br>
-**[usage](#usage)**<br>
-<span style="color:#0366d6">**configuration**</span><br>
-&nbsp;&nbsp;**[BrtConfig](#BrtConfig)**<br>
-&nbsp;&nbsp;**[BrtField](#BrtField)**<br>
-&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
-&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
-&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
-&nbsp;&nbsp;**[BrtData](#BrtData)**<br>
-&nbsp;&nbsp;**[BrtError](#BrtError)**<br>
+**[Install](#install)**<br>
+**[Usage](#usage)**<br>
+**[Configuration](#BrtConfig)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtConfig](#BrtConfig)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtField](#BrtField)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtData](#BrtData)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtError](#BrtError)**<br>
 **[Contributing](#Contributing)**<br>
 **[Having troubles ?](#Having-troubles-?)**<br>
 
-# install
+# Install
 
 ```bash
 npm install @moventes/bruit --save
@@ -47,7 +47,7 @@ or
 <script src="https://unpkg.com/@moventes/bruit/dist/bruit.js"></script>
 ```
 
-# usage
+# Usage
 
 ```html
 <bruit-io> element to click </bruit-io>
