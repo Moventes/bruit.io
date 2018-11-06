@@ -20,6 +20,16 @@ Bruit is a webComponent for user review ...
 
 <a href="https://bruit.io/"><button>start on bruit.io</button></a>
 
+### Table of Contents
+
+**[usage](#usage)**<br>
+**[configuration](#configuration)**<br>
+**[types](#types)**<br>
+**[customization](#customization)**<br>
+**[about](#about)**<br>
+
+# usage
+
 # configuration
 
 | attribute             | type           | about                                                                        | required | default value   |
