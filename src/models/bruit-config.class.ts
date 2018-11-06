@@ -69,8 +69,8 @@ export class BruitConfig implements BruitConfigModel {
     if (typeof config.durationBeforeClosing === 'number') {
       this.durationBeforeClosing = config.durationBeforeClosing;
     }
-    if (config.api_url) {
-      ComponentConfig.BRUIT_IO_API_URL = config.api_url;
+    if (config.apiUrl) {
+      ComponentConfig.BRUIT_IO_API_URL = config.apiUrl;
     }
   }
 

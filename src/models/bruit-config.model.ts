@@ -21,5 +21,5 @@ export interface BruitConfigModel {
   closeModalOnSubmit?: boolean;
   durationBeforeClosing?: number;
   form: Array<FormField>;
-  api_url?: string;
+  apiUrl?: string;
 }

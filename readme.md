@@ -22,9 +22,22 @@ Bruit is a webComponent for user review ...
 
 # configuration
 
-| attribute | type / possible values | about                 |
-| --------- | ---------------------- | --------------------- |
-| apiKey    | string                 | your personal api key |
+| attribute             | type           | about                                                                        | required | default value   |
+| --------------------- | -------------- | ---------------------------------------------------------------------------- | -------- | --------------- |
+| **apiKey**            | string         | your personal api key                                                        | yes      | -               |
+| **form**              | array of field | your personal api key                                                        | yes      | -               |
+| closeModalOnSubmit    | boolean        | true for close modal directly on submit form and send feedback in background | no       | false           |
+| durationBeforeClosing | number         | time ( milliseconds ) before closing modal after sending                     | no       | 1500            |
+| labels                | labels object  | labels of the modal (title/button/...)                                       | no       |
+| logs                  | logs object    | type and number of log to send                                               | no       | all - 100 lines |
+| colors                | colors object  | modal theming                                                                | no       |
+| apiUrl                | string         | if you want use you own api for send feedback                                | no       | api.bruit.io    |
+
+# types
+
+## field (formField)
+
+## bruitConfig
 
 # customization
 
