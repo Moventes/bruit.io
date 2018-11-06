@@ -53,14 +53,29 @@ or
 <bruit-io> element to click </bruit-io>
 ```
 
-with properties:
+**with properties:**
 
 - config (required)
 - data (optional)
 - dataFn (optional)
+- onError (optional)
 
-Integration frameworks:
-Angular ... ReacJS
+**Integration frameworks:**
+
+<p align="center">
+  <a href="#html">
+    <img alt="html/js" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="100px">
+  </a>
+  <a href="#angular">
+    <img alt="Angular" src="https://angular.io/assets/images/logos/angular/angular.svg" width="100px">
+  </a>
+    <a href="#react">
+    <img alt="React" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="100px">
+  </a>
+    <a href="#ember">
+    <img alt="Ember" src="https://upload.wikimedia.org/wikipedia/fr/6/69/Ember.js_Logo_and_Mascot.png" width="100px">
+  </a>
+</p>
 
 ## BrtConfig
 
@@ -172,6 +187,16 @@ import { BrtData } from '@moventes/bruit';
 ```javascript
 import { BrtError } from '@moventes/bruit';
 ```
+
+# Integration frameworks
+
+## HTML
+
+## Angular
+
+## React
+
+## Ember
 
 # Contributing
 
