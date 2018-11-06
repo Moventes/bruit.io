@@ -22,11 +22,20 @@ Bruit is a webComponent for user review ...
 
 # Table of Contents
 
+**[install](#install)**<br>
 **[usage](#usage)**<br>
-**[configuration](#configuration)**<br>
-**[types](#types)**<br>
-**[customization](#customization)**<br>
-**[about](#about)**<br>
+**configuration**
+
+- [BrtConfig](#BrtConfig)<br>
+- [BrtField](#BrtField)\*\*<br>
+- [BrtLabels](#BrtLabels)\*\*<br>
+- [BrtColors](#BrtColors)\*\*<br>
+- [BrtLogLevels](#BrtLogLevels)\*\*<br>
+- [BrtData](#BrtData)\*\*<br>
+- [BrtError](#BrtError)\*\*<br>
+
+**[Contributing](#Contributing)**<br>
+**[Having troubles ?](#Having-troubles-?)**<br>
 
 # install
 
@@ -59,17 +68,17 @@ Angular ... ReacJS
 
 BrtConfig is a JSON for configure and customize bruit component
 
-| attribute             | type            | description                                                                  | required | default value                 |
-| --------------------- | --------------- | ---------------------------------------------------------------------------- | -------- | ----------------------------- |
-| **apiKey**            | string          | your personal api key                                                        | yes      | -                             |
-| **form**              | array<BrtField> | your personal api key                                                        | yes      | -                             |
-| closeModalOnSubmit    | boolean         | true for close modal directly on submit form and send feedback in background | no       | false                         |
-| durationBeforeClosing | number          | time ( milliseconds ) before closing modal after sending                     | no       | 1500                          |
-| labels                | BrtLabels       | labels of the modal (title/button/...)                                       | no       | see                           |
-| logLevels             | BrtLogLevels    | type and number of log to send                                               | no       | see                           |
-| maxLogLines           | number          | number of log to send                                                        | no       | 100                           |
-| colors                | BrtColors       | modal theming                                                                | no       | see                           |
-| apiUrl                | string          | if you want use you own api for send feedback                                | no       | https://api.bruit.io/feedback |
+| attribute             | type            | description                                                                  | required | default value                   |
+| --------------------- | --------------- | ---------------------------------------------------------------------------- | -------- | ------------------------------- |
+| **apiKey**            | string          | your personal api key                                                        | yes      | -                               |
+| **form**              | array<BrtField> | your personal api key                                                        | yes      | -                               |
+| closeModalOnSubmit    | boolean         | true for close modal directly on submit form and send feedback in background | no       | false                           |
+| durationBeforeClosing | number          | time ( milliseconds ) before closing modal after sending                     | no       | 1500                            |
+| labels                | BrtLabels       | labels of the modal (title/button/...)                                       | no       | see                             |
+| logLevels             | BrtLogLevels    | type and number of log to send                                               | no       | see                             |
+| maxLogLines           | number          | number of log to send                                                        | no       | 100                             |
+| colors                | BrtColors       | modal theming                                                                | no       | see                             |
+| apiUrl                | string          | if you want use you own api for send feedback                                | no       | <https://api.bruit.io/feedback> |
 
 - import if using Typescript :
 
@@ -82,10 +91,6 @@ import { BrtConfig } from '@moventes/bruit';
 - description
 - format
 - default value :
-
-```json
-
-```
 
 - import if using Typescript :
 
@@ -113,6 +118,18 @@ import { BrtLabels } from '@moventes/bruit';
 
 ### BrtColors
 
+- default value :
+
+```json
+{
+  "header": "#2D8297",
+  "body": "#eee",
+  "background": "#444444ee",
+  "errors": "#c31313",
+  "focus": "#1f5a69"
+}
+```
+
 - import if using Typescript :
 
 ```javascript
@@ -120,6 +137,21 @@ import { BrtColors } from '@moventes/bruit';
 ```
 
 ### BrtLogLevels
+
+- default value :
+
+```json
+{
+  "log": true,
+  "debug": true,
+  "info": true,
+  "warn": true,
+  "error": true,
+  "network": true,
+  "click": true,
+  "url": true
+}
+```
 
 - import if using Typescript :
 
