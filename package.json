@@ -27,7 +27,8 @@
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "puppeteer": "1.8.0",
-    "tslint": "^5.11.0"
+    "tslint": "^5.11.0",
+    "merge": ">=1.2.1"
   },
   "repository": {
     "type": "git",
