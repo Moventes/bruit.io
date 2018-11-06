@@ -368,14 +368,22 @@ export class BruitIo {
     );
   }
 
+  modalSubHeader() {
+    return (
+      <div class="sub-head">
+        <p>{this._config.labels.introduction}</p>
+      </div>
+    );
+  }
   modalContent() {
     return (
       <div class="content" style={{ 'background-color': this._config.colors.body }}>
+        {this.modalSubHeader()}
         <form id="bruit-io-form">
-          <div id="bruit-io-fieldset">
+          <fieldset id="bruit-io-fieldset">
             {this.modalFields()}
             <div class="button-container">{this.modalSubmitButtonOrError()}</div>
-          </div>
+          </fieldset>
         </form>
       </div>
     );

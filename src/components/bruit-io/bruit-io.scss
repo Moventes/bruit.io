@@ -91,7 +91,7 @@ bruit-io {
 
       .head {
         height: 3rem;
-        padding: .5em 1em;
+        padding: 1rem 2rem;
         color: #fff;
         display: flex;
         flex-direction: row;
@@ -106,21 +106,32 @@ bruit-io {
         }
       }
 
+
+
       .content {
-        padding: 10%;
+        height: 100%;
         overflow-y: auto;
+        flex: auto;
 
-        #bruit-io-fieldset {
-          position: relative;
-          width: 100%;
+        .sub-head {
+          padding: 2rem 2rem 0 2rem;
+          color: #555;
         }
 
-        #bruit-io-footer-error {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
+        form {
+          padding: 3em;
 
+          #bruit-io-fieldset {
+            position: relative;
+            width: 100%;
+          }
+
+          #bruit-io-footer-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+        }
       }
     }
 
