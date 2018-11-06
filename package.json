@@ -1,6 +1,6 @@
 {
   "name": "@moventes/bruit",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "send your feedbacks with bruit.io",
   "private": false,
   "module": "dist/esm/index.js",

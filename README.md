@@ -30,47 +30,118 @@ Bruit is a webComponent for user review ...
 
 # install
 
-`npm install xxx --save`
+```bash
+npm install @moventes/bruit --save
+```
+
+or
+
+```html
+<script src="https://unpkg.com/@moventes/bruit/dist/bruit.js"></script>
+```
 
 # usage
 
-`<bruit-io> element to click </bruit-io>`
+```html
+<bruit-io> element to click </bruit-io>
+```
+
 with properties:
 
 - config (required)
-- .. (optional)
-- ... (optional)
+- data (optional)
+- dataFn (optional)
 
 Integration frameworks:
 Angular ... ReacJS
 
 ## BrtConfig
 
-| attribute             | type           | about                                                                        | required | default value   |
-| --------------------- | -------------- | ---------------------------------------------------------------------------- | -------- | --------------- |
-| **apiKey**            | string         | your personal api key                                                        | yes      | -               |
-| **form**              | array of field | your personal api key                                                        | yes      | -               |
-| closeModalOnSubmit    | boolean        | true for close modal directly on submit form and send feedback in background | no       | false           |
-| durationBeforeClosing | number         | time ( milliseconds ) before closing modal after sending                     | no       | 1500            |
-| labels                | labels object  | labels of the modal (title/button/...)                                       | no       |
-| logs                  | logs object    | type and number of log to send                                               | no       | all - 100 lines |
-| colors                | colors object  | modal theming                                                                | no       |
-| apiUrl                | string         | if you want use you own api for send feedback                                | no       | api.bruit.io    |
+BrtConfig is a JSON for configure and customize bruit component
 
-If using Typescript : `import { BrtConfig } from '@moventes/bruit';`
+| attribute             | type            | description                                                                  | required | default value                 |
+| --------------------- | --------------- | ---------------------------------------------------------------------------- | -------- | ----------------------------- |
+| **apiKey**            | string          | your personal api key                                                        | yes      | -                             |
+| **form**              | array<BrtField> | your personal api key                                                        | yes      | -                             |
+| closeModalOnSubmit    | boolean         | true for close modal directly on submit form and send feedback in background | no       | false                         |
+| durationBeforeClosing | number          | time ( milliseconds ) before closing modal after sending                     | no       | 1500                          |
+| labels                | BrtLabels       | labels of the modal (title/button/...)                                       | no       | see                           |
+| logLevels             | BrtLogLevels    | type and number of log to send                                               | no       | see                           |
+| maxLogLines           | number          | number of log to send                                                        | no       | 100                           |
+| colors                | BrtColors       | modal theming                                                                | no       | see                           |
+| apiUrl                | string          | if you want use you own api for send feedback                                | no       | https://api.bruit.io/feedback |
+
+- import if using Typescript :
+
+```javascript
+import { BrtConfig } from '@moventes/bruit';
+```
 
 ### BrtField
 
 - description
 - format
-- default value
-- import if using Typescript : `import { BrtConfig } from '@moventes/bruit';`
+- default value :
+
+```json
+
+```
+
+- import if using Typescript :
+
+```javascript
+import { BrtField } from '@moventes/bruit';
+```
 
 ### BrtLabels
 
+- default value :
+
+```json
+{
+  "title": "bruit.io",
+  "introduction": "send a feedback",
+  "button": "send"
+}
+```
+
+- import if using Typescript :
+
+```javascript
+import { BrtLabels } from '@moventes/bruit';
+```
+
 ### BrtColors
 
+- import if using Typescript :
+
+```javascript
+import { BrtColors } from '@moventes/bruit';
+```
+
 ### BrtLogLevels
+
+- import if using Typescript :
+
+```javascript
+import { BrtLogLevels } from '@moventes/bruit';
+```
+
+### BrtData
+
+- import if using Typescript :
+
+```javascript
+import { BrtData } from '@moventes/bruit';
+```
+
+### BrtError
+
+- import if using Typescript :
+
+```javascript
+import { BrtError } from '@moventes/bruit';
+```
 
 # Contributing
 
