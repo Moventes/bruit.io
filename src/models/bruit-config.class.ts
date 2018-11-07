@@ -33,13 +33,13 @@ export class BruitConfig implements BrtConfig {
   constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
     this.form = config.form.map((field, index) => {
-      field.id =
-        field.id.trim().toLowerCase() ||
-        `${index}-${field.label
-          .trim()
-          .replace(/[^A-Za-z\s]/g, '')
-          .replace(/\s+/g, '-')
-          .toLowerCase()}`;
+      field.id = field.id
+        ? field.id.trim().toLowerCase()
+        : `${index}-${field.label
+            .trim()
+            .replace(/[^A-Za-z\s]/g, '')
+            .replace(/\s+/g, '-')
+            .toLowerCase()}`;
       return field;
     });
     if (config.logLevels) {
@@ -133,7 +133,7 @@ export class BruitConfig implements BrtConfig {
       form
         .map(field => field.id)
         .filter(id => !!id)
-        .find((id, index, a) => a.indexOf(id) === index)
+        .find((id, index, a) => a.indexOf(id) !== index && a.indexOf(id) >= 0)
     ) {
       return {
         code: 4,

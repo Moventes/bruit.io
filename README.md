@@ -42,6 +42,9 @@ Bruit is a webComponent for user review ...
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtData](#BrtData)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtError](#BrtError)**<br>
+**[Add data in feedback](#adddatainfeedback)**<br>
+**[Handle errors](#handleherrors)**<br>
+**[Framework integrations](#Frameworkintegrations)**<br>
 **[Contributing](#Contributing)**<br>
 **[Having troubles ?](#Having-troubles-?)**<br>
 
@@ -70,7 +73,7 @@ with properties :
 - _dataFn_ (optional)
 - _onError_ (event) (optional)
 
-**Integration frameworks :**
+**Framework integrations :**
 
 <p align="center">
   <a href="#javascript">
@@ -210,7 +213,11 @@ import { BrtData } from '@bruit/component';
 import { BrtError } from '@bruit/component';
 ```
 
-# Integration frameworks
+# Add data in feedback
+
+# Handle errors
+
+# Framework integrations
 
 ## JavaScript
 
