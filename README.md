@@ -42,9 +42,9 @@ Bruit is a webComponent for user review ...
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtData](#BrtData)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtError](#BrtError)**<br>
-**[Add data in feedback](#adddatainfeedback)**<br>
-**[Handle errors](#handleherrors)**<br>
-**[Framework integrations](#Frameworkintegrations)**<br>
+**[Add data in feedback](#add-data-in-feedback)**<br>
+**[Handle errors](#handle-errors)**<br>
+**[Framework integrations](#Framework-integrations)**<br>
 **[Contributing](#Contributing)**<br>
 **[Having troubles ?](#Having-troubles-?)**<br>
 
