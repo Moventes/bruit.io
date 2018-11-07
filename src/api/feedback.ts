@@ -46,7 +46,7 @@ export class Feedback implements BrtFeedback {
     const agreement = agreementField ? agreementField.value : true;
     return this.getDataFromFn(dataFn).then((dataFromFn: Array<BrtData>) => {
       this.data = [
-        ...formData.map(ff => <BrtData>{ type: ff.type, value: ff.value, label: ff.label }),
+        ...formData.map(ff => <BrtData>{ type: ff.type, value: ff.value, label: ff.label, id: ff.id }),
         ...data,
         ...dataFromFn
       ];

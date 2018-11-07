@@ -33,7 +33,13 @@ export class BruitConfig implements BrtConfig {
   constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
     this.form = config.form.map((field, index) => {
-      field.id = field.id || index + '-' + field.type; //TODO use field.label.replace(\s,'-').toLowerCase() instead of field.type
+      field.id =
+        field.id.trim().toLowerCase() ||
+        `${index}-${field.label
+          .trim()
+          .replace(/[^A-Za-z\s]/g, '')
+          .replace(/\s+/g, '-')
+          .toLowerCase()}`;
       return field;
     });
     if (config.logLevels) {
@@ -122,8 +128,18 @@ export class BruitConfig implements BrtConfig {
         text: 'agreement field must be a checkbox'
       };
     }
-
-    //TODO add control of unicity of IDs
+    // control of unicity of IDs
+    if (
+      form
+        .map(field => field.id)
+        .filter(id => !!id)
+        .find((id, index, a) => a.indexOf(id) === index)
+    ) {
+      return {
+        code: 4,
+        text: 'form field must have unique id'
+      };
+    }
     return;
   }
 }
