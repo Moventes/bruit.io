@@ -1,8 +1,7 @@
-import { Cookies } from './../models/cookies.model';
-import { NavigatorInfo } from './../models/navigator-info.model';
+import { BrtNavigatorInfo, BrtCookies } from '@bruit/types';
 
 export class NavigatorTool {
-  static getInfo(): NavigatorInfo {
+  static getInfo(): BrtNavigatorInfo {
     return {
       cookieEnabled: window.navigator.cookieEnabled,
       userAgent: window.navigator.userAgent,
@@ -12,7 +11,7 @@ export class NavigatorTool {
     };
   }
 
-  static getCookies(): Cookies {
+  static getCookies(): BrtCookies {
     return document.cookie
       .split('; ')
       .map(c => c.split('='))

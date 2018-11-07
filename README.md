@@ -53,31 +53,37 @@ or
 <bruit-io> element to click </bruit-io>
 ```
 
-**with properties:**
+with properties :
 
-- config (required)
-- data (optional)
-- dataFn (optional)
-- onError (optional)
+- [_config_](#configuration) (required)
+- _data_ (optional)
+- _dataFn_ (optional)
+- _onError_ (event) (optional)
 
-**Integration frameworks:**
+**Integration frameworks :**
 
 <p align="center">
   <a href="#html">
     <img alt="html/js" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="100px">
   </a>
   <a href="#angular">
-    <img alt="Angular" src="https://angular.io/assets/images/logos/angular/angular.svg" width="100px">
+    <img alt="Angular" src="https://angular.io/assets/images/logos/angular/angular.svg" width="110px">
   </a>
     <a href="#react">
-    <img alt="React" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="100px">
+    <img alt="React" src="https://camo.githubusercontent.com/98a9b62f324b8a13275cc57dc4293f0ee315f85f/68747470733a2f2f73616e6473746f726d2e64652f5f5265736f75726365732f50657273697374656e742f333238353431366538353033623263383335346333323162636436393063663535306238623264332f52656163742d4c6f676f2e737667" width="100px">
   </a>
     <a href="#ember">
     <img alt="Ember" src="https://upload.wikimedia.org/wikipedia/fr/6/69/Ember.js_Logo_and_Mascot.png" width="100px">
   </a>
 </p>
 
-## BrtConfig
+## Configuration
+
+`bruit-io` webComponent has a `config` property.
+
+`config` property take a [BrtConfig](#brtconfig) value.
+
+### _BrtConfig_
 
 BrtConfig is a JSON for configure and customize bruit component
 
@@ -91,7 +97,7 @@ BrtConfig is a JSON for configure and customize bruit component
 | logLevels             | BrtLogLevels    | type and number of log to send                                               | no       | see                             |
 | maxLogLines           | number          | number of log to send                                                        | no       | 100                             |
 | colors                | BrtColors       | modal theming                                                                | no       | see                             |
-| apiUrl                | string          | if you want use you own api for send feedback                                | no       | <https://api.bruit.io/feedback> |
+| apiUrl                | string          | if you want use your own api for send feedback                               | no       | <https://api.bruit.io/feedback> |
 
 - import if using Typescript :
 
@@ -99,7 +105,7 @@ BrtConfig is a JSON for configure and customize bruit component
 import { BrtConfig } from '@moventes/bruit';
 ```
 
-### BrtField
+### _BrtField_
 
 - description
 - format
@@ -111,7 +117,7 @@ import { BrtConfig } from '@moventes/bruit';
 import { BrtField } from '@moventes/bruit';
 ```
 
-### BrtLabels
+### _BrtLabels_
 
 - default value :
 
@@ -129,7 +135,7 @@ import { BrtField } from '@moventes/bruit';
 import { BrtLabels } from '@moventes/bruit';
 ```
 
-### BrtColors
+### _BrtColors_
 
 - default value :
 
@@ -149,7 +155,7 @@ import { BrtLabels } from '@moventes/bruit';
 import { BrtColors } from '@moventes/bruit';
 ```
 
-### BrtLogLevels
+### _BrtLogLevels_
 
 - default value :
 
@@ -172,7 +178,7 @@ import { BrtColors } from '@moventes/bruit';
 import { BrtLogLevels } from '@moventes/bruit';
 ```
 
-### BrtData
+### _BrtData_
 
 - import if using Typescript :
 
@@ -180,7 +186,7 @@ import { BrtLogLevels } from '@moventes/bruit';
 import { BrtData } from '@moventes/bruit';
 ```
 
-### BrtError
+### _BrtError_
 
 - import if using Typescript :
 

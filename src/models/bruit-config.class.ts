@@ -1,6 +1,4 @@
-import { BrtConfig } from './brt-config.model';
-import { BrtField } from './brt-field.model';
-import { BrtError } from './brt-error.model';
+import { BrtConfig, BrtField, BrtError } from '@bruit/types';
 import { ComponentConfig } from '../config/config';
 
 export class BruitConfig implements BrtConfig {
@@ -35,7 +33,7 @@ export class BruitConfig implements BrtConfig {
   constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
     this.form = config.form.map((field, index) => {
-      field.id = index + '-' + field.type;
+      field.id = field.id || index + '-' + field.type; //TODO use field.label.replace(\s,'-').toLowerCase() instead of field.type
       return field;
     });
     if (config.logLevels) {
@@ -124,6 +122,8 @@ export class BruitConfig implements BrtConfig {
         text: 'agreement field must be a checkbox'
       };
     }
+
+    //TODO add control of unicity of IDs
     return;
   }
 }

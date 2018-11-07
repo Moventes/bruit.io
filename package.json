@@ -1,6 +1,6 @@
 {
-  "name": "@moventes/bruit",
-  "version": "0.2.10",
+  "name": "@bruit/component",
+  "version": "0.2.11",
   "description": "send your feedbacks with bruit.io",
   "private": false,
   "module": "dist/esm/index.js",
@@ -44,6 +44,7 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
+    "@bruit/types": "latest",
     "html2canvas": "^1.0.0-alpha.12"
   }
 }

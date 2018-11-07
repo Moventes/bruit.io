@@ -10,16 +10,12 @@ import '@stencil/core';
 
 import {
   BrtConfig,
-} from './models/brt-config.model';
-import {
   BrtData,
-} from './models/brt-data.model';
+  BrtError,
+} from '@bruit/types';
 import {
   EventEmitter,
 } from '@stencil/core';
-import {
-  BrtError,
-} from './models/brt-error.model';
 
 
 export namespace Components {

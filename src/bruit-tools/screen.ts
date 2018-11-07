@@ -1,8 +1,8 @@
 import html2canvas from 'html2canvas';
-import { ScreenInfo } from '../models/screen-info.model';
+import { BrtScreenInfo } from '@bruit/types';
 
 export class ScreenTool {
-  static getInfo(): ScreenInfo {
+  static getInfo(): BrtScreenInfo {
     return {
       height: window.screen.height,
       width: window.screen.width,

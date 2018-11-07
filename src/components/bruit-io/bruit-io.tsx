@@ -1,13 +1,10 @@
 import { Component, Prop, State, Watch, EventEmitter, Event, Element } from '@stencil/core';
-import { BrtConfig } from '../../models/brt-config.model';
 import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
 import { HttpTool } from '../../bruit-tools/http';
 import { ClickTool } from '../../bruit-tools/click';
-import { BrtData } from '../../models/brt-data.model';
 import { Feedback } from '../../api/feedback';
-import { BrtField } from '../../models/brt-field.model';
-import { BrtError } from '../../models/brt-error.model';
+import { BrtError, BrtField, BrtData, BrtConfig } from '@bruit/types';
 import { UrlTool } from '../../bruit-tools/url';
 @Component({
   tag: 'bruit-io',

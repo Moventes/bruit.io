@@ -1,23 +1,17 @@
 import { Api } from './api';
-import { BrtField } from '../models/brt-field.model';
-import { FeedbackModel } from './../models/feedback.model';
-import { Cookies } from '../models/cookies.model';
-import { NavigatorInfo } from '../models/navigator-info.model';
-import { ScreenInfo } from '../models/screen-info.model';
-import { Log } from '../models/log.model';
-import { BrtData } from '../models/brt-data.model';
 import { ScreenTool } from '../bruit-tools/screen';
 import { NavigatorTool } from '../bruit-tools/navigator';
+import { BrtFeedback, BrtCookies, BrtNavigatorInfo, BrtScreenInfo, BrtLog, BrtData, BrtField } from '@bruit/types';
 
-export class Feedback implements FeedbackModel {
+export class Feedback implements BrtFeedback {
   //FeedbackModel:
   apiKey: string;
   canvas: string;
   url: string;
-  cookies: Cookies;
-  navigator: NavigatorInfo;
-  display: ScreenInfo;
-  logs: Array<Log>;
+  cookies: BrtCookies;
+  navigator: BrtNavigatorInfo;
+  display: BrtScreenInfo;
+  logs: Array<BrtLog>;
   data: Array<BrtData>;
 
   constructor(apiKey: string) {
