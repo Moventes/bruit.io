@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "send your feedbacks with bruit.io",
   "private": false,
   "module": "dist/esm/index.js",
