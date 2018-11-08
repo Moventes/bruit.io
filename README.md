@@ -146,7 +146,7 @@ this field is used to check if the user agrees to send his personal data.
   - _title_
     `title` id is used for determinate the field tu use for make the title of feedback
 
-* format :
+- format :
 
 ```ts
 interface BrtField {
