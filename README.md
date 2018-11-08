@@ -17,7 +17,7 @@
   </a>
 </p>
 <p align="center">
-available on all frameworks that support WebComponents like
+Available on all frameworks that support WebComponents like
 </p>
 <p align="center">
     <img alt="javascript" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" height="40px">
@@ -59,7 +59,7 @@ Bruit is a webComponent for user review ...
 npm install @bruit/component --save
 ```
 
-or
+Or
 
 ```html
 <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
@@ -114,7 +114,7 @@ with properties :
 
 BrtConfig is a JSON for configure and customize `bruit-io` component
 
-| attribute          | type                          | description                                                                  | required | default value                   |
+| Attribute          | Type                          | Description                                                                  | Required | Default value                   |
 | ------------------ | ----------------------------- | ---------------------------------------------------------------------------- | -------- | ------------------------------- |
 | **apiKey**         | string                        | your personal api key [(create my api key)](https://bruit.io/)               | yes      | -                               |
 | **form**           | array<[BrtField](#brtfield)>  | input list for generate form                                                 | yes      | -                               |
@@ -125,7 +125,7 @@ BrtConfig is a JSON for configure and customize `bruit-io` component
 | colors             | [BrtColors](#BrtColors)       | modal theming                                                                | no       | [see](#BrtColors)               |
 | apiUrl             | string                        | if you want use your own api for send feedback                               | no       | <https://api.bruit.io/feedback> |
 
-- import if using Typescript :
+- Import if using Typescript :
 
 ```javascript
 import { BrtConfig } from '@bruit/component';
@@ -135,14 +135,14 @@ import { BrtConfig } from '@bruit/component';
 
 `BrtConfig.form` must be contains minimum one `BrtField` with `id="agreement"` and `type="checkbox"`.
 
-this field is used to check if the user agrees to send his personal data.
+This field is used to check if the user agrees to send his personal data.
 
-- special ids :
+- Special ids :
 
   - `agreement` id is used for determinate the field to use for check if user agrees to send his personal data
   - `title` id is used for determinate the field tu use for make the title of feedback
 
-- format :
+- Format :
 
 ```ts
 interface BrtField {
@@ -154,7 +154,7 @@ interface BrtField {
 }
 ```
 
-- import if using Typescript :
+- Import if using Typescript :
 
 ```javascript
 import { BrtField } from '@bruit/component';
@@ -162,7 +162,19 @@ import { BrtField } from '@bruit/component';
 
 ### _BrtLabels_
 
-- default value :
+This values is used in modal only, the title is show in the header, introduction under the header, and button in submit button.
+
+- Format :
+
+```ts
+interface BrtLabels {
+  title?: string;
+  introduction?: string;
+  button?: string;
+}
+```
+
+- Default value :
 
 ```json
 {
@@ -172,7 +184,7 @@ import { BrtField } from '@bruit/component';
 }
 ```
 
-- import if using Typescript :
+- Import if using Typescript :
 
 ```javascript
 import { BrtLabels } from '@bruit/component';
@@ -180,7 +192,25 @@ import { BrtLabels } from '@bruit/component';
 
 ### _BrtColors_
 
-- default value :
+🎨 If you are an artist, use BrtColors for th modal theming.
+
+It's possible to change the header, body, background, errors and focus colors.
+
+Use hexadecimal values only.
+
+- Format :
+
+```ts
+interface BrtColors {
+  header?: string;
+  body?: string;
+  background?: string;
+  errors?: string;
+  focus?: string;
+}
+```
+
+- Default value :
 
 ```json
 {
@@ -192,7 +222,7 @@ import { BrtLabels } from '@bruit/component';
 }
 ```
 
-- import if using Typescript :
+- Import if using Typescript :
 
 ```javascript
 import { BrtColors } from '@bruit/component';
@@ -200,7 +230,42 @@ import { BrtColors } from '@bruit/component';
 
 ### _BrtLogLevels_
 
-- default value :
+By default, all your log types (log, warn, errors, ...) are send in feedback. `BrtLogLevels` allows to disable specific type.
+
+For disable a type, just set logLevels with this type to false :
+
+```json
+{
+  "apiKey": "xxxxxxxxxx",
+  "form": [...],
+  "logLevels": {
+    "log":false
+  }
+}
+```
+
+- special types:
+
+  - `network` type is for your fetch and xmlHttpRequest calls.
+  - `click` type is for mouse click event.
+  - `url` type log all url changing
+
+- Format :
+
+```ts
+interface BrtLogLevels {
+  log?: boolean;
+  debug?: boolean;
+  info?: boolean;
+  warn?: boolean;
+  error?: boolean;
+  network?: boolean;
+  click?: boolean;
+  url?: boolean;
+}
+```
+
+- Default value :
 
 ```json
 {
@@ -215,11 +280,17 @@ import { BrtColors } from '@bruit/component';
 }
 ```
 
-- import if using Typescript :
+- Import if using Typescript :
 
 ```javascript
 import { BrtLogLevels } from '@bruit/component';
 ```
+
+# Add data in feedback
+
+## data
+
+## type BrtData
 
 ### _BrtData_
 
@@ -229,6 +300,12 @@ import { BrtLogLevels } from '@bruit/component';
 import { BrtData } from '@bruit/component';
 ```
 
+# Handle errors
+
+## event
+
+## type BrtError
+
 ### _BrtError_
 
 - import if using Typescript :
@@ -236,10 +313,6 @@ import { BrtData } from '@bruit/component';
 ```javascript
 import { BrtError } from '@bruit/component';
 ```
-
-# Add data in feedback
-
-# Handle errors
 
 # Framework integrations
 
@@ -369,5 +442,5 @@ xxx
 
 # Having troubles ?
 
-- issues Github
-- stackoverflow
+- [issues Github](https://github.com/Moventes/bruit.io/issues)
+- [StackOverflow](https://stackoverflow.com/questions/tagged/bruit.io)
