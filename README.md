@@ -192,7 +192,7 @@ import { BrtLabels } from '@bruit/component';
 
 ### _BrtColors_
 
-🎨 If you are an artist, use BrtColors for th modal theming.
+🎨 If you are an artist, use BrtColors for the modal theming.
 
 It's possible to change the header, body, background, errors and focus colors.
 
@@ -237,9 +237,9 @@ For disable a type, just set logLevels with this type to false :
 ```json
 {
   "apiKey": "xxxxxxxxxx",
-  "form": [...],
+  "form": ["..."],
   "logLevels": {
-    "log":false
+    "log": false
   }
 }
 ```
