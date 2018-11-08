@@ -1,3 +1,3 @@
 export const ComponentConfig = {
-  BRUIT_IO_API_URL: "http://localhost:3334/feedback"
-}
+  BRUIT_IO_API_URL: 'https://api.bruit.io/feedback'
+};

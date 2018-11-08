@@ -1,4 +1,9 @@
 export class ClickTool {
+  /**
+   * @param path array of element (from click event)
+   *
+   * @return string, xpath of clicked element
+   */
   static init() {
     window.addEventListener('click', event => {
       this.logClick({
@@ -9,8 +14,17 @@ export class ClickTool {
     });
   }
 
+  /**
+   * @param path array of element (from click event)
+   *
+   * @return string, xpath of clicked element
+   */
   private static getXPath(path: Array<Element>): string {
-    if (path.length) {
+    // if is an array and click is in html
+    if (Array.isArray(path) && path.length >= 3) {
+      // xpath start always with '//'
+      // path is an array of dom element start with clicked element, finish with window
+
       path.pop(); //remove "window"
       path.pop(); // remove "document"
       path.pop(); //remove "html"
@@ -18,25 +32,7 @@ export class ClickTool {
       return (
         '//' +
         path
-          .map(elem => {
-            let nodePath = elem.nodeName;
-            if (elem.id) {
-              nodePath += `[@id="${elem.id}"]`;
-            } else {
-              // if (elem.parentElement && elem.parentElement..ch)
-              var i = 0;
-              let child = elem;
-              while ((child = child.previousElementSibling) != null) {
-                if (child.nodeName === elem.nodeName) {
-                  i++;
-                }
-              }
-              if (i > 0) {
-                nodePath += `[${i}]`;
-              }
-            }
-            return nodePath;
-          })
+          .map(ClickTool.getElementXpath)
           .reverse()
           .join('/')
       );
@@ -45,18 +41,44 @@ export class ClickTool {
     }
   }
 
-  // getXPathForElement(element) {
-  //   const idx = (sib, name) =>
-  //     sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+  /**
+   * create xpath element from dom element
+   * ex: DIV[@id="idOfDiv"] for <div id="idOfDiv"></div>
+   * ex: DIV[1] for <span><div></div><div clickedDiv ></div></span>
+   *
+   * @param elem Element
+   *
+   * @return string, the element xpath
+   */
+  private static getElementXpath(elem: Element): string {
+    if (elem.id) {
+      //if element have an id => concat `[@id="${elem.id}"]` with the element name
+      return `${elem.nodeName}[@id="${elem.id}"]`;
+    } else if (elem.previousElementSibling || elem.nextElementSibling) {
+      // element havn't id and have sibling => concat his index `[index]` with the element name
+      return `${elem.nodeName}[${ClickTool.indexOfElement(elem)}]`;
+    } else {
+      // element is unique
+      return elem.nodeName;
+    }
+  }
 
-  //   const segs = elm =>
-  //     !elm || elm.nodeType !== 1
-  //       ? ['']
-  //       : elm.id && document.querySelector(`#${elm.id}`) === elm
-  //         ? [`id("${elm.id}")`]
-  //         : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
-  //   return segs(element).join('/');
-  // }
+  /**
+   * @param elem the element to use for count his index in his parent
+   *
+   * @return number, index of element in his parent
+   */
+  private static indexOfElement(elem: Element): number {
+    // count previous element of same nodeName
+    var indexOfElement = 0;
+    let child = elem;
+    while ((child = child.previousElementSibling) != null) {
+      if (child.nodeName === elem.nodeName) {
+        indexOfElement++;
+      }
+    }
+    return indexOfElement;
+  }
 
   static logClick(...args) {
     if ((<any>console).click) {

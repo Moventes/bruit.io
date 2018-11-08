@@ -6,6 +6,7 @@ import { ClickTool } from '../../bruit-tools/click';
 import { Feedback } from '../../api/feedback';
 import { BrtError, BrtField, BrtData, BrtConfig } from '@bruit/types';
 import { UrlTool } from '../../bruit-tools/url';
+import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 @Component({
   tag: 'bruit-io',
   styleUrl: 'bruit-io.scss',
@@ -138,11 +139,11 @@ export class BruitIo {
           return sendFeedback;
         } else {
           // else, we display de loader
-          this.submitButtonState(1);
+          this.setSubmitButtonState(SubmitButtonState.LOADING);
           // send feedback
           return sendFeedback.then(() => {
             // we display the "validation" for <durationBeforeClosing> milliseconds
-            this.submitButtonState(2);
+            this.setSubmitButtonState(SubmitButtonState.CHECKED);
             return new Promise(resolve => {
               setTimeout(() => resolve(), this._config.durationBeforeClosing);
             });
@@ -188,7 +189,7 @@ export class BruitIo {
    * reset the modal values and open it
    */
   openModal() {
-    this.submitButtonState(0);
+    this.setSubmitButtonState(SubmitButtonState.SUBMIT);
     this.modalBrtField = JSON.parse(JSON.stringify(this._config.form));
     this.modalOpened = true;
   }
@@ -260,20 +261,17 @@ export class BruitIo {
 
   /**
    * change submit button state
-   * state 0 = button send
-   * state 1 = loader
-   * state 2 = button checked
-   * @param state state of the submit button (0|1|2)
+   * @param state state of the submit button
    */
-  submitButtonState(state: number) {
+  setSubmitButtonState(state: SubmitButtonState) {
     const buttonClassList = document.getElementById('bruit-io-submit-button').classList;
     switch (state) {
-      case 2: {
+      case SubmitButtonState.CHECKED: {
         buttonClassList.remove('onClick');
         buttonClassList.add('validate');
         break;
       }
-      case 1: {
+      case SubmitButtonState.LOADING: {
         buttonClassList.add('onClick');
         buttonClassList.remove('validate');
         break;
@@ -312,14 +310,7 @@ export class BruitIo {
     } else {
       return (
         <a onClick={() => this.newFeedback()}>
-          <svg viewBox="0 0 96 96" width="30" height="30">
-            <path
-              d="M73.3,35.3h-8.9c-1.4-2.5-3.4-4.6-5.8-6.2l5.2-5.2l-4.5-4.5l-6.9,6.9C51,26,49.6,25.8,48,25.8
-		s-3,0.2-4.5,0.5l-6.9-6.9L32.2,24l5.1,5.2c-2.3,1.6-4.3,3.7-5.7,6.2h-8.9v6.3h6.6c-0.2,1-0.3,2.1-0.3,3.2V48h-6.3v6.3H29v3.2
-		c0,1.1,0.1,2.1,0.3,3.2h-6.6V67h8.9c3.3,5.7,9.4,9.5,16.4,9.5s13.1-3.8,16.4-9.5h8.9v-6.3h-6.6c0.2-1,0.3-2.1,0.3-3.2v-3.2h6.3V48
-		H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,48H41.7v-6.3h12.7V48z"
-            />
-          </svg>
+          <img src="./../../assets/img/bug-icon.svg" />
         </a>
       );
     }
@@ -350,16 +341,7 @@ export class BruitIo {
       <div class="head" style={{ 'background-color': this._config.colors.header }}>
         <h1 class="title">{this._config.labels.title}</h1>
         <a id="bruit-io-btn-close">
-          <svg
-            width="24"
-            height="24"
-            xmlns="http://www.w3.org/2000/svg"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            fill="white"
-          >
-            <path d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z" />
-          </svg>
+          <img src="./../../assets/img/close-icon.svg" />
         </a>
       </div>
     );
