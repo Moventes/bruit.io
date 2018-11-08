@@ -116,8 +116,8 @@ BrtConfig is a JSON for configure and customize `bruit-io` component
 
 | attribute          | type                          | description                                                                  | required | default value                   |
 | ------------------ | ----------------------------- | ---------------------------------------------------------------------------- | -------- | ------------------------------- |
-| **apiKey**         | string                        | your personal api key                                                        | yes      | -                               |
-| **form**           | array<[BrtField](#brtfield)>  | your personal api key                                                        | yes      | -                               |
+| **apiKey**         | string                        | your personal api key [(create my api key)](https://bruit.io/)               | yes      | -                               |
+| **form**           | array<[BrtField](#brtfield)>  | input list for generate form                                                 | yes      | -                               |
 | closeModalOnSubmit | boolean                       | true for close modal directly on submit form and send feedback in background | no       | false                           |
 | labels             | [BrtLabels](#brtlabels)       | labels of the modal (title/button/...)                                       | no       | [see](#brtlabels)               |
 | logLevels          | [BrtLogLevels](#BrtLogLevels) | type and number of log to send                                               | no       | [see](#BrtLogLevels)            |
@@ -133,18 +133,14 @@ import { BrtConfig } from '@bruit/component';
 
 ### _BrtField_
 
-- description
-
 `BrtConfig.form` must be contains minimum one `BrtField` with `id="agreement"` and `type="checkbox"`.
 
 this field is used to check if the user agrees to send his personal data.
 
 - special ids :
 
-  - _agreement_
-    `agreement` id is used for determinate the field to use for check if user agrees to send his personal data
-  - _title_
-    `title` id is used for determinate the field tu use for make the title of feedback
+  - `agreement` id is used for determinate the field to use for check if user agrees to send his personal data
+  - `title` id is used for determinate the field tu use for make the title of feedback
 
 - format :
 
