@@ -29,6 +29,8 @@ available on
 
 Bruit is a webComponent for user review ...
 
+---
+
 # Getting started
 
 <a href="https://bruit.io/"><button>start on bruit.io</button></a>
@@ -62,6 +64,8 @@ or
 ```html
 <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
 ```
+
+---
 
 # Usage
 
@@ -102,9 +106,9 @@ with properties :
 
 ## Configuration
 
-`bruit-io` webComponent has a `config` property.
-
-`config` property take a [BrtConfig](#brtconfig) value.
+> `bruit-io` webComponent has a `config` property.
+>
+> `config` property take a [BrtConfig](#brtconfig) value.
 
 ### _BrtConfig_
 
@@ -131,11 +135,18 @@ import { BrtConfig } from '@bruit/component';
 
 - description
 
-`BrtConfig.form` must be contains minimum one BrtField with id="agreement" and type="checkbox".
+`BrtConfig.form` must be contains minimum one `BrtField` with `id="agreement"` and `type="checkbox"`.
 
-ce champ est utilisé pour vérifier si l'utilisateur est d'accord pour envoyer ses données personnelles.
+this field is used to check if the user agrees to send his personal data.
 
-- format :
+- special ids :
+
+  - _agreement_
+    `agreement` id is used for determinate the field to use for check if user agrees to send his personal data
+  - _title_
+    `title` id is used for determinate the field tu use for make the title of feedback
+
+* format :
 
 ```ts
 interface BrtField {
