@@ -17,7 +17,7 @@
   </a>
 </p>
 <p align="center">
-available on
+available on all frameworks that support WebComponents like
 </p>
 <p align="center">
     <img alt="javascript" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" height="40px">
