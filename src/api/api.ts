@@ -7,9 +7,10 @@ export class Api {
       xhr.open('POST', ComponentConfig.BRUIT_IO_API_URL, true);
       xhr.setRequestHeader('Content-type', 'application/json');
       xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
+        if (xhr.readyState === 4 || (xhr.readyState === 2 && xhr.status === 200)) {
           if (xhr.status === 200) {
-            resolve(JSON.parse(xhr.responseText));
+            //JSON.parse(xhr.responseText)
+            resolve();
           } else {
             const body = JSON.parse(xhr.responseText);
             reject({ ...xhr, code: 900, text: (body ? body.message : null) || 'An Unexpected Error Occurred' });
