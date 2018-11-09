@@ -1,10 +1,11 @@
 import { Component, Prop, State, Watch, EventEmitter, Event, Element } from '@stencil/core';
+import { BrtError, BrtField, BrtData, BrtConfig } from '@bruit/types';
+import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { BruitConfig } from '../../models/bruit-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
 import { HttpTool } from '../../bruit-tools/http';
 import { ClickTool } from '../../bruit-tools/click';
 import { Feedback } from '../../api/feedback';
-import { BrtError, BrtField, BrtData, BrtConfig } from '@bruit/types';
 import { UrlTool } from '../../bruit-tools/url';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 @Component({
@@ -254,9 +255,11 @@ export class BruitIo {
    * set all form field to disabled
    */
   disabledBrtField() {
-    this.modalBrtField.map(field => document.getElementById(field.id)).forEach(domField => {
-      domField.setAttribute('disabled', 'true');
-    });
+    this.modalBrtField
+      .map(field => document.getElementById(field.id))
+      .forEach(domField => {
+        domField.setAttribute('disabled', 'true');
+      });
   }
 
   /**
@@ -409,18 +412,18 @@ export class BruitIo {
   modalFields() {
     return this.modalBrtField.map(field => {
       switch (field.type) {
-        case 'text':
-        case 'email': {
+        case BrtFieldType.TEXT:
+        case BrtFieldType.EMAIL: {
           return this.inputField(field);
         }
-        case 'checkbox': {
+        case BrtFieldType.CHECKBOX: {
           return this.checkboxField(field);
         }
-        case 'textarea': {
+        case BrtFieldType.TEXTAREA: {
           return this.textareaField(field);
         }
         default: {
-          const err = { code: 6, text: `"${field.type}" field type is not supported` };
+          const err = { code: 116, text: `"${field.type}" field type is not supported` };
           console.error('BRUIT.IO error : ', err);
           this.sendError.emit(err);
           return <span class="error">error</span>;

@@ -1,7 +1,8 @@
+import { BrtFeedback, BrtCookies, BrtNavigatorInfo, BrtScreenInfo, BrtLog, BrtData, BrtField } from '@bruit/types';
+
 import { Api } from './api';
 import { ScreenTool } from '../bruit-tools/screen';
 import { NavigatorTool } from '../bruit-tools/navigator';
-import { BrtFeedback, BrtCookies, BrtNavigatorInfo, BrtScreenInfo, BrtLog, BrtData, BrtField } from '@bruit/types';
 
 export class Feedback implements BrtFeedback {
   //FeedbackModel:

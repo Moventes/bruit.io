@@ -1,5 +1,5 @@
-import { BruitConfig } from './../models/bruit-config.class';
 import { BrtLogLevels } from '@bruit/types';
+import { BruitConfig } from './../models/bruit-config.class';
 export class ConsoleTool {
   private static BUFFER_SIZE = 100;
   private static logArray = [];

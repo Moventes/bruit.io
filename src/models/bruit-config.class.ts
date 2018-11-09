@@ -1,4 +1,5 @@
 import { BrtConfig, BrtField, BrtError } from '@bruit/types';
+import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { ComponentConfig } from '../config/config';
 
 export class BruitConfig implements BrtConfig {
@@ -122,7 +123,7 @@ export class BruitConfig implements BrtConfig {
         text: 'agreement field is missing'
       };
     }
-    if (agreementField.type !== 'checkbox') {
+    if (agreementField.type !== BrtFieldType.CHECKBOX) {
       return {
         code: 114,
         text: 'agreement field must be a checkbox'
@@ -138,6 +139,15 @@ export class BruitConfig implements BrtConfig {
       return {
         code: 115,
         text: 'form field must have unique id'
+      };
+    }
+    // control types
+    const allTypes = Object.keys(BrtFieldType).map(BrtFieldTypeKey => BrtFieldType[BrtFieldTypeKey]);
+    const badTypes = form.map(field => field.type).filter(id => !allTypes.includes(id));
+    if (badTypes.length > 0) {
+      return {
+        code: 116,
+        text: `types ${badTypes.toString()} are not suported`
       };
     }
     return;

@@ -99,7 +99,6 @@ with properties :
 <p align="center">
   <a href="#javascript" align="center">
     <img style="display: block" alt="Javascript" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" height="70px"/><p>Javascript/html</p>
-    
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#angular">

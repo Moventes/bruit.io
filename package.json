@@ -44,7 +44,7 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
-    "@bruit/types": "latest",
+    "@bruit/types": "^0.1.18",
     "html2canvas": "^1.0.0-alpha.12"
   }
 }
