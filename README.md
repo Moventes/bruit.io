@@ -28,6 +28,8 @@ Available on all <img alt="javascript" src="https://upload.wikimedia.org/wikiped
     <img alt="Vue" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" height="40px">
 </p>
 
+---
+
 Bruit is simpliest tool (make on "web component" standard) for get your users feedbacks. Users feedbacks is sent directly to your favorite project management tools 🎉 .
 
 bruit.io gather an open source "webComponent" and a backend for format your feedback. and we do not do data retention about feedback 👏
