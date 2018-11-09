@@ -34,6 +34,7 @@ Available on all frameworks that support WebComponents like
     <img alt="Ionic" src="https://d1eq8vvyuam4eq.cloudfront.net/tutorials/ionic/logo-ionic.svg?ver=1539283235" height="40px">
     <img alt="Meteor" src="https://cdn.freebiesupply.com/logos/large/2x/meteor-icon-logo-png-transparent.png" height="40px">
     <img alt="Backbone" src="https://seeklogo.com/images/B/backbone-logo-5471D69D9B-seeklogo.com.png" height="40px">
+    <img alt="Aurelia" src="https://banner2.kisspng.com/20180907/wko/kisspng-javascript-framework-javascript-library-software-f-aurelia-logo-svg-vector-amp-png-transparent-ve-5b9296d1bb6649.0695022115363335217676.jpg" height="40px">
 </p>
 
 ---
