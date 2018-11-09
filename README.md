@@ -16,18 +16,21 @@
     <img alt="Built With Stencil" src="https://img.shields.io/badge/-Built%20With%20Stencil-16161d.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI%2BCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI%2BCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU%2BCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00MjQuNywzNzMuOWMwLDM3LjYtNTUuMSw2OC42LTkyLjcsNjguNkgxODAuNGMtMzcuOSwwLTkyLjctMzAuNy05Mi43LTY4LjZ2LTMuNmgzMzYuOVYzNzMuOXoiLz4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTQyNC43LDI5Mi4xSDE4MC40Yy0zNy42LDAtOTIuNy0zMS05Mi43LTY4LjZ2LTMuNkgzMzJjMzcuNiwwLDkyLjcsMzEsOTIuNyw2OC42VjI5Mi4xeiIvPgo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDI0LjcsMTQxLjdIODcuN3YtMy42YzAtMzcuNiw1NC44LTY4LjYsOTIuNy02OC42SDMzMmMzNy45LDAsOTIuNywzMC43LDkyLjcsNjguNlYxNDEuN3oiLz4KPC9zdmc%2BCg%3D%3D&colorA=16161d&style=flat-square">
   </a>
 </p>
+<p align="center"> Bruit.oi is a WebComponents</p>
+<p align="center"><img src="https://cdn.freebiesupply.com/logos/large/2x/web-components-logo-png-transparent.png" height="50px"/></p>
 <p align="center">
-Available on all frameworks that support WebComponents like
+Available on all <img alt="javascript" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" height="20px"> frameworks that support WebComponents like
 </p>
 <p align="center">
-    <img alt="javascript" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" height="40px">
     <img alt="Angular" src="https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg" height="40px">
     <img alt="React" src="https://camo.githubusercontent.com/98a9b62f324b8a13275cc57dc4293f0ee315f85f/68747470733a2f2f73616e6473746f726d2e64652f5f5265736f75726365732f50657273697374656e742f333238353431366538353033623263383335346333323162636436393063663535306238623264332f52656163742d4c6f676f2e737667" height="40px">
     <!-- <img alt="Ember" src="https://upload.wikimedia.org/wikipedia/fr/6/69/Ember.js_Logo_and_Mascot.png" height="40px"> -->
     <img alt="Vue" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" height="40px">
 </p>
 
-Bruit is a webComponent for user review ...
+Bruit is simpliest tool (make on "web component" standard) for get your users feedbacks. Users feedbacks is sent directly to your favorite project management tools 🎉 .
+
+bruit.io gather an open source "webComponent" and a backend for format your feedback. and we do not do data retention about feedback 👏
 
 ---
 
@@ -288,11 +291,36 @@ import { BrtLogLevels } from '@bruit/component';
 
 # Add data in feedback
 
+You can add data in feedback (example: a version number, a user id, ...).
+
+If you have data that can be retrieved synchronously, you can use `data`.
+
+For asynchronous data, you can use `dataFn`.
+
 ## data
 
-## type BrtData
+`data` property is used for send synchronous data.
+
+Just give him an `BrtData` array.
+
+## dataFn
+
+`dataFn` property is used for send asynchronous data.
+
+Give him an `Promise` of `BrtData` array. Your promise will be called upon to submit the feedback.
 
 ### _BrtData_
+
+- Format :
+
+```ts
+interface BrtData {
+  label: string;
+  type?: string;
+  value: any;
+  id?: string;
+}
+```
 
 - import if using Typescript :
 
@@ -304,9 +332,22 @@ import { BrtData } from '@bruit/component';
 
 ## event
 
-## type BrtError
+`bruit-io` emit `onError` event when an error occured.
+
+An error is composed by a `code` and a `text`. it is of type `BrtError`.
+
+[more information about errors](https://github.com/Moventes/bruit.io/blob/master/DOC_ERRORS.md)
 
 ### _BrtError_
+
+- Format :
+
+```ts
+interface BrtError {
+  code: number;
+  text: string;
+}
+```
 
 - import if using Typescript :
 
@@ -328,7 +369,7 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 </head>
 <body>
   <bruit-io></bruit-io>
-    <script>
+  <script>
     var bruitCmp = document.querySelector('bruit-io');
     bruitCmp.config = {
       apiKey: 'xxxxxxxxxxxxxxxxx',
@@ -346,7 +387,7 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 Using `bruit-io` component within an Angular CLI project is a two-step process. We need to:
 
 1. Include the `CUSTOM_ELEMENTS_SCHEMA` in the modules that use the components
-1. Call `defineCustomElements(window)` from `main.ts` (or some other appropriate place)
+2. Call `defineCustomElements(window)` from `main.ts` (or some other appropriate place)
 
 ### Including the Custom Elements Schema
 
@@ -389,6 +430,47 @@ platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch(err => console.log(err));
 defineCustomElements(window);
+```
+
+### Using bruit-io in your angular component
+
+```html
+<bruit-io [config]="bruitConfig" [data]="bruitData" [dataFn]="bruitDataPromise()" (onError)="handleBruitError($event)"></bruit-io>
+```
+
+```ts
+public bruitConfig: BrtConfig = {
+  apiKey:"xxxxxxxxxxx",
+  form:[...]
+};
+
+public bruitData: Array<BrtData> = [
+  {
+    label:"version",
+    value: environment.version
+  }
+];
+
+constructor(private api : ApiService){}
+
+bruitDataPromise():Promise<Array<BrtData>>{
+  return this.api.getUser().then( user =>
+    [
+      {
+        label: "user id",
+        value: user.id
+      },
+      {
+        label: "user email",
+        value: user.email
+      }
+    ]
+  );
+}
+
+handleBruitError(error: BrtError){
+  ...
+}
 ```
 
 [_from stencil documentation_](https://github.com/ionic-team/stencil-site/edit/master/src/docs/framework-integration/angular.md)

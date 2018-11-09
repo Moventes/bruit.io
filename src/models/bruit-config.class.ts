@@ -77,19 +77,19 @@ export class BruitConfig implements BrtConfig {
   static haveError(config: BrtConfig): BrtError | void {
     if (!config) {
       return {
-        code: 1,
+        code: 100,
         text: 'config is missing'
       };
     }
     if (!config.apiKey) {
       return {
-        code: 2,
+        code: 101,
         text: 'apiKey is missing'
       };
     }
     if (!config.form) {
       return {
-        code: 2,
+        code: 102,
         text: 'form is missing'
       };
     }
@@ -99,32 +99,32 @@ export class BruitConfig implements BrtConfig {
   private static haveFormError(form: Array<BrtField>): BrtError | void {
     if (!Array.isArray(form)) {
       return {
-        code: 3,
+        code: 110,
         text: 'config form must be an array'
       };
     }
     if (form.length === 0) {
       return {
-        code: 3,
+        code: 111,
         text: 'config form must have at least one field'
       };
     }
     if (!form.every(field => !!field.label && !!field.type)) {
       return {
-        code: 3,
+        code: 112,
         text: 'all config form field must have a label and a type'
       };
     }
     const agreementField = form.find(field => field.id === 'agreement');
     if (!agreementField) {
       return {
-        code: 4,
+        code: 113,
         text: 'agreement field is missing'
       };
     }
     if (agreementField.type !== 'checkbox') {
       return {
-        code: 4,
+        code: 114,
         text: 'agreement field must be a checkbox'
       };
     }
@@ -136,7 +136,7 @@ export class BruitConfig implements BrtConfig {
         .find((id, index, a) => a.indexOf(id) !== index && a.indexOf(id) >= 0)
     ) {
       return {
-        code: 4,
+        code: 115,
         text: 'form field must have unique id'
       };
     }
