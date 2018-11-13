@@ -1,12 +1,21 @@
 @import './../../styles/devices';
 
 bruit-io {
-  @import './../../styles/reset';
+
   @import './../../styles/material-form';
   @import './../../styles/submit-button';
   @import './../../styles/icon';
 
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat',
+    Arial,
+    Helvetica,
+    sans-serif !important;
+
+
+  * h1 {
+    font-weight: bold !important;
+  }
+
 
   .error {
     color: #c31313 !important;
@@ -97,8 +106,11 @@ bruit-io {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        font-size: 2em;
         flex-shrink: 0;
+
+        h1 {
+          font-size: 2em !important;
+        }
 
 
         #bruit-io-btn-close {
@@ -136,5 +148,7 @@ bruit-io {
     }
 
   }
+
+  @import './../../styles/reset';
 
 }
