@@ -374,7 +374,7 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://unpkg.com/@bruit/component/dist/test-components.js"></script>
+  <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
 </head>
 <body>
   <bruit-io></bruit-io>
