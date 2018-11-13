@@ -37,9 +37,11 @@ button#bruit-io-submit-button {
     display: none;
   }
 
-  font: {
-    size: 12px;
-    weight: bold;
+  * {
+    font: {
+      size: 12px !important;
+      weight: bold !important;
+    }
   }
 
   // &:hover {
