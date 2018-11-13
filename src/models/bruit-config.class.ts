@@ -28,7 +28,7 @@ export class BruitConfig implements BrtConfig {
     focus: '#1f5a69'
   };
   closeModalOnSubmit = false;
-  durationBeforeClosing = 1500;
+  durationBeforeClosing = 1000;
   form: Array<BrtField>;
 
   constructor(config: BrtConfig) {
