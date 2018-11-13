@@ -211,9 +211,10 @@ export class BruitIo {
    */
   waitOnSubmit(): Promise<Array<BrtField>> {
     //getting the three clickable dom element (for submit or close modal)
-    const form = document.getElementById('bruit-io-form');
-    const button_close = document.getElementById('bruit-io-btn-close');
-    const modal_wrapper = document.getElementById('bruit-io-wrapper');
+    const form: HTMLElement = this.bruitElement.querySelector('#bruit-io-form');
+    const button_close: HTMLElement = this.bruitElement.querySelector('#bruit-io-btn-close');
+    const modal_wrapper: HTMLElement = this.bruitElement.querySelector('#bruit-io-wrapper');
+
     //show the close button
     button_close.hidden = false;
 
