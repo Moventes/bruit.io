@@ -295,29 +295,26 @@ interface BrtLogLevels {
 import { BrtLogLevels } from '@bruit/component';
 ```
 
-# Automatically add data in the feedback
+# Add data to the feedback
 
 It is possible to automatically had technical data in the feedback, for example the version number of your application, the identifier of the user sending the feedback, etc.
 
-If you have data that can be retrieved synchronously, you can use `data`.
-
-For asynchronous data, you can use `dataFn`.
+This is done by using either the `data` or `dataFn` property on the component.
 
 ## data
 
-`data` property is used for send synchronous data.
+`data` property is used to send an array object to add to the feedback to the component.
 
-Just give him an `BrtData` array.
+The property takes a `BrtData` array as a value.
 
 ## dataFn
 
-`dataFn` property is used for send asynchronous data.
+`dataFn` property takes a function as a value. The function should return either an array of `BrtData` or a promise of an array of `BrtData`.
 
-Give him an `Promise` of `BrtData` array. Your promise will be called upon to submit the feedback.
 
 ### _BrtData_
 
-- Format :
+Used to pass additional data to the feedback (ie the application version number)
 
 ```ts
 interface BrtData {
@@ -328,7 +325,14 @@ interface BrtData {
 }
 ```
 
-- import if using Typescript :
+Attribute | Type | Description | Mandatory
+----- | ----- | ----- | -----
+**label** | string | a label for the data | **yes**
+type | string | the type of the data | no
+**value** | any | the value to send | **yes**
+id | string | an identifier for the data | no
+
+- Typescript import:
 
 ```javascript
 import { BrtData } from '@bruit/component';
@@ -338,15 +342,15 @@ import { BrtData } from '@bruit/component';
 
 ## event
 
-`bruit-io` emit `onError` event when an error occured.
+`bruit-io` emits `onError` events when an error occurs.
 
-An error is composed by a `code` and a `text`. it is of type `BrtError`.
+An error is of type `BrtError`, composed by a `code` and a `text`.
 
 [more information about errors](https://github.com/Moventes/bruit.io/blob/master/DOC_ERRORS.md)
 
 ### _BrtError_
 
-- Format :
+Format of the errors which may be sent by the component.
 
 ```ts
 interface BrtError {
@@ -355,7 +359,7 @@ interface BrtError {
 }
 ```
 
-- import if using Typescript :
+- Typescript import:
 
 ```javascript
 import { BrtError } from '@bruit/component';
@@ -390,16 +394,16 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 
 ## Angular
 
-Using `bruit-io` component within an Angular CLI project is a two-step process. We need to:
+Using `bruit-io` component within an Angular project is a two-step process. You need to:
 
 1. Include the `CUSTOM_ELEMENTS_SCHEMA` in the modules that use the components
 2. Call `defineCustomElements(window)` from `main.ts` (or some other appropriate place)
 
 ### Including the Custom Elements Schema
 
-Including the `CUSTOM_ELEMENTS_SCHEMA` in the module allows the use of the web components in the HTML markup without the compiler producing errors. Here is an example of adding it to `AppModule`:
+Including the `CUSTOM_ELEMENTS_SCHEMA` in the module allows the use of Web Components in the HTML files. Here is an example of adding it to `AppModule`:
 
-```tsx
+```ts
 import { BrowserModule } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -413,13 +417,13 @@ import { AppComponent } from './app.component';
 export class AppModule {}
 ```
 
-The `CUSTOM_ELEMENTS_SCHEMA` needs to be included in any module that uses custom elements.
+The `CUSTOM_ELEMENTS_SCHEMA` needs to be included in any module that uses bruit.io.
 
 ### Calling defineCustomElements
 
-Bruit component include a main function that is used to load the components in the collection. That function is called `defineCustomElements()` and it needs to be called once during the bootstrapping of your application. One convenient place to do this is in `main.ts` as such:
+bruit.io component includes a function is used to load itself in the application window object. That function is called `defineCustomElements()` and needs to be called once during the bootstrapping of your application. One convenient place to add it is in the `main.ts` file as follows:
 
-```tsx
+```ts
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -438,7 +442,7 @@ platformBrowserDynamic()
 defineCustomElements(window);
 ```
 
-### Using bruit-io in your angular component
+### Using bruit-io in an Angular component
 
 ```html
 <bruit-io [config]="bruitConfig" [data]="bruitData" [dataFn]="bruitDataPromise()" (onError)="handleBruitError($event)"></bruit-io>
@@ -459,7 +463,7 @@ public bruitData: Array<BrtData> = [
 
 constructor(private api : ApiService){}
 
-bruitDataPromise():Promise<Array<BrtData>>{
+bruitDataPromise(): Promise<Array<BrtData>>{
   return this.api.getUser().then( user =>
     [
       {
@@ -483,7 +487,7 @@ handleBruitError(error: BrtError){
 
 ## React
 
-With an application built using the `create-react-app` script the easiest way to include the `bruit-io` component is to call `defineCustomElements(window)` from the `index.js` file.
+With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineCustomElements(window)` method in the `index.js` file.
 
 ```tsx
 import React from 'react';
