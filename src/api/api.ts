@@ -8,8 +8,7 @@ export class Api {
       xhr.setRequestHeader('Content-type', 'application/json');
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 || (xhr.readyState === 2 && xhr.status === 200)) {
-          if (xhr.status === 200) {
-            //JSON.parse(xhr.responseText)
+          if (JSON.stringify(xhr.status).startsWith('2') || xhr.status === 304) {
             resolve();
           } else {
             const body = JSON.parse(xhr.responseText);

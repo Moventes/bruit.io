@@ -88,7 +88,7 @@ export class BruitIo {
 
   // dom element of bruit-io component
   @Element()
-  bruitElement: HTMLElement;
+  bruitElement: HTMLStencilElement;
   private _haveInnerElement: boolean;
 
   /**
@@ -172,7 +172,7 @@ export class BruitIo {
             };
           }
           console.error('BRUIT.IO error : ', err);
-          setTimeout(() => this.destroyFeedback(), 5000);
+          setTimeout(() => this.destroyFeedback(), 3000);
         }
       });
   }
@@ -225,7 +225,7 @@ export class BruitIo {
         e.preventDefault();
 
         //disable modal
-        this.disabledBrtField();
+        this.disabledBrtField(this.modalBrtField);
         button_close.hidden = true;
         // remove event listeners (for memory leaks and disable form)
         button_close.removeEventListener('click', _closeModalFn, false);
@@ -256,8 +256,8 @@ export class BruitIo {
   /**
    * set all form field to disabled
    */
-  disabledBrtField() {
-    this.modalBrtField
+  disabledBrtField(brtFields) {
+    brtFields
       .map(field => document.getElementById(field.id))
       .forEach(domField => {
         domField.setAttribute('disabled', 'true');
@@ -505,13 +505,21 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
         <input
           id={field.id}
           name={field.id}
-          onChange={e => (field.value = e.target['value'])}
-          value={field.value}
+          onChange={e => (field.value = e.target['checked'])}
           checked={field.value}
           required={!!field.required}
           type={field.type}
         />
-        <label htmlFor={field.id}>{field.label}</label>
+        <label htmlFor={field.id} />
+        <a
+          class="checkbox-label"
+          onClick={() => {
+            field.value = !field.value;
+            this.bruitElement.forceUpdate();
+          }}
+        >
+          {field.label}
+        </a>
       </div>
     );
   }
