@@ -531,6 +531,7 @@ new Vue({
 
 # Contributing
 
+Bruit.io web component is 100% free and open source.
 Contributing to bruit.io may involve writing TypeScript, TSX, Stencil, SCSS or Markdown depending on the component you are working on. We are looking for help in any of these areas!
 
 # Having troubles ?
