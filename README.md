@@ -1,6 +1,5 @@
 <p align="center">
-  <h1 align="center">Bruit.io</h1>
-  <p align="center">BRuit is a User Issues Tool</p>
+  <h1 align="center">bruit.io</h1>
 </p>
 <p align="center">
   <a href="https://www.npmjs.com/package/@bruit/component">
@@ -16,13 +15,13 @@
     <img alt="Built With Stencil" src="https://img.shields.io/badge/-Built%20With%20Stencil-16161d.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI%2BCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI%2BCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU%2BCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00MjQuNywzNzMuOWMwLDM3LjYtNTUuMSw2OC42LTkyLjcsNjguNkgxODAuNGMtMzcuOSwwLTkyLjctMzAuNy05Mi43LTY4LjZ2LTMuNmgzMzYuOVYzNzMuOXoiLz4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTQyNC43LDI5Mi4xSDE4MC40Yy0zNy42LDAtOTIuNy0zMS05Mi43LTY4LjZ2LTMuNkgzMzJjMzcuNiwwLDkyLjcsMzEsOTIuNyw2OC42VjI5Mi4xeiIvPgo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDI0LjcsMTQxLjdIODcuN3YtMy42YzAtMzcuNiw1NC44LTY4LjYsOTIuNy02OC42SDMzMmMzNy45LDAsOTIuNywzMC43LDkyLjcsNjguNlYxNDEuN3oiLz4KPC9zdmc%2BCg%3D%3D&colorA=16161d&style=flat-square">
   </a>
 </p>
-<p align="center"> Bruit.io is a WebComponent built on Stencil.js</p>
+<p align="center"> bruit.io is a Web Component built with Stencil.js</p>
 <p align="center">
 <a href="https://developer.mozilla.org/docs/Web/Web_Components"><img src="https://cdn.freebiesupply.com/logos/large/2x/web-components-logo-png-transparent.png" height="50px"/></a>
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" height="50px"/>
 </p>
 <p align="center">
-Available on all frameworks that support WebComponents such as
+Available on all frameworks that support Web Components such as
 </p>
 <p align="center">
     <img alt="Angular" src="https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg" height="40px">
@@ -39,9 +38,9 @@ Available on all frameworks that support WebComponents such as
 
 ---
 
-Bruit.io is a tool to get your users feedbacks, designed to be as simple to use as possible, following the Web Component standards. Users' feedbacks are sent directly to your favorite project management tools 🎉 .
+bruit.io is a tool to get your users feedbacks, designed to be as simple to use as possible, following the Web Components standards. Users' feedbacks are sent directly to your favorite project management tools 🎉 .
 
-Bruit.io is built around an open source Web Component and a backend reciving the users feedback. 
+bruit.io is built around an open source Web Component and a backend reciving the users feedback. 
 
 And we do no data retention at all about those feedbacks 👏
 
@@ -61,23 +60,21 @@ And we do no data retention at all about those feedbacks 👏
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**[BrtData](#BrtData)**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**[BrtError](#BrtError)**<br>
 **[Add data in feedbacks](#add-data-in-feedback)**<br>
 **[Handle errors](#handle-errors)**<br>
 **[Frameworks integration](#Framework-integrations)**<br>
 **[Contributing](#Contributing)**<br>
 **[Having troubles?](#Having-troubles-?)**<br>
 
-# Install
+# Installation
 
-In command line
+bruit.io can be installed either with a command line
 
 ```bash
 npm install @bruit/component --save
 ```
 
-Or by directly modifying your index.html file
+Or by directly modifying your `index.html` file
 
 ```html
 <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
@@ -87,20 +84,22 @@ Or by directly modifying your index.html file
 
 # Usage
 
-Simply add the following tag wherever you want in your project
+Simply add this tag wherever you want in your project:
 
 ```html
-<bruit-io> element to click </bruit-io>
+<bruit-io> 
+  ... optional element to click ...
+</bruit-io>
 ```
 
-with properties :
+These properties are available on the component:
 
-- [_config_](#configuration) (required)
+- [_config_](#configuration) (**required**)
 - [_data_](#Add-data-in-feedback) (optional)
 - [_dataFn_](#Add-data-in-feedback) (optional)
-- [_onError_](#Handle-errors) (event) (optional)
+- [_onError_](#Handle-errors) (optional)
 
-**integration code examples :**
+Integration code examples are available for these platforms:
 
 <p align="center">
   <a href="#javascript">
@@ -147,7 +146,7 @@ interface BrtConfig {
 
 | Attribute          | Type                          | Description                                                                  | Mandatory | Default value                   |
 | ------------------ | ----------------------------- | ---------------------------------------------------------------------------- | -------- | ------------------------------- |
-| **apiKey**         | string                        | your personal api key [(create an api key)](https://bruit.io/)               | **yes**      | -                               |
+| **apiKey**         | string                        | your personal api key [(create an api key)](https://bruit.io/get-started)               | **yes**      | -                               |
 | **form**           | array<[BrtField](#brtfield)>  | inputs list for the generated form                                                 | **yes**     | -                               |
 | labels             | [BrtLabels](#brtlabels)       | describes the labels of the modal (title / button / ...)                                       | no       | [see](#brtlabels)               |
 | logLevels          | [BrtLogLevels](#BrtLogLevels) | Used to filter the logs to send by their level (debug, warn, error, etc)                                                | no       | [see](#BrtLogLevels)            |
@@ -156,7 +155,7 @@ interface BrtConfig {
 | closeModalOnSubmit | boolean                       | true to have modal closed automatically on submit (feedback is sent in background) | no       | false                           |
 | apiUrl             | string                        | Allows to use some third party backend for feedback processing                               | no       | <https://api.bruit.io/feedback> |
 
-- Typescript import :
+Typescript import :
 
 ```javascript
 import { BrtConfig } from '@bruit/component';
@@ -190,7 +189,7 @@ There are special values for the id attribute:
   - `agreement`: sets the field to use to check whether user agrees to send his personal data
   - `title`: sets the field used to display the title of feedback
 
-- Typescript import:
+Typescript import:
 
 ```javascript
 import { BrtField } from '@bruit/component';
@@ -214,7 +213,7 @@ title | Defines the title of the modal | bruit.io
 introduction | Defines the description text | send a feedback
 button | Defines the text of the submit button | send
 
-- Typescript import:
+Typescript import:
 
 ```javascript
 import { BrtLabels } from '@bruit/component';
@@ -222,7 +221,7 @@ import { BrtLabels } from '@bruit/component';
 
 ### _BrtColors_
 
-🎨 If you feel like an artist, you may use BrtColors to change the theme of the modal.
+If you feel like an artist 🎨 , you may use BrtColors to change the theme of the modal.
 
 This gives the possiblity to change the header, body, background, errors and focus colors.
 
@@ -246,7 +245,7 @@ background | the color used to dim what's behind the modal | #444444ee
 errors | the text color to use for errors  | #c31313
 focus | the color to use on focused field | #1f5a6
 
-- Typescript import:
+Typescript import:
 
 ```javascript
 import { BrtColors } from '@bruit/component';
@@ -256,7 +255,7 @@ import { BrtColors } from '@bruit/component';
 
 By default, all log levels (log, warn, errors, ...) are sent in the feedback. `BrtLogLevels` allows to disable specific ones.
 
-To disable a type, just set with the related type to false in the logLevels section:
+To disable a type, just set the related type to false in the logLevels section:
 
 ```json
 {
@@ -282,42 +281,39 @@ interface BrtLogLevels {
 }
 ```
 
-- special types:
+bruit.io adds special types of logs:
 
   - `network` type is for your fetch and xmlHttpRequest calls.
   - `click` type is for mouse click event.
-  - `url` type log all url changing
+  - `url` type logs all url changing
 
 
-- Typescript import:
+Typescript import:
 
 ```javascript
 import { BrtLogLevels } from '@bruit/component';
 ```
 
-# Automatically add data in the feedback
+# Add data to the feedback
 
 It is possible to automatically had technical data in the feedback, for example the version number of your application, the identifier of the user sending the feedback, etc.
 
-If you have data that can be retrieved synchronously, you can use `data`.
-
-For asynchronous data, you can use `dataFn`.
+This is done by using either the `data` or `dataFn` property on the component.
 
 ## data
 
-`data` property is used for send synchronous data.
+`data` property is used to send an array of objects to add to the feedback to the component.
 
-Just give him an `BrtData` array.
+The property takes a `BrtData` array as a value.
 
 ## dataFn
 
-`dataFn` property is used for send asynchronous data.
+`dataFn` property takes a function as a value. The function should return either an array of `BrtData` or a promise of an array of `BrtData`.
 
-Give him an `Promise` of `BrtData` array. Your promise will be called upon to submit the feedback.
 
 ### _BrtData_
 
-- Format :
+Used to pass additional data to the feedback (ie the application version number)
 
 ```ts
 interface BrtData {
@@ -328,7 +324,14 @@ interface BrtData {
 }
 ```
 
-- import if using Typescript :
+Attribute | Type | Description | Mandatory
+----- | ----- | ----- | -----
+**label** | string | a label for the data | **yes**
+type | string | the type of the data | no
+**value** | any | the value to send | **yes**
+id | string | an identifier for the data | no
+
+Typescript import:
 
 ```javascript
 import { BrtData } from '@bruit/component';
@@ -338,15 +341,15 @@ import { BrtData } from '@bruit/component';
 
 ## event
 
-`bruit-io` emit `onError` event when an error occured.
+`bruit-io` emits `onError` events when an error occurs.
 
-An error is composed by a `code` and a `text`. it is of type `BrtError`.
+An error is of type `BrtError`, composed by a `code` and a `text`.
 
 [more information about errors](https://github.com/Moventes/bruit.io/blob/master/DOC_ERRORS.md)
 
 ### _BrtError_
 
-- Format :
+Format of the errors which may be sent by the component.
 
 ```ts
 interface BrtError {
@@ -355,7 +358,7 @@ interface BrtError {
 }
 ```
 
-- import if using Typescript :
+Typescript import:
 
 ```javascript
 import { BrtError } from '@bruit/component';
@@ -365,13 +368,13 @@ import { BrtError } from '@bruit/component';
 
 ## JavaScript
 
-Integrating `bruit-io` component to a project without a JavaScript framework is straight forward. If you're using a simple HTML page, you can add bruit component via a script tag.
+Integrating `bruit-io` component to a project without a JavaScript framework is straight forward. If you're using a simple HTML page, you can add bruit.io component via a script tag.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://unpkg.com/@bruit/component/dist/test-components.js"></script>
+  <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
 </head>
 <body>
   <bruit-io></bruit-io>
@@ -390,16 +393,16 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 
 ## Angular
 
-Using `bruit-io` component within an Angular CLI project is a two-step process. We need to:
+Using `bruit-io` component within an Angular project is a two-step process. You need to:
 
 1. Include the `CUSTOM_ELEMENTS_SCHEMA` in the modules that use the components
 2. Call `defineCustomElements(window)` from `main.ts` (or some other appropriate place)
 
 ### Including the Custom Elements Schema
 
-Including the `CUSTOM_ELEMENTS_SCHEMA` in the module allows the use of the web components in the HTML markup without the compiler producing errors. Here is an example of adding it to `AppModule`:
+Including the `CUSTOM_ELEMENTS_SCHEMA` in the module allows the use of Web Components in the HTML files. Here is an example of adding it to `AppModule`:
 
-```tsx
+```ts
 import { BrowserModule } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -413,13 +416,13 @@ import { AppComponent } from './app.component';
 export class AppModule {}
 ```
 
-The `CUSTOM_ELEMENTS_SCHEMA` needs to be included in any module that uses custom elements.
+The `CUSTOM_ELEMENTS_SCHEMA` needs to be included in any module that uses bruit.io.
 
 ### Calling defineCustomElements
 
-Bruit component include a main function that is used to load the components in the collection. That function is called `defineCustomElements()` and it needs to be called once during the bootstrapping of your application. One convenient place to do this is in `main.ts` as such:
+bruit.io component includes a function used to load itself in the application window object. That function is called `defineCustomElements()` and needs to be executed once during the bootstrapping of your application. One convenient place to add it is in the `main.ts` file as follows:
 
-```tsx
+```ts
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -438,7 +441,7 @@ platformBrowserDynamic()
 defineCustomElements(window);
 ```
 
-### Using bruit-io in your angular component
+### Using bruit.io in an Angular component
 
 ```html
 <bruit-io [config]="bruitConfig" [data]="bruitData" [dataFn]="bruitDataPromise()" (onError)="handleBruitError($event)"></bruit-io>
@@ -459,7 +462,7 @@ public bruitData: Array<BrtData> = [
 
 constructor(private api : ApiService){}
 
-bruitDataPromise():Promise<Array<BrtData>>{
+bruitDataPromise(): Promise<Array<BrtData>>{
   return this.api.getUser().then( user =>
     [
       {
@@ -483,7 +486,7 @@ handleBruitError(error: BrtError){
 
 ## React
 
-With an application built using the `create-react-app` script the easiest way to include the `bruit-io` component is to call `defineCustomElements(window)` from the `index.js` file.
+With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineCustomElements(window)` method in the `index.js` file.
 
 ```tsx
 import React from 'react';
@@ -505,7 +508,7 @@ defineCustomElements(window);
 
 ## Vue
 
-In order to use the `bruit-io` component within the Vue app, the application must be modified to define the custom elements and to inform the Vue compiler which elements to ignore during compilation. This can all be done within the `main.js` file. For example:
+In order to use the `bruit-io` Web Component inside of a Vue application, it should be modified to define the custom elements and to inform the Vue compiler which elements to ignore during compilation. This can all be done within the `main.js` file as follows:
 
 ```tsx
 import Vue from 'vue';
@@ -526,9 +529,9 @@ new Vue({
 
 # Contributing
 
-Contributing to Bruit.io may involve writing TypeScript, TSX, Stencil, SCSS or Markdown depending on the component you are working on. We are looking for help in any of these areas!
+Contributing to bruit.io may involve writing TypeScript, TSX, Stencil, SCSS or Markdown depending on the component you are working on. We are looking for help in any of these areas!
 
 # Having troubles ?
 
-- [issues Github](https://github.com/Moventes/bruit.io/issues)
+- [Github issues](https://github.com/Moventes/bruit.io/issues)
 - [StackOverflow](https://stackoverflow.com/questions/tagged/bruit.io)
