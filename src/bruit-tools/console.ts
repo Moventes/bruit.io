@@ -4,7 +4,26 @@ export class ConsoleTool {
   private static BUFFER_SIZE = 100;
   private static logArray = [];
 
+  public static LOG_ENABLED = true;
+
   static init(config: BruitConfig) {
+    if (
+      !(
+        !!(<any>window).cordova ||
+        (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0) ||
+        (config.logLevels.click ||
+          config.logLevels.debug ||
+          config.logLevels.error ||
+          config.logLevels.info ||
+          config.logLevels.log ||
+          config.logLevels.network ||
+          config.logLevels.url ||
+          config.logLevels.warn)
+      )
+    ) {
+      ConsoleTool.LOG_ENABLED = false;
+      console.info('BRUIT.IO - logs reports are disabled in localhost mode');
+    }
     ConsoleTool.BUFFER_SIZE = config.maxLogLines;
     ConsoleTool.configure(config.logLevels);
   }
@@ -91,70 +110,63 @@ export class ConsoleTool {
       };
     }
 
-    if (!(<any>console).overloaded) {
+    if (this.LOG_ENABLED && !(<any>console).overloaded) {
       (<any>console).overloaded = true;
 
       (<any>console).logArray = function() {
         return JSON.parse(JSON.stringify(ConsoleTool.logArray));
       };
 
-      if (
-        !!(<any>window).cordova ||
-        (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0)
-      ) {
-        if (levels.click) {
-          (<any>console).click = function() {
-            return ConsoleTool.handleLogMessage('click', arguments);
-          };
-        }
-        if (levels.url) {
-          (<any>console).url = function() {
-            return ConsoleTool.handleLogMessage('url', arguments);
-          };
-        }
+      if (levels.click) {
+        (<any>console).click = function() {
+          return ConsoleTool.handleLogMessage('click', arguments);
+        };
+      }
+      if (levels.url) {
+        (<any>console).url = function() {
+          return ConsoleTool.handleLogMessage('url', arguments);
+        };
+      }
 
-        if (levels.network) {
-          (<any>console).network = function() {
-            return ConsoleTool.handleLogMessage('network', arguments);
-          };
-        }
-        if (levels.log) {
-          const _log = console.log;
-          console.log = function() {
-            return _log.apply(console, ConsoleTool.handleLogMessage('log', arguments));
-          };
-        }
-        if (levels.debug) {
-          const _debug = console.debug;
-          console.debug = function() {
-            return _debug.apply(console, ConsoleTool.handleLogMessage('debug', arguments));
-          };
-        }
-        if (levels.error) {
-          const _error = console.error;
-          console.error = function() {
-            const args = ConsoleTool.handleLogMessage('error', arguments);
-            args.push(new Error().stack);
-            return _error.apply(console, args);
-          };
-        }
-        if (levels.warn) {
-          const _warn = console.warn;
-          console.warn = function() {
-            return _warn.apply(console, ConsoleTool.handleLogMessage('warn', arguments));
-          };
-        }
-        if (levels.info) {
-          const _info = console.info;
-          console.info = function() {
-            return _info.apply(console, ConsoleTool.handleLogMessage('info', arguments));
-          };
-        }
-      } else {
-        console.info('BRUIT.IO - logs reports are disabled in localhost mode');
+      if (levels.network) {
+        (<any>console).network = function() {
+          return ConsoleTool.handleLogMessage('network', arguments);
+        };
+      }
+      if (levels.log) {
+        const _log = console.log;
+        console.log = function() {
+          return _log.apply(console, ConsoleTool.handleLogMessage('log', arguments));
+        };
+      }
+      if (levels.debug) {
+        const _debug = console.debug;
+        console.debug = function() {
+          return _debug.apply(console, ConsoleTool.handleLogMessage('debug', arguments));
+        };
+      }
+      if (levels.error) {
+        const _error = console.error;
+        console.error = function() {
+          const args = ConsoleTool.handleLogMessage('error', arguments);
+          args.push(new Error().stack);
+          return _error.apply(console, args);
+        };
+      }
+      if (levels.warn) {
+        const _warn = console.warn;
+        console.warn = function() {
+          return _warn.apply(console, ConsoleTool.handleLogMessage('warn', arguments));
+        };
+      }
+      if (levels.info) {
+        const _info = console.info;
+        console.info = function() {
+          return _info.apply(console, ConsoleTool.handleLogMessage('info', arguments));
+        };
       }
     } else {
-      console.info('BRUIT.IO - console already overloaded');
+      console.info('BRUIT.IO - console already overloaded or disabled');
     }
   }
 

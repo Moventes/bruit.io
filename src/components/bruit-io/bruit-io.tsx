@@ -101,14 +101,16 @@ export class BruitIo {
     this.initConfig(this.config);
 
     ConsoleTool.init(this._config);
-    if (this._config.logLevels.network) {
-      HttpTool.init();
-    }
-    if (this._config.logLevels.click) {
-      ClickTool.init();
-    }
-    if (this._config.logLevels.url) {
-      UrlTool.init();
+    if (ConsoleTool.LOG_ENABLED) {
+      if (this._config.logLevels.network) {
+        HttpTool.init();
+      }
+      if (this._config.logLevels.click) {
+        ClickTool.init();
+      }
+      if (this._config.logLevels.url) {
+        UrlTool.init();
+      }
     }
 
     this._haveInnerElement = !!this.bruitElement.innerHTML;
