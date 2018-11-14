@@ -1,3 +1,5 @@
+import { BrtClickLogArg } from '@bruit/types';
+
 export class ClickTool {
   /**
    * @param path array of element (from click event)
@@ -6,7 +8,7 @@ export class ClickTool {
    */
   static init() {
     window.addEventListener('click', event => {
-      this.logClick({
+      this.logClick(<BrtClickLogArg>{
         url: window.location.href,
         xpath: this.getXPath(event['path']),
         dom: event.srcElement.outerHTML
