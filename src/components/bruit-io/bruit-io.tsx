@@ -29,7 +29,6 @@ export class BruitIo {
     let configError = BruitConfig.haveError(newConfig);
     if (!configError) {
       this._config = new BruitConfig(newConfig);
-      console.log(this._config);
     } else {
       this.sendError.emit(configError);
       console.error(configError);
@@ -96,8 +95,8 @@ export class BruitIo {
    * fired on component loading before render()
    */
   componentWillLoad() {
-    console.log('bruit started ...');
-    //first init
+    // console.info('[BRUIT.IO] - bruit started ...');
+    // first init
     this.initConfig(this.config);
 
     ConsoleTool.init(this._config);
