@@ -82,7 +82,7 @@ export class BruitConfig implements BrtConfig {
         text: 'config is missing'
       };
     }
-    if (!config.apiKey) {
+    if (!config.apiKey && (!config.apiUrl || config.apiUrl === ComponentConfig.BRUIT_IO_API_URL)) {
       return {
         code: 101,
         text: 'apiKey is missing'

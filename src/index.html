@@ -1,79 +1,82 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>serv:BRUIT</title>
+    <script src="/build/bruit.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-  <title>serv:BRUIT</title>
-  <script src="/build/bruit.js"></script>
+  <body>
+    <style>
+      body * {
+        font: italic bold 20px/30px Georgia, serif;
+      }
+    </style>
 
-</head>
+    <bruit-io></bruit-io>
 
-<body>
-  <style>
-    body * {
-      font: italic bold 20px/30px Georgia, serif;
-    }
+    <div>
+      <ul>
+        <li>t1</li>
+        <li>12</li>
+        <li id="first">
+          <ul>
+            <li>try me !</li>
+            <li id="second">me to!</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 
-  </style>
+    <script>
+      var bruitCmp = document.querySelector('bruit-io');
 
-  <bruit-io></bruit-io>
+      bruitCmp.config = {
+        apiKey: 'JlcerWZLcVw0mxWkRaYY',
+        form: [
+          {
+            label: 'email',
+            type: 'email',
+            required: true
+          },
+          {
+            label: 'firstname',
+            type: 'text'
+          },
+          {
+            label: 'lastname',
+            type: 'text'
+          },
+          {
+            label: 'message',
+            type: 'textarea',
+            required: true
+          },
+          {
+            label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
+            type: 'checkbox',
+            id: 'agreement',
+            value: true
+          }
+        ]
+      };
 
-
-  <div>
-    <ul>
-      <li>t1</li>
-      <li>12</li>
-      <li id="iden">r1</li>
-    </ul>
-  </div>
-
-  <script>
-    var bruitCmp = document.querySelector('bruit-io');
-
-    bruitCmp.config = {
-      apiKey: 'JlcerWZLcVw0mxWkRaYY',
-      form: [{
-          label: 'email',
-          type: 'email',
-          required: true
-        },
+      bruitCmp.data = [
         {
-          label: 'firstname',
-          type: 'text'
-        },
-        {
-          label: 'lastname',
-          type: 'text',
-        },
-        {
-          label: 'message',
-          type: 'textarea',
-          required: true,
-        },
-        {
-          label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
-          type: 'checkbox',
-          id: 'agreement',
-          value: true
+          label: 'verion',
+          value: '0.1.54'
         }
-      ]
-    };
+      ];
 
-    bruitCmp.data = [{
-      label: "verion",
-      value: "0.1.54"
-    }];
-
-    bruitCmp.dataFn = new Promise(resolve => {
-      resolve([{
-        label: "user",
-        data: "lamstutz"
-      }])
-    })
-
-  </script>
-
-</body>
-
+      bruitCmp.dataFn = new Promise(resolve => {
+        resolve([
+          {
+            label: 'user',
+            data: 'lamstutz'
+          }
+        ]);
+      });
+    </script>
+  </body>
 </html>

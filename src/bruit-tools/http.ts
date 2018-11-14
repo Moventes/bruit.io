@@ -1,3 +1,5 @@
+import { BrtLogHttp, BrtHttpRequest, BrtLogHttpType } from '@bruit/types';
+
 export class HttpTool {
   static init() {
     HttpTool.overrideXMLHttpRequest();
@@ -13,7 +15,7 @@ export class HttpTool {
 
         this._oldonreadystatechange = this.onreadystatechange;
         this.onreadystatechange = function(e) {
-          if (this.readyState === 2 && this.status !== 200) {
+          if (this.readyState === 2 && !JSON.stringify(this.status).startsWith('2')) {
             HttpTool.logResponseHeaders(method, e.target.responseURL, e.target.status);
           }
           if (this.readyState === 4) {
@@ -75,23 +77,23 @@ export class HttpTool {
     })(window.fetch);
   }
 
-  private static logCall(method: string, url: string, header?: any, body?: any) {
-    const requestLog = {
-      type: 'request',
+  private static logCall(method: string, url: string, headers?: any, body?: any) {
+    const requestLog: BrtLogHttp = {
+      type: BrtLogHttpType.REQUEST,
       timestamp: new Date(),
-      method,
+      method: BrtHttpRequest[method.toUpperCase()],
       url,
       body,
-      header
+      headers
     };
     HttpTool.logHttp(requestLog);
   }
 
   private static logResponse(method: string, url: string, status: any, response?: any, timestamp?: Date) {
-    const requestLog = {
-      type: 'response',
+    const requestLog: BrtLogHttp = {
+      type: BrtLogHttpType.RESPONSE,
       timestamp: timestamp || new Date(),
-      method,
+      method: BrtHttpRequest[method.toUpperCase()],
       url,
       status,
       response
@@ -100,10 +102,10 @@ export class HttpTool {
   }
 
   private static logResponseHeaders(method: string, url: string, status: any, timestamp?: Date) {
-    const requestLog = {
-      type: 'response-header',
+    const requestLog: BrtLogHttp = {
+      type: BrtLogHttpType.RESPONSE_HEADER,
       timestamp: timestamp || new Date(),
-      method,
+      method: BrtHttpRequest[method.toUpperCase()],
       url,
       status
     };

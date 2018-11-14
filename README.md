@@ -40,7 +40,7 @@ Available on all frameworks that support Web Components such as
 
 bruit.io is a tool to get your users feedbacks, designed to be as simple to use as possible, following the Web Components standards. Users' feedbacks are sent directly to your favorite project management tools 🎉 .
 
-bruit.io is built around an open source Web Component and a backend reciving the users feedback. 
+bruit.io is built around an open source Web Component and a backend reciving the users feedback.
 
 And we do no data retention at all about those feedbacks 👏
 
@@ -87,9 +87,7 @@ Or by directly modifying your `index.html` file
 Simply add this tag wherever you want in your project:
 
 ```html
-<bruit-io> 
-  ... optional element to click ...
-</bruit-io>
+<bruit-io> ... optional element to click ... </bruit-io>
 ```
 
 These properties are available on the component:
@@ -133,7 +131,7 @@ Describes the options for the `bruit-io` component
 
 ```ts
 interface BrtConfig {
-  apiKey: string;
+  apiKey?: string;
   form: Array<BrtField>;
   labels?: BrtLabels;
   logLevels?: BrtLogLevels;
@@ -144,16 +142,16 @@ interface BrtConfig {
 }
 ```
 
-| Attribute          | Type                          | Description                                                                  | Mandatory | Default value                   |
-| ------------------ | ----------------------------- | ---------------------------------------------------------------------------- | -------- | ------------------------------- |
-| **apiKey**         | string                        | your personal api key [(create an api key)](https://bruit.io/get-started)               | **yes**      | -                               |
-| **form**           | array<[BrtField](#brtfield)>  | inputs list for the generated form                                                 | **yes**     | -                               |
-| labels             | [BrtLabels](#brtlabels)       | describes the labels of the modal (title / button / ...)                                       | no       | [see](#brtlabels)               |
-| logLevels          | [BrtLogLevels](#BrtLogLevels) | Used to filter the logs to send by their level (debug, warn, error, etc)                                                | no       | [see](#BrtLogLevels)            |
-| maxLogLines        | number                        | Defines the number of log lines to send in the feedback                                                       | no       | 100                             |
-| colors             | [BrtColors](#BrtColors)       | Allows to pick your colors in the modal theming                                                                | no       | [see](#BrtColors)               |
-| closeModalOnSubmit | boolean                       | true to have modal closed automatically on submit (feedback is sent in background) | no       | false                           |
-| apiUrl             | string                        | Allows to use some third party backend for feedback processing                               | no       | <https://api.bruit.io/feedback> |
+| Attribute          | Type                          | Description                                                                        | Mandatory | Default value                   |
+| ------------------ | ----------------------------- | ---------------------------------------------------------------------------------- | --------- | ------------------------------- |
+| apiKey             | string                        | your personal api key [(create an api key)](https://bruit.io/get-started)          | no        | -                               |
+| **form**           | array<[BrtField](#brtfield)>  | inputs list for the generated form                                                 | **yes**   | -                               |
+| labels             | [BrtLabels](#brtlabels)       | describes the labels of the modal (title / button / ...)                           | no        | [see](#brtlabels)               |
+| logLevels          | [BrtLogLevels](#BrtLogLevels) | Used to filter the logs to send by their level (debug, warn, error, etc)           | no        | [see](#BrtLogLevels)            |
+| maxLogLines        | number                        | Defines the number of log lines to send in the feedback                            | no        | 100                             |
+| colors             | [BrtColors](#BrtColors)       | Allows to pick your colors in the modal theming                                    | no        | [see](#BrtColors)               |
+| closeModalOnSubmit | boolean                       | true to have modal closed automatically on submit (feedback is sent in background) | no        | false                           |
+| apiUrl             | string                        | Allows to use some third party backend for feedback processing                     | no        | <https://api.bruit.io/feedback> |
 
 Typescript import :
 
@@ -174,20 +172,21 @@ interface BrtField {
   value?: any;
 }
 ```
-Attribute | Type | Description | Mandatory
-| ------------------ | ----------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------
-id | string | Unique identifier for the field | no | 
-**label** | string | Placeholder / label for the field | **yes**
-**type** | BrtFieldType | The input type of the field | **yes** 
-required | boolean | true to make the field required to send the feedback | no | 
-value | any | The value typed by the user | no
+
+| Attribute | Type         | Description                                          | Mandatory |
+| --------- | ------------ | ---------------------------------------------------- | --------- |
+| id        | string       | Unique identifier for the field                      | no        |
+| **label** | string       | Placeholder / label for the field                    | **yes**   |
+| **type**  | BrtFieldType | The input type of the field                          | **yes**   |
+| required  | boolean      | true to make the field required to send the feedback | no        |
+| value     | any          | The value typed by the user                          | no        |
 
 `BrtConfig.form` must contain one `BrtField` with `id="agreement"` and `type="checkbox"`, used to check whether personal data should be sent with the feedback.
 
 There are special values for the id attribute:
 
-  - `agreement`: sets the field to use to check whether user agrees to send his personal data
-  - `title`: sets the field used to display the title of feedback
+- `agreement`: sets the field to use to check whether user agrees to send his personal data
+- `title`: sets the field used to display the title of feedback
 
 Typescript import:
 
@@ -207,11 +206,11 @@ interface BrtLabels {
 }
 ```
 
-Attribute | Description | Default value
------------------- | ------------------ | ------------------ |
-title | Defines the title of the modal | bruit.io
-introduction | Defines the description text | send a feedback
-button | Defines the text of the submit button | send
+| Attribute    | Description                           | Default value   |
+| ------------ | ------------------------------------- | --------------- |
+| title        | Defines the title of the modal        | bruit.io        |
+| introduction | Defines the description text          | send a feedback |
+| button       | Defines the text of the submit button | send            |
 
 Typescript import:
 
@@ -237,13 +236,13 @@ interface BrtColors {
 }
 ```
 
-Attribute | Description | Default value
------------------- | ------------------ | ------------------ |
-header | the modal's header color | #2D8297
-body | the color for the background of the modal | #eee
-background | the color used to dim what's behind the modal | #444444ee
-errors | the text color to use for errors  | #c31313
-focus | the color to use on focused field | #1f5a6
+| Attribute  | Description                                   | Default value |
+| ---------- | --------------------------------------------- | ------------- |
+| header     | the modal's header color                      | #2D8297       |
+| body       | the color for the background of the modal     | #eee          |
+| background | the color used to dim what's behind the modal | #444444ee     |
+| errors     | the text color to use for errors              | #c31313       |
+| focus      | the color to use on focused field             | #1f5a6        |
 
 Typescript import:
 
@@ -283,10 +282,9 @@ interface BrtLogLevels {
 
 bruit.io adds special types of logs:
 
-  - `network` type is for your fetch and xmlHttpRequest calls.
-  - `click` type is for mouse click event.
-  - `url` type logs all url changing
-
+- `network` type is for your fetch and xmlHttpRequest calls.
+- `click` type is for mouse click event.
+- `url` type logs all url changing
 
 Typescript import:
 
@@ -310,7 +308,6 @@ The property takes a `BrtData` array as a value.
 
 `dataFn` property takes a function as a value. The function should return either an array of `BrtData` or a promise of an array of `BrtData`.
 
-
 ### _BrtData_
 
 Used to pass additional data to the feedback (ie the application version number)
@@ -324,12 +321,12 @@ interface BrtData {
 }
 ```
 
-Attribute | Type | Description | Mandatory
------ | ----- | ----- | -----
-**label** | string | a label for the data | **yes**
-type | string | the type of the data | no
-**value** | any | the value to send | **yes**
-id | string | an identifier for the data | no
+| Attribute | Type   | Description                | Mandatory |
+| --------- | ------ | -------------------------- | --------- |
+| **label** | string | a label for the data       | **yes**   |
+| type      | string | the type of the data       | no        |
+| **value** | any    | the value to send          | **yes**   |
+| id        | string | an identifier for the data | no        |
 
 Typescript import:
 
@@ -373,19 +370,19 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
-</head>
-<body>
-  <bruit-io></bruit-io>
-  <script>
-    var bruitCmp = document.querySelector('bruit-io');
-    bruitCmp.config = {
-      apiKey: 'xxxxxxxxxxxxxxxxx',
-      form: [...]
-    };
-  </script>
-</body>
+  <head>
+    <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
+  </head>
+  <body>
+    <bruit-io></bruit-io>
+    <script>
+      var bruitCmp = document.querySelector('bruit-io');
+      bruitCmp.config = {
+        apiKey: 'xxxxxxxxxxxxxxxxx',
+        form: [...]
+      };
+    </script>
+  </body>
 </html>
 ```
 
@@ -444,7 +441,12 @@ defineCustomElements(window);
 ### Using bruit.io in an Angular component
 
 ```html
-<bruit-io [config]="bruitConfig" [data]="bruitData" [dataFn]="bruitDataPromise()" (onError)="handleBruitError($event)"></bruit-io>
+<bruit-io
+  [config]="bruitConfig"
+  [data]="bruitData"
+  [dataFn]="bruitDataPromise()"
+  (onError)="handleBruitError($event)"
+></bruit-io>
 ```
 
 ```ts

@@ -31,13 +31,14 @@ export class ClickTool {
       path.pop(); // remove "document"
       path.pop(); //remove "html"
 
-      return (
-        '//' +
-        path
-          .map(ClickTool.getElementXpath)
-          .reverse()
-          .join('/')
-      );
+      const xpathElements = [];
+
+      path.some(element => {
+        xpathElements.push(ClickTool.getElementXpath(element));
+        return !!element.id;
+      });
+
+      return '//' + xpathElements.reverse().join('/');
     } else {
       return '//';
     }
