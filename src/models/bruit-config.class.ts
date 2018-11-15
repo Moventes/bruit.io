@@ -6,7 +6,7 @@ export class BruitConfig implements BrtConfig {
   apiKey: string;
   labels = {
     title: 'bruit.io',
-    introduction: 'send a feedback',
+    introduction: '',
     button: 'send'
   };
   logLevels = {

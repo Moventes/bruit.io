@@ -369,11 +369,15 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
   }
 
   modalSubHeader() {
-    return (
-      <div class="sub-head">
-        <p>{this._config.labels.introduction}</p>
-      </div>
-    );
+    if (this._config.labels.introduction) {
+      return (
+        <div class="sub-head">
+          <p>{this._config.labels.introduction}</p>
+        </div>
+      );
+    } else {
+      return;
+    }
   }
   modalContent() {
     return (
