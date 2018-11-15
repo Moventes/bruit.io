@@ -1,4 +1,6 @@
-import { BrtLogHttp, BrtHttpRequest, BrtLogHttpType } from '@bruit/types';
+import { BrtLogHttp } from '@bruit/types';
+import { BrtHttpRequest } from '@bruit/types/dist/enums/brt-http-request';
+import { BrtLogHttpType } from '@bruit/types/dist/enums/brt-log-http-type';
 
 export class HttpTool {
   static init() {
