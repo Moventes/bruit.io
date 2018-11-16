@@ -21,7 +21,7 @@ import {
 export namespace Components {
 
   interface BruitIo {
-    'config': BrtConfig;
+    'config': BrtConfig | string;
     /**
     * field array to add in feedback
     */
@@ -32,7 +32,7 @@ export namespace Components {
     'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
   }
   interface BruitIoAttributes extends StencilHTMLAttributes {
-    'config'?: BrtConfig;
+    'config'?: BrtConfig | string;
     /**
     * field array to add in feedback
     */

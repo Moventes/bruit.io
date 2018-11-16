@@ -18,17 +18,33 @@ export class BruitIo {
 
   // configuration
   @Prop()
-  config: BrtConfig;
+  config: BrtConfig | string;
 
   /**
    * test validity of config and assign to internal config
    * @param newConfig the new value of config
    */
   @Watch('config')
-  initConfig(newConfig: BrtConfig) {
-    let configError = BruitConfig.haveError(newConfig);
+  initConfig(newConfig: BrtConfig | string) {
+    let _newConfig: BrtConfig;
+    let configError: BrtError | void;
+    if (typeof newConfig === 'string') {
+      try {
+        _newConfig = JSON.parse(newConfig) as BrtConfig;
+      } catch {
+        configError = {
+          code: 100,
+          text: 'bad config format (must be a json or stringified json)'
+        };
+      }
+    } else {
+      _newConfig = newConfig as BrtConfig;
+    }
     if (!configError) {
-      this._config = new BruitConfig(newConfig);
+      configError = BruitConfig.haveError(_newConfig);
+    }
+    if (!configError) {
+      this._config = new BruitConfig(_newConfig);
     } else {
       this.sendError.emit(configError);
       console.error(configError);
@@ -98,17 +114,18 @@ export class BruitIo {
     // console.info('[BRUIT.IO] - bruit started ...');
     // first init
     this.initConfig(this.config);
-
-    ConsoleTool.init(this._config);
-    if (ConsoleTool.LOG_ENABLED) {
-      if (this._config.logLevels.network) {
-        HttpTool.init();
-      }
-      if (this._config.logLevels.click) {
-        ClickTool.init();
-      }
-      if (this._config.logLevels.url) {
-        UrlTool.init();
+    if (this._config) {
+      ConsoleTool.init(this._config);
+      if (ConsoleTool.LOG_ENABLED) {
+        if (this._config.logLevels.network) {
+          HttpTool.init();
+        }
+        if (this._config.logLevels.click) {
+          ClickTool.init();
+        }
+        if (this._config.logLevels.url) {
+          UrlTool.init();
+        }
       }
     }
 
@@ -125,7 +142,7 @@ export class BruitIo {
       this.destroyFeedback();
     }
     //create a new feedback
-    const feedback = new Feedback(this.config.apiKey);
+    const feedback = new Feedback(this._config.apiKey);
     // init feedback (screenshot) -> open modal =>  wait user submit
     feedback
       .init()
