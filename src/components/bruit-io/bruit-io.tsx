@@ -325,13 +325,13 @@ export class BruitIo {
   principalButton() {
     if (this._haveInnerElement) {
       return (
-        <a onClick={() => this.newFeedback()}>
+        <a onClick={() => this.newFeedback()} class="bruit-button">
           <slot />
         </a>
       );
     } else {
       return (
-        <a onClick={() => this.newFeedback()}>
+        <a onClick={() => this.newFeedback()} class="bruit-button">
           <svg viewBox="0 0 96 96" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M73.3,35.3h-8.9c-1.4-2.5-3.4-4.6-5.8-6.2l5.2-5.2l-4.5-4.5l-6.9,6.9C51,26,49.6,25.8,48,25.8

@@ -1,15 +1,18 @@
 @import './../../styles/devices';
 
 bruit-io {
+  a.bruit-button {
+    cursor: pointer;
+  }
 
   @import './../../styles/material-form';
   @import './../../styles/submit-button';
   @import './../../styles/icon';
 
   font-family: 'Montserrat',
-    Arial,
-    Helvetica,
-    sans-serif !important;
+  Arial,
+  Helvetica,
+  sans-serif !important;
 
 
   * h1 {
