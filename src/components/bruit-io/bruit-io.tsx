@@ -129,7 +129,7 @@ export class BruitIo {
       }
     }
 
-    this._haveInnerElement = !!this.bruitElement.innerHTML;
+    this._haveInnerElement = !!this.bruitElement.innerHTML ? !!this.bruitElement.innerHTML.trim() : false;
   }
 
   /**
