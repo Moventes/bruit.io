@@ -16,7 +16,7 @@
 
   </style>
 
-  <bruit-io></bruit-io>
+  <bruit-io> </bruit-io>
 
   <div>
     <ul>
@@ -34,35 +34,35 @@
   <script>
     var bruitCmp = document.querySelector('bruit-io');
 
-    bruitCmp.config = 'gh';
-    // JSON.stringify({
-    //   apiKey: 'JlcerWZLcVw0mxWkRaYY',
-    //   form: [{
-    //       label: 'email',
-    //       type: 'email',
-    //       required: true
-    //     },
-    //     {
-    //       label: 'firstname',
-    //       type: 'text'
-    //     },
-    //     {
-    //       label: 'lastname',
-    //       type: 'text'
-    //     },
-    //     {
-    //       label: 'message',
-    //       type: 'textarea',
-    //       required: true
-    //     },
-    //     {
-    //       label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
-    //       type: 'checkbox',
-    //       id: 'agreement',
-    //       value: true
-    //     }
-    //   ]
-    // });
+    bruitCmp.config =
+      JSON.stringify({
+        apiKey: 'JlcerWZLcVw0mxWkRaYY',
+        form: [{
+            label: 'email',
+            type: 'email',
+            required: true
+          },
+          {
+            label: 'firstname',
+            type: 'text'
+          },
+          {
+            label: 'lastname',
+            type: 'text'
+          },
+          {
+            label: 'message',
+            type: 'textarea',
+            required: true
+          },
+          {
+            label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
+            type: 'checkbox',
+            id: 'agreement',
+            value: true
+          }
+        ]
+      });
 
     bruitCmp.data = [{
       label: 'verion',
