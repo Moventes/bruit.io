@@ -7,7 +7,7 @@
 
 | Property | Attribute | Description                                         | Type                                    |
 | -------- | --------- | --------------------------------------------------- | --------------------------------------- |
-| `config` | --        |                                                     | `BrtConfig`                             |
+| `config` | `config`  |                                                     | `BrtConfig \| string`                   |
 | `dataFn` | --        | FN or PROMISE return field array to add in feedback | `() => BrtData[] \| Promise<BrtData[]>` |
 | `data`   | --        | field array to add in feedback                      | `BrtData[]`                             |
 
