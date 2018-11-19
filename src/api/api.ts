@@ -11,8 +11,12 @@ export class Api {
           if (JSON.stringify(xhr.status).startsWith('2') || xhr.status === 304) {
             resolve();
           } else {
-            const body = JSON.parse(xhr.responseText);
-            reject({ ...xhr, code: 900, text: (body ? body.message : null) || 'An Unexpected Error Occurred' });
+            try {
+              const body = JSON.parse(xhr.responseText);
+              reject({ ...xhr, code: 900, text: (body ? body.message : null) || 'An Unexpected Error Occurred' });
+            } catch {
+              reject({ ...xhr, code: 900, text: 'An Unexpected Error Occurred' });
+            }
           }
         }
       };
