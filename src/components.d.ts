@@ -11,11 +11,7 @@ import '@stencil/core';
 import {
   BrtConfig,
   BrtData,
-  BrtError,
 } from '@bruit/types';
-import {
-  EventEmitter,
-} from '@stencil/core';
 
 
 export namespace Components {
@@ -44,7 +40,7 @@ export namespace Components {
     /**
     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */
-    'onOnError'?: (event: CustomEvent<BrtError>) => void;
+    'onOnError'?: (event: CustomEvent) => void;
   }
 }
 

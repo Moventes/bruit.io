@@ -64,6 +64,8 @@ export class BruitIo {
   @Prop()
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
+  // TODO: Issue https://github.com/ionic-team/stencil/issues/724
+  // Instead of generic, replace with EventEmitter<BrtError> once issue solved
   /**
    * emit bruit-error on internal error or config error
    * ex : BruitIo.addEventListener('onError',error=>...)
@@ -71,7 +73,7 @@ export class BruitIo {
   @Event({
     eventName: 'onError'
   })
-  sendError: EventEmitter<BrtError>;
+  sendError: EventEmitter;
 
   /**
    * modalOpened boolean manages the modal opening/closing action
