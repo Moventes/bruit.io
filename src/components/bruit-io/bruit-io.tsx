@@ -46,7 +46,7 @@ export class BruitIo {
     if (!configError) {
       this._config = new BruitConfig(_newConfig);
     } else {
-      this.sendError.emit(configError);
+      this.onError.emit(configError);
       console.error(configError);
     }
   }
@@ -70,10 +70,7 @@ export class BruitIo {
    * emit bruit-error on internal error or config error
    * ex : BruitIo.addEventListener('onError',error=>...)
    */
-  @Event({
-    eventName: 'onError'
-  })
-  sendError: EventEmitter;
+  @Event() onError: EventEmitter;
 
   /**
    * modalOpened boolean manages the modal opening/closing action
@@ -181,7 +178,7 @@ export class BruitIo {
           this.destroyFeedback();
           //console.log('feedback canceled');
         } else {
-          this.sendError.emit(err);
+          this.onError.emit(err);
           if (err && err.text) {
             this.modalError = err;
           } else {
@@ -466,7 +463,7 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
         default: {
           const err = { code: 116, text: `"${field.type}" field type is not supported` };
           console.error('BRUIT.IO error : ', err);
-          this.sendError.emit(err);
+          this.onError.emit(err);
           return <span class="error">error</span>;
         }
       }
