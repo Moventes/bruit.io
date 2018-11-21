@@ -31,7 +31,7 @@
   label,
   .checkbox-label {
     color: #999;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: normal;
     position: absolute;
     pointer-events: none;
@@ -45,6 +45,7 @@
   /* active state */
   input:not([type="checkbox"]),
   textarea {
+    font-size: 14px;
 
     &:focus,
     &.has-value {
@@ -135,12 +136,12 @@
   $transitionSpeed: 200ms;
 
   input[type="checkbox"]+label {
-    width: 16px;
-    height: 16px;
-    border: 3px solid $grey;
+    width: 14px;
+    height: 14px;
+    border: 2px solid $grey;
     border-radius: 100%;
     text-indent: 32px;
-    font: normal normal 16px "Helvetica";
+    font: normal normal 14px "Helvetica";
     white-space: nowrap;
     color: $grey;
     user-select: none;
@@ -152,10 +153,10 @@
       position: absolute;
       width: 0px;
       height: 8px;
-      border-bottom: 3px solid;
-      border-left: 3px solid;
+      border-bottom: 2px solid;
+      border-left: 2px solid;
       // border-color: $green;
-      top: 25%;
+      top: 20%;
       left: 50%;
       transform-origin: bottom left;
       transform: rotate(-45deg);
@@ -174,10 +175,11 @@
     cursor: pointer;
     display: block;
     position: relative;
+    font-size: 14px;
   }
 
   input[type="checkbox"]:checked+label {
-    border: 3px solid;
+    border: 2px solid;
     // border-color: $green;
 
     &:after {

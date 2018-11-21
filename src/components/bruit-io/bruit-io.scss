@@ -131,6 +131,10 @@ bruit-io {
         .sub-head {
           padding: 32px 32px 0 32px;
           color: #555;
+
+          >p {
+            font-size: 14px;
+          }
         }
 
         form {
