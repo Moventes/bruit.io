@@ -102,8 +102,7 @@ bruit-io {
 
 
       .head {
-        height: 3rem;
-        padding: 1rem 2rem;
+        padding: 16px 24px;
         color: #fff;
         display: flex;
         flex-direction: row;
@@ -112,11 +111,12 @@ bruit-io {
         flex-shrink: 0;
 
         h1 {
-          font-size: 2em !important;
+          font-size: 24px !important;
         }
 
 
         #bruit-io-btn-close {
+          width: 24px;
           cursor: pointer;
         }
       }
@@ -129,12 +129,12 @@ bruit-io {
         flex: auto;
 
         .sub-head {
-          padding: 2rem 2rem 0 2rem;
+          padding: 32px 32px 0 32px;
           color: #555;
         }
 
         form {
-          padding: 3em;
+          padding: 48px;
 
           #bruit-io-fieldset {
             position: relative;

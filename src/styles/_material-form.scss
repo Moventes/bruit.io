@@ -3,14 +3,14 @@
   position: relative;
   margin: 0 auto 45px auto;
   width: 100%;
-  min-height: 1.2em;
+  min-height: 20px;
   max-width: 400px;
   white-space: normal;
 
 
   input:not([type="checkbox"]),
   textarea {
-    font-size: 18px;
+    font-size: 16px;
     padding: 10px 0 10px 0;
     display: block;
     width: 100%;
@@ -31,7 +31,7 @@
   label,
   .checkbox-label {
     color: #999;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
     position: absolute;
     pointer-events: none;
@@ -135,12 +135,12 @@
   $transitionSpeed: 200ms;
 
   input[type="checkbox"]+label {
-    width: 1em;
-    height: 1em;
+    width: 16px;
+    height: 16px;
     border: 3px solid $grey;
     border-radius: 100%;
-    text-indent: 2em;
-    font: normal normal 1em "Helvetica";
+    text-indent: 32px;
+    font: normal normal 16px "Helvetica";
     white-space: nowrap;
     color: $grey;
     user-select: none;
@@ -151,7 +151,7 @@
       content: "";
       position: absolute;
       width: 0px;
-      height: .5em;
+      height: 8px;
       border-bottom: 3px solid;
       border-left: 3px solid;
       // border-color: $green;
@@ -168,7 +168,7 @@
     width: 100%;
     height: auto;
     background-color: transparent;
-    margin-left: 2em;
+    margin-left: 32px;
     color: #555;
     pointer-events: initial;
     cursor: pointer;
@@ -182,7 +182,7 @@
 
     &:after {
       opacity: 1;
-      width: 1.1em;
+      width: 18px;
     }
   }
 
