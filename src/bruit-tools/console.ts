@@ -1,34 +1,27 @@
-import { BrtLogLevels } from '@bruit/types';
-import { BruitConfig } from './../models/bruit-config.class';
+import { BruitConfig } from '../models/bruit-config.class';
+import { BrtLogLevels, BrtLog, BrtLogType } from '@bruit/types';
+
 export class ConsoleTool {
   private static BUFFER_SIZE = 100;
-  private static logArray = [];
-
-  public static LOG_ENABLED = true;
+  private static logByLevel: { [level: string]: Array<BrtLog> } = {};
 
   static init(config: BruitConfig) {
     if (
       !(
         !!(<any>window).cordova ||
-        (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0) ||
-        (config.logLevels.click ||
-          config.logLevels.debug ||
-          config.logLevels.error ||
-          config.logLevels.info ||
-          config.logLevels.log ||
-          config.logLevels.network ||
-          config.logLevels.url ||
-          config.logLevels.warn)
+        (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0)
       )
     ) {
-      ConsoleTool.LOG_ENABLED = false;
+      (<any>console).overloadable = false;
       console.info('BRUIT.IO - logs reports are disabled in localhost mode');
+    } else {
+      (<any>console).overloadable = true;
     }
-    ConsoleTool.BUFFER_SIZE = config.maxLogLines;
-    ConsoleTool.configure(config.logLevels);
+    ConsoleTool.BUFFER_SIZE = Math.max(config.maxLogLines, ConsoleTool.BUFFER_SIZE);
+    ConsoleTool.configure();
   }
 
-  private static configure(levels: BrtLogLevels) {
+  private static configure() {
     if (typeof (<any>JSON).decycle !== 'function') {
       (<any>JSON).decycle = function decycle(object, replacer) {
         const objects = new WeakMap();
@@ -110,67 +103,62 @@ export class ConsoleTool {
       };
     }
 
-    if (this.LOG_ENABLED && !(<any>console).overloaded) {
+    if (!(<any>console).overloaded && (<any>console).overloadable) {
       (<any>console).overloaded = true;
 
-      (<any>console).logArray = function() {
-        return JSON.parse(JSON.stringify(ConsoleTool.logArray));
+      (<any>console).logArray = function(levels: BrtLogLevels, maxLines: number = ConsoleTool.BUFFER_SIZE) {
+        return Object.entries(levels)
+          .filter(v => v[1])
+          .map(v => ConsoleTool.logByLevel[v[0]])
+          .reduce((logArray, logsLevel) => logArray.concat(logsLevel), [])
+          .sort((logA, logB) => logA.timestamp.getTime() - logB.timestamp.getTime())
+          .slice(0, maxLines);
       };
 
-      if (levels.click) {
-        (<any>console).click = function() {
-          return ConsoleTool.handleLogMessage('click', arguments);
-        };
-      }
-      if (levels.url) {
-        (<any>console).url = function() {
-          return ConsoleTool.handleLogMessage('url', arguments);
-        };
-      }
+      (<any>console).click = function() {
+        return ConsoleTool.handleLogMessage(BrtLogType.CLICK, arguments);
+      };
 
-      if (levels.network) {
-        (<any>console).network = function() {
-          return ConsoleTool.handleLogMessage('network', arguments);
-        };
-      }
-      if (levels.log) {
-        const _log = console.log;
-        console.log = function() {
-          return _log.apply(console, ConsoleTool.handleLogMessage('log', arguments));
-        };
-      }
-      if (levels.debug) {
-        const _debug = console.debug;
-        console.debug = function() {
-          return _debug.apply(console, ConsoleTool.handleLogMessage('debug', arguments));
-        };
-      }
-      if (levels.error) {
-        const _error = console.error;
-        console.error = function() {
-          const args = ConsoleTool.handleLogMessage('error', arguments);
-          args.push(new Error().stack);
-          return _error.apply(console, args);
-        };
-      }
-      if (levels.warn) {
-        const _warn = console.warn;
-        console.warn = function() {
-          return _warn.apply(console, ConsoleTool.handleLogMessage('warn', arguments));
-        };
-      }
-      if (levels.info) {
-        const _info = console.info;
-        console.info = function() {
-          return _info.apply(console, ConsoleTool.handleLogMessage('info', arguments));
-        };
-      }
+      (<any>console).url = function() {
+        return ConsoleTool.handleLogMessage(BrtLogType.URL, arguments);
+      };
+
+      (<any>console).network = function() {
+        return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
+      };
+
+      const _log = console.log;
+      console.log = function() {
+        return _log.apply(console, ConsoleTool.handleLogMessage(BrtLogType.LOG, arguments));
+      };
+
+      const _debug = console.debug;
+      console.debug = function() {
+        return _debug.apply(console, ConsoleTool.handleLogMessage(BrtLogType.DEBUG, arguments));
+      };
+
+      const _error = console.error;
+      console.error = function() {
+        const args = ConsoleTool.handleLogMessage(BrtLogType.ERROR, arguments);
+        args.push(new Error().stack);
+        return _error.apply(console, args);
+      };
+
+      const _warn = console.warn;
+      console.warn = function() {
+        return _warn.apply(console, ConsoleTool.handleLogMessage(BrtLogType.WARN, arguments));
+      };
+
+      const _info = console.info;
+      console.info = function() {
+        return _info.apply(console, ConsoleTool.handleLogMessage(BrtLogType.INFO, arguments));
+      };
     } else {
-      console.info('BRUIT.IO - console already overloaded or disabled');
+      // console.info('BRUIT.IO - console already overloaded or disabled');
     }
   }
 
-  private static handleLogMessage(type: string, args: IArguments): Array<any> {
+  private static handleLogMessage(type: BrtLogType, args: IArguments): Array<any> {
     if (type && args && args.length > 0) {
       const parentArgs = Array.from(args);
 
@@ -190,9 +178,12 @@ export class ConsoleTool {
         }
         thisLog.arguments.push(arg);
       });
-      ConsoleTool.logArray.push(thisLog);
-      if (ConsoleTool.logArray.length > ConsoleTool.BUFFER_SIZE) {
-        ConsoleTool.logArray.shift();
+      if (!Array.isArray(ConsoleTool.logByLevel[thisLog.type])) {
+        ConsoleTool.logByLevel[thisLog.type] = [];
+      }
+      ConsoleTool.logByLevel[thisLog.type].push(thisLog);
+      if (ConsoleTool.logByLevel[thisLog.type].length > ConsoleTool.BUFFER_SIZE) {
+        ConsoleTool.logByLevel[thisLog.type].shift();
       }
       return parentArgs;
     } else {

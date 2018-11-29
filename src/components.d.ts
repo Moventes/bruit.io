@@ -42,15 +42,44 @@ export namespace Components {
     */
     'onOnError'?: (event: CustomEvent) => void;
   }
+
+  interface BruitModal {
+    'config': BrtConfig | string;
+    /**
+    * field array to add in feedback
+    */
+    'data': Array<BrtData>;
+    /**
+    * FN or PROMISE return field array to add in feedback
+    */
+    'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
+  }
+  interface BruitModalAttributes extends StencilHTMLAttributes {
+    'config'?: BrtConfig | string;
+    /**
+    * field array to add in feedback
+    */
+    'data'?: Array<BrtData>;
+    /**
+    * FN or PROMISE return field array to add in feedback
+    */
+    'dataFn'?: () => Array<BrtData> | Promise<Array<BrtData>>;
+    /**
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent) => void;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'BruitIo': Components.BruitIo;
+    'BruitModal': Components.BruitModal;
   }
 
   interface StencilIntrinsicElements {
     'bruit-io': Components.BruitIoAttributes;
+    'bruit-modal': Components.BruitModalAttributes;
   }
 
 
@@ -60,12 +89,20 @@ declare global {
     new (): HTMLBruitIoElement;
   };
 
+  interface HTMLBruitModalElement extends Components.BruitModal, HTMLStencilElement {}
+  var HTMLBruitModalElement: {
+    prototype: HTMLBruitModalElement;
+    new (): HTMLBruitModalElement;
+  };
+
   interface HTMLElementTagNameMap {
     'bruit-io': HTMLBruitIoElement
+    'bruit-modal': HTMLBruitModalElement
   }
 
   interface ElementTagNameMap {
     'bruit-io': HTMLBruitIoElement;
+    'bruit-modal': HTMLBruitModalElement;
   }
 
 

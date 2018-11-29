@@ -13,5 +13,6 @@ export const config: Config = {
       serviceWorker: null
     }
   ],
+  copy: [{ src: 'init.js', dest: './../init.js' }],
   plugins: [sass()]
 };

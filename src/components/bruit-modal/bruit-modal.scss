@@ -1,0 +1,161 @@
+@import './../../styles/devices';
+
+bruit-modal {
+  a.bruit-button {
+    cursor: pointer;
+  }
+
+  @import './../../styles/material-form';
+  @import './../../styles/submit-button';
+  @import './../../styles/icon';
+
+  font-family: 'Montserrat',
+  Arial,
+  Helvetica,
+  sans-serif !important;
+
+
+  * h1 {
+    font-weight: bold !important;
+  }
+
+
+  .error {
+    color: #c31313 !important;
+
+    svg.svg-icon path {
+      fill: #c31313 !important;
+    }
+  }
+
+  #bruit-io-wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+    z-index: 90000;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    @media #{$mobile} {
+      align-items: flex-start;
+    }
+
+    @media #{$tablet} {
+      align-items: center;
+    }
+
+    @media #{$laptop} {
+      align-items: center;
+    }
+
+    &.open {
+      opacity: 1;
+      visibility: visible;
+
+      .modal {
+        margin-top: 0;
+        opacity: 1;
+      }
+
+    }
+
+
+    .modal {
+
+      margin-top: 100vh;
+      max-height: 100vh;
+
+      @media #{$mobile} {
+        width: 100vw;
+        min-height: 100vh;
+
+      }
+
+      @media #{$tablet} {
+        min-width: 70vw;
+        max-width: 100vw;
+        min-height: 70vh;
+      }
+
+      @media #{$laptop} {
+        min-width: 50vw;
+        max-width: 100vw;
+        min-height: 60vh;
+      }
+
+
+
+      z-index: 91000;
+      background: #fff;
+      opacity: 0;
+      transition: all 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
+
+
+
+      .head {
+        padding: 16px 24px;
+        color: #fff;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+
+        h1 {
+          font-size: 24px !important;
+        }
+
+
+        #bruit-io-btn-close {
+          width: 24px;
+          cursor: pointer;
+        }
+      }
+
+
+
+      .content {
+        height: 100%;
+        overflow-y: auto;
+        flex: auto;
+
+        .sub-head {
+          padding: 32px 32px 0 32px;
+          color: #555;
+
+          >p {
+            font-size: 14px;
+          }
+        }
+
+        form {
+          padding: 48px;
+
+          #bruit-io-fieldset {
+            position: relative;
+            width: 100%;
+          }
+
+          #bruit-io-footer-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+  }
+
+  @import './../../styles/reset';
+
+}
