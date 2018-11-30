@@ -59,12 +59,14 @@ export class BruitIo {
 
   @Method()
   start(brtCoreConfig) {
+    console.log('start')
     var modal = document.getElementsByTagName('bruit-core');
     if (modal.length <= 0) {
       var bruitCore = document.createElement('bruit-core');
       if (brtCoreConfig) {
         bruitCore.config = brtCoreConfig;
       }
+      console.log('append!')
       document.body.appendChild(bruitCore);
     }
   }
@@ -76,6 +78,13 @@ export class BruitIo {
    */
   @Event() onError: EventEmitter;
 
+  @Event({
+    bubbles:true
+  }) onReady: EventEmitter;
+
+  componentDidLoad(){
+    this.onReady.emit(true);
+  }
   /**
    * the current and complete config
    */

@@ -25,7 +25,6 @@
     #viewport {
       transform: rotate(5deg);
     }
-
   </style>
 
 
@@ -51,7 +50,10 @@
   <script>
     window.addEventListener('load', function () {
       var bruitCmp = document.querySelector('bruit-io');
-      bruitCmp.start();
+      // console.log('start', bruitCmp);
+      bruitCmp.addEventListener('onReady', function () {
+        bruitCmp.start();
+      });
       bruitCmp.config =
         JSON.stringify({
           apiKey: 'JlcerWZLcVw0mxWkRaYY',
@@ -61,29 +63,29 @@
             button: 'send now'
           },
           form: [{
-              label: 'email',
-              type: 'email',
-              required: true
-            },
-            {
-              label: 'firstname',
-              type: 'text'
-            },
-            {
-              label: 'lastname',
-              type: 'text'
-            },
-            {
-              label: 'message',
-              type: 'textarea',
-              required: true
-            },
-            {
-              label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
-              type: 'checkbox',
-              id: 'agreement',
-              value: true
-            }
+            label: 'email',
+            type: 'email',
+            required: true
+          },
+          {
+            label: 'firstname',
+            type: 'text'
+          },
+          {
+            label: 'lastname',
+            type: 'text'
+          },
+          {
+            label: 'message',
+            type: 'textarea',
+            required: true
+          },
+          {
+            label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
+            type: 'checkbox',
+            id: 'agreement',
+            value: true
+          }
           ]
         });
 

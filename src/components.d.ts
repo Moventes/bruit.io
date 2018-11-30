@@ -46,6 +46,7 @@ export namespace Components {
     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */
     'onOnError'?: (event: CustomEvent) => void;
+    'onOnReady'?: (event: CustomEvent) => void;
   }
 
   interface BruitCore {

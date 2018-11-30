@@ -13,7 +13,7 @@ export class BruitCoreConfig implements BrtCoreConfig {
   };
 
   constructor(config: BrtCoreConfig) {
-    if (config.logCacheLength) {
+    if (config && config.logCacheLength) {
       this.logCacheLength = {
         ...this.logCacheLength,
         ...config.logCacheLength
@@ -24,13 +24,15 @@ export class BruitCoreConfig implements BrtCoreConfig {
   static haveError(config: BrtCoreConfig): BrtError | void {
     if (config) {
       if (config.logCacheLength) {
-        if (!Object.entries(config.logCacheLength).every(v => v[1] >= 0)) {
+        if (!Object.keys(config.logCacheLength).every(v => config.logCacheLength[v] >= 0)) {
           return {
             code: 101,
             text: 'core config logCacheLength'
           };
         }
       }
+    } else {
+      // error
     }
   }
 }

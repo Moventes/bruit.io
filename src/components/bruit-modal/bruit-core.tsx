@@ -25,24 +25,26 @@ export class BruitCore {
    */
   @Watch('config')
   initConfig(newConfig: BrtCoreConfig | string) {
+
     let _newConfig: BrtCoreConfig;
     let configError: BrtError | void;
-    if (typeof newConfig === 'string') {
-      try {
-        _newConfig = JSON.parse(newConfig) as BrtCoreConfig;
-      } catch {
-        configError = {
-          code: 100,
-          text: 'bad config format (must be a json or stringified json)'
-        };
+    if (newConfig) {
+      if (typeof newConfig === 'string') {
+        try {
+          _newConfig = JSON.parse(newConfig) as BrtCoreConfig;
+        } catch {
+          configError = {
+            code: 100,
+            text: 'bad config format (must be a json or stringified json)'
+          };
+        }
+      } else {
+        _newConfig = newConfig as BrtCoreConfig;
       }
-    } else {
-      _newConfig = newConfig as BrtCoreConfig;
+      if (!configError) {
+        configError = BruitCoreConfig.haveError(_newConfig);
+      }
     }
-    if (!configError) {
-      configError = BruitCoreConfig.haveError(_newConfig);
-    }
-
     if (!configError) {
       this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
       ConsoleTool.init(this._bruitCoreConfig.logCacheLength);
