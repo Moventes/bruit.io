@@ -39,7 +39,7 @@
           <li>try me !</li>
           <li id="second">me to!</li>
           <li id="viewport">
-            <!-- <bruit-io> </bruit-io> -->
+            <bruit-io> </bruit-io>
           </li>
         </ul>
       </li>
@@ -49,55 +49,56 @@
 
 
   <script>
-    // var bruitCmp = document.querySelector('bruit-io');
-    window.customElements.get('bruit-io')
+    window.addEventListener('load', function () {
+      var bruitCmp = document.querySelector('bruit-io');
+      bruitCmp.start();
+      bruitCmp.config =
+        JSON.stringify({
+          apiKey: 'JlcerWZLcVw0mxWkRaYY',
+          labels: {
+            title: 'bruit.io - test',
+            introduction: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            button: 'send now'
+          },
+          form: [{
+              label: 'email',
+              type: 'email',
+              required: true
+            },
+            {
+              label: 'firstname',
+              type: 'text'
+            },
+            {
+              label: 'lastname',
+              type: 'text'
+            },
+            {
+              label: 'message',
+              type: 'textarea',
+              required: true
+            },
+            {
+              label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
+              type: 'checkbox',
+              id: 'agreement',
+              value: true
+            }
+          ]
+        });
 
-    // bruitCmp.config =
-    //   JSON.stringify({
-    //     apiKey: 'JlcerWZLcVw0mxWkRaYY',
-    //     labels: {
-    //       title: 'bruit.io - test',
-    //       introduction: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    //       button: 'send now'
-    //     },
-    //     form: [{
-    //         label: 'email',
-    //         type: 'email',
-    //         required: true
-    //       },
-    //       {
-    //         label: 'firstname',
-    //         type: 'text'
-    //       },
-    //       {
-    //         label: 'lastname',
-    //         type: 'text'
-    //       },
-    //       {
-    //         label: 'message',
-    //         type: 'textarea',
-    //         required: true
-    //       },
-    //       {
-    //         label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
-    //         type: 'checkbox',
-    //         id: 'agreement',
-    //         value: true
-    //       }
-    //     ]
-    //   });
+      bruitCmp.data = [{
+        label: 'verion',
+        value: '0.1.54'
+      }];
 
-    // bruitCmp.data = [{
-    //   label: 'verion',
-    //   value: '0.1.54'
-    // }];
-
-    // bruitCmp.dataFn = new Promise(resolve => {
-    //   resolve([{
-    //     label: 'user',
-    //     data: 'lamstutz'
-    //   }]);
-    // });
+      bruitCmp.dataFn = new Promise(resolve => {
+        resolve([{
+          label: 'user',
+          data: 'lamstutz'
+        }]);
+      });
+    });
 
   </script>
 </body>

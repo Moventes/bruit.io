@@ -1,4 +1,4 @@
-export * from './components.d';
+export * from './components';
 
 export * from '@bruit/types/dist/interfaces/brt-colors';
 export * from '@bruit/types/dist/interfaces/brt-config';

@@ -1,36 +1,35 @@
-import { Component, Prop, State, Watch, EventEmitter, Event, Element } from '@stencil/core';
-import { BrtError, BrtField, BrtData, BrtConfig } from '@bruit/types';
+import { Component, Prop, State, Watch, EventEmitter, Event, Element, Method } from '@stencil/core';
+import { BrtError, BrtField, BrtData, BrtCoreConfig } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
-import { BruitConfig } from '../../models/bruit-config.class';
+import { BruitCoreConfig } from '../../models/bruit-core-config.class';
+import { BruitIoConfig } from '../../models/bruit-io-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
-import { HttpTool } from '../../bruit-tools/http';
-import { ClickTool } from '../../bruit-tools/click';
 import { Feedback } from '../../api/feedback';
-import { UrlTool } from '../../bruit-tools/url';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
+
 @Component({
-  tag: 'bruit-modal',
-  styleUrl: 'bruit-modal.scss',
+  tag: 'bruit-core',
+  styleUrl: 'bruit-core.scss',
   shadow: false // set to true when all browser support shadowDom
 })
-export class BruitModal {
+export class BruitCore {
   // attributs on bruit-io component
 
   // configuration
   @Prop()
-  config: BrtConfig | string;
+  config: BrtCoreConfig | string;
 
   /**
    * test validity of config and assign to internal config
    * @param newConfig the new value of config
    */
   @Watch('config')
-  initConfig(newConfig: BrtConfig | string) {
-    let _newConfig: BrtConfig;
+  initConfig(newConfig: BrtCoreConfig | string) {
+    let _newConfig: BrtCoreConfig;
     let configError: BrtError | void;
     if (typeof newConfig === 'string') {
       try {
-        _newConfig = JSON.parse(newConfig) as BrtConfig;
+        _newConfig = JSON.parse(newConfig) as BrtCoreConfig;
       } catch {
         configError = {
           code: 100,
@@ -38,13 +37,15 @@ export class BruitModal {
         };
       }
     } else {
-      _newConfig = newConfig as BrtConfig;
+      _newConfig = newConfig as BrtCoreConfig;
     }
     if (!configError) {
-      configError = BruitConfig.haveError(_newConfig);
+      configError = BruitCoreConfig.haveError(_newConfig);
     }
+
     if (!configError) {
-      this._config = new BruitConfig(_newConfig);
+      this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
+      ConsoleTool.init(this._bruitCoreConfig.logCacheLength);
     } else {
       this.onError.emit(configError);
       console.error(configError);
@@ -52,17 +53,10 @@ export class BruitModal {
   }
 
   /**
-   * field array to add in feedback
+   * the current and complete core config
    */
-  @Prop()
-  data: Array<BrtData>;
-
-  /**
-   * FN or PROMISE
-   * return field array to add in feedback
-   */
-  @Prop()
-  dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
+  @State()
+  _bruitCoreConfig: BruitCoreConfig;
 
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved
@@ -99,12 +93,11 @@ export class BruitModal {
    * the current and complete config
    */
   @State()
-  _config: BruitConfig;
+  _bruitIoConfig: BruitIoConfig;
 
   // dom element of bruit-io component
   @Element()
-  bruitElement: HTMLStencilElement;
-  private _haveInnerElement: boolean;
+  bruitCoreElement: HTMLStencilElement;
 
   /**
    * fired on component loading before render()
@@ -113,35 +106,25 @@ export class BruitModal {
     // console.info('[BRUIT.IO] - bruit started ...');
     // first init
     this.initConfig(this.config);
-    if (this._config) {
-      ConsoleTool.init(this._config);
-      if (ConsoleTool.LOG_ENABLED) {
-        if (this._config.logLevels.network) {
-          HttpTool.init();
-        }
-        if (this._config.logLevels.click) {
-          ClickTool.init();
-        }
-        if (this._config.logLevels.url) {
-          UrlTool.init();
-        }
-      }
-    }
-
-    this._haveInnerElement = !!this.bruitElement.innerHTML ? !!this.bruitElement.innerHTML.trim() : false;
   }
 
   /**
    * called on click on component
    * init a feedback, wait user submit, send feedback
    */
-  newFeedback() {
+  @Method()
+  newFeedback(
+    bruitIoConfig: BruitIoConfig,
+    data?: Array<BrtData>,
+    dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
+  ) {
     //if there's already a current feedback, we have a probleme!!! => destroy it
     if (this._currentFeedback) {
       this.destroyFeedback();
     }
     //create a new feedback
-    const feedback = new Feedback(this._config.apiKey);
+    this._bruitIoConfig = bruitIoConfig;
+    const feedback = new Feedback(this._bruitIoConfig.apiKey);
     // init feedback (screenshot) -> open modal =>  wait user submit
     feedback
       .init()
@@ -149,9 +132,9 @@ export class BruitModal {
       .then(() => this.waitOnSubmit())
       .then(dataFromModal => {
         //user submit with data dataFromModal
-        const sendFeedback = feedback.send(dataFromModal, this.data, this.dataFn);
+        const sendFeedback = feedback.send(dataFromModal, data, dataFn);
         // if the configuration says that the modal must be closed directly
-        if (this._config.closeModalOnSubmit) {
+        if (this._bruitIoConfig.closeModalOnSubmit) {
           // close the modal and send feedback
           this.closeModal();
           return sendFeedback;
@@ -163,7 +146,7 @@ export class BruitModal {
             // we display the "validation" for <durationBeforeClosing> milliseconds
             this.setSubmitButtonState(SubmitButtonState.CHECKED);
             return new Promise(resolve => {
-              setTimeout(() => resolve(), this._config.durationBeforeClosing);
+              setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
             });
           });
         }
@@ -208,7 +191,7 @@ export class BruitModal {
    */
   openModal() {
     this.setSubmitButtonState(SubmitButtonState.SUBMIT);
-    this.modalBrtField = JSON.parse(JSON.stringify(this._config.form));
+    this.modalBrtField = JSON.parse(JSON.stringify(this._bruitIoConfig.form));
     this.modalOpened = true;
   }
 
@@ -228,9 +211,9 @@ export class BruitModal {
    */
   waitOnSubmit(): Promise<Array<BrtField>> {
     //getting the three clickable dom element (for submit or close modal)
-    const form: HTMLElement = this.bruitElement.querySelector('#bruit-io-form');
-    const button_close: HTMLElement = this.bruitElement.querySelector('#bruit-io-btn-close');
-    const modal_wrapper: HTMLElement = this.bruitElement.querySelector('#bruit-io-wrapper');
+    const form: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-form');
+    const button_close: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-btn-close');
+    const modal_wrapper: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-wrapper');
 
     //show the close button
     button_close.hidden = false;
@@ -308,39 +291,17 @@ export class BruitModal {
   // "render()" is called after "componentWillLoad()" and when the state change
 
   render() {
-    if (this._config) {
+    if (this._bruitIoConfig) {
       return (
         <span>
-          {this.principalButton()}
           {this.modal()}
           {this.theming()}
         </span>
       );
+    } else if (this._bruitCoreConfig) {
+      return <span />;
     } else {
       return <p class="error">missing config</p>;
-    }
-  }
-
-  principalButton() {
-    if (this._haveInnerElement) {
-      return (
-        <a onClick={() => this.newFeedback()} class="bruit-button">
-          <slot />
-        </a>
-      );
-    } else {
-      return (
-        <a onClick={() => this.newFeedback()} class="bruit-button">
-          <svg viewBox="0 0 96 96" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M73.3,35.3h-8.9c-1.4-2.5-3.4-4.6-5.8-6.2l5.2-5.2l-4.5-4.5l-6.9,6.9C51,26,49.6,25.8,48,25.8
-s-3,0.2-4.5,0.5l-6.9-6.9L32.2,24l5.1,5.2c-2.3,1.6-4.3,3.7-5.7,6.2h-8.9v6.3h6.6c-0.2,1-0.3,2.1-0.3,3.2V48h-6.3v6.3H29v3.2
-c0,1.1,0.1,2.1,0.3,3.2h-6.6V67h8.9c3.3,5.7,9.4,9.5,16.4,9.5s13.1-3.8,16.4-9.5h8.9v-6.3h-6.6c0.2-1,0.3-2.1,0.3-3.2v-3.2h6.3V48
-H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,48H41.7v-6.3h12.7V48z"
-            />
-          </svg>
-        </a>
-      );
     }
   }
 
@@ -349,7 +310,7 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
       <div
         id="bruit-io-wrapper"
         class={this.modalOpened ? 'open' : 'close'}
-        style={{ 'background-color': this._config.colors.background }}
+        style={{ 'background-color': this._bruitIoConfig.colors.background }}
       >
         <div
           class="modal"
@@ -366,8 +327,8 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
 
   modalHeader() {
     return (
-      <div class="head" style={{ 'background-color': this._config.colors.header }}>
-        <h1 class="title">{this._config.labels.title}</h1>
+      <div class="head" style={{ 'background-color': this._bruitIoConfig.colors.header }}>
+        <h1 class="title">{this._bruitIoConfig.labels.title}</h1>
         <a id="bruit-io-btn-close">
           <svg
             width="24"
@@ -385,10 +346,10 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
   }
 
   modalSubHeader() {
-    if (this._config.labels.introduction) {
+    if (this._bruitIoConfig.labels.introduction) {
       return (
         <div class="sub-head">
-          <p>{this._config.labels.introduction}</p>
+          <p>{this._bruitIoConfig.labels.introduction}</p>
         </div>
       );
     } else {
@@ -397,7 +358,7 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
   }
   modalContent() {
     return (
-      <div class="content" style={{ 'background-color': this._config.colors.body }}>
+      <div class="content" style={{ 'background-color': this._bruitIoConfig.colors.body }}>
         {this.modalSubHeader()}
         <form id="bruit-io-form">
           <fieldset id="bruit-io-fieldset">
@@ -415,16 +376,16 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
         <button
           type="submit"
           id="bruit-io-submit-button"
-          style={{ color: this._config.colors.header, 'border-color': this._config.colors.header }}
+          style={{ color: this._bruitIoConfig.colors.header, 'border-color': this._bruitIoConfig.colors.header }}
         >
           <svg class="svg-icon" viewBox="0 0 20 20">
             <path
               class="no-color"
-              fill={this._config.colors.header}
+              fill={this._bruitIoConfig.colors.header}
               d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
             />
           </svg>
-          <span id="button-submit-label">{this._config.labels.button}</span>
+          <span id="button-submit-label">{this._bruitIoConfig.labels.button}</span>
         </button>
       );
     } else {
@@ -535,7 +496,7 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
           class="checkbox-label"
           onClick={() => {
             field.value = !field.value;
-            this.bruitElement.forceUpdate();
+            this.bruitCoreElement.forceUpdate();
           }}
         >
           {field.label}
@@ -549,42 +510,42 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
       <style>
         {'bruit-io .group .bar:before, bruit-io .group .bar:after{' +
           'background-color: ' +
-          this._config.colors.focus +
+          this._bruitIoConfig.colors.focus +
           '}' +
           'bruit-io .group input:not([type="checkbox"]):invalid ~.bar:before, bruit-io .group input:not([type="checkbox"]):invalid ~.bar:after{' +
           'background-color: ' +
-          this._config.colors.errors +
+          this._bruitIoConfig.colors.errors +
           '}' +
           'bruit-io button#bruit-io-submit-button:hover{' +
           'background-color: ' +
-          this._config.colors.header +
+          this._bruitIoConfig.colors.header +
           '!important ;' +
           'color: white !important;' +
           '}' +
           'bruit-io button#bruit-io-submit-button.onClick{' +
           'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
-          this._config.colors.header +
+          this._bruitIoConfig.colors.header +
           '!important;}' +
           'bruit-io .group input[type="checkbox"]:checked+label, bruit-io .group input[type="checkbox"]+label:after{' +
           'border-color: ' +
-          this._config.colors.focus +
+          this._bruitIoConfig.colors.focus +
           '}' +
           'bruit-io .group input:not([type="checkbox"]).has-value:invalid~label, bruit-io .group input:not([type="checkbox"]):focus:invalid~label{' +
           'color: ' +
-          this._config.colors.errors +
+          this._bruitIoConfig.colors.errors +
           '}' +
           'bruit-io .group input:not([type="checkbox"]).has-value~label, bruit-io .group input:not([type="checkbox"]):focus~label{' +
           'color: ' +
-          this._config.colors.focus +
+          this._bruitIoConfig.colors.focus +
           '}' +
           'bruit-io .group textarea.has-value~label, bruit-io .group textarea:focus~label{' +
           'color: ' +
-          this._config.colors.focus +
+          this._bruitIoConfig.colors.focus +
           '}' +
           'bruit-io .group textarea.has-value:invalid~label{' +
           'color: ' +
-          this._config.colors.errors +
+          this._bruitIoConfig.colors.errors +
           '}'}
       </style>
     );

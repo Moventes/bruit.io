@@ -1,4 +1,4 @@
-import { newE2EPage } from '@stencil/core/testing';
+import { newE2EPage } from '@stencil/core/dist/testing';
 
 describe('bruit-io', () => {
   it('renders', async () => {

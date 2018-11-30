@@ -10,8 +10,12 @@ import '@stencil/core';
 
 import {
   BrtConfig,
+  BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
+import {
+  BruitIoConfig,
+} from './models/bruit-io-config.class';
 
 
 export namespace Components {
@@ -26,6 +30,7 @@ export namespace Components {
     * FN or PROMISE return field array to add in feedback
     */
     'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
+    'start': (brtCoreConfig: any) => void;
   }
   interface BruitIoAttributes extends StencilHTMLAttributes {
     'config'?: BrtConfig | string;
@@ -43,27 +48,15 @@ export namespace Components {
     'onOnError'?: (event: CustomEvent) => void;
   }
 
-  interface BruitModal {
-    'config': BrtConfig | string;
+  interface BruitCore {
+    'config': BrtCoreConfig | string;
     /**
-    * field array to add in feedback
+    * called on click on component init a feedback, wait user submit, send feedback
     */
-    'data': Array<BrtData>;
-    /**
-    * FN or PROMISE return field array to add in feedback
-    */
-    'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
+    'newFeedback': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => void;
   }
-  interface BruitModalAttributes extends StencilHTMLAttributes {
-    'config'?: BrtConfig | string;
-    /**
-    * field array to add in feedback
-    */
-    'data'?: Array<BrtData>;
-    /**
-    * FN or PROMISE return field array to add in feedback
-    */
-    'dataFn'?: () => Array<BrtData> | Promise<Array<BrtData>>;
+  interface BruitCoreAttributes extends StencilHTMLAttributes {
+    'config'?: BrtCoreConfig | string;
     /**
     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */
@@ -74,12 +67,12 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'BruitIo': Components.BruitIo;
-    'BruitModal': Components.BruitModal;
+    'BruitCore': Components.BruitCore;
   }
 
   interface StencilIntrinsicElements {
     'bruit-io': Components.BruitIoAttributes;
-    'bruit-modal': Components.BruitModalAttributes;
+    'bruit-core': Components.BruitCoreAttributes;
   }
 
 
@@ -89,20 +82,20 @@ declare global {
     new (): HTMLBruitIoElement;
   };
 
-  interface HTMLBruitModalElement extends Components.BruitModal, HTMLStencilElement {}
-  var HTMLBruitModalElement: {
-    prototype: HTMLBruitModalElement;
-    new (): HTMLBruitModalElement;
+  interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement {}
+  var HTMLBruitCoreElement: {
+    prototype: HTMLBruitCoreElement;
+    new (): HTMLBruitCoreElement;
   };
 
   interface HTMLElementTagNameMap {
     'bruit-io': HTMLBruitIoElement
-    'bruit-modal': HTMLBruitModalElement
+    'bruit-core': HTMLBruitCoreElement
   }
 
   interface ElementTagNameMap {
     'bruit-io': HTMLBruitIoElement;
-    'bruit-modal': HTMLBruitModalElement;
+    'bruit-core': HTMLBruitCoreElement;
   }
 
 

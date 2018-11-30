@@ -3,12 +3,16 @@ import {
 } from './esm/es5/bruit.define.js';
 
 
-export function defineBruitElements(win, opts) {
-  var r = defineCustomElements(win, opts);
+export function defineBruitElements(brtCoreConfig, opts) {
+  var r = defineCustomElements(window, opts);
   window.addEventListener('load', function () {
-    var modal = document.getElementsByTagName('bruit-modal');
+    var modal = document.getElementsByTagName('bruit-core');
     if (modal.length <= 0) {
-      document.body.appendChild(document.createElement('bruit-modal'));
+      var bruitCore = document.createElement('bruit-core');
+      if (brtCoreConfig) {
+        bruitCore.config = brtCoreConfig;
+      }
+      document.body.appendChild(bruitCore);
     }
   }, false);
   return r;

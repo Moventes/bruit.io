@@ -1,11 +1,14 @@
-import { BruitConfig } from '../models/bruit-config.class';
-import { BrtLogLevels, BrtLog, BrtLogType } from '@bruit/types';
+import { HttpTool } from './http';
+import { UrlTool } from './url';
+import { ClickTool } from './click';
+import { BrtLog, BrtLogCacheLength } from '@bruit/types';
+import { BrtLogType } from '@bruit/types/dist/enums/brt-log-type';
 
 export class ConsoleTool {
-  private static BUFFER_SIZE = 100;
+  private static brtLogCacheLength: BrtLogCacheLength;
   private static logByLevel: { [level: string]: Array<BrtLog> } = {};
 
-  static init(config: BruitConfig) {
+  static init(brtLogCacheLengthConfig: BrtLogCacheLength) {
     if (
       !(
         !!(<any>window).cordova ||
@@ -17,7 +20,7 @@ export class ConsoleTool {
     } else {
       (<any>console).overloadable = true;
     }
-    ConsoleTool.BUFFER_SIZE = Math.max(config.maxLogLines, ConsoleTool.BUFFER_SIZE);
+    ConsoleTool.brtLogCacheLength = brtLogCacheLengthConfig;
     ConsoleTool.configure();
   }
 
@@ -103,56 +106,79 @@ export class ConsoleTool {
       };
     }
 
-    if (!(<any>console).overloaded && (<any>console).overloadable) {
-      (<any>console).overloaded = true;
+    if ((<any>console).overloadable) {
+      if (!(<any>console).overloaded) {
+        (<any>console).overloaded = {};
+      }
 
-      (<any>console).logArray = function(levels: BrtLogLevels, maxLines: number = ConsoleTool.BUFFER_SIZE) {
-        return Object.entries(levels)
-          .filter(v => v[1])
-          .map(v => ConsoleTool.logByLevel[v[0]])
-          .reduce((logArray, logsLevel) => logArray.concat(logsLevel), [])
-          .sort((logA, logB) => logA.timestamp.getTime() - logB.timestamp.getTime())
-          .slice(0, maxLines);
-      };
-
-      (<any>console).click = function() {
-        return ConsoleTool.handleLogMessage(BrtLogType.CLICK, arguments);
-      };
-
-      (<any>console).url = function() {
-        return ConsoleTool.handleLogMessage(BrtLogType.URL, arguments);
-      };
-
-      (<any>console).network = function() {
-        return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
-      };
-
-      const _log = console.log;
-      console.log = function() {
-        return _log.apply(console, ConsoleTool.handleLogMessage(BrtLogType.LOG, arguments));
-      };
-
-      const _debug = console.debug;
-      console.debug = function() {
-        return _debug.apply(console, ConsoleTool.handleLogMessage(BrtLogType.DEBUG, arguments));
-      };
-
-      const _error = console.error;
-      console.error = function() {
-        const args = ConsoleTool.handleLogMessage(BrtLogType.ERROR, arguments);
-        args.push(new Error().stack);
-        return _error.apply(console, args);
-      };
-
-      const _warn = console.warn;
-      console.warn = function() {
-        return _warn.apply(console, ConsoleTool.handleLogMessage(BrtLogType.WARN, arguments));
-      };
-
-      const _info = console.info;
-      console.info = function() {
-        return _info.apply(console, ConsoleTool.handleLogMessage(BrtLogType.INFO, arguments));
-      };
+      if (!(<any>console).overloaded.logArray) {
+        (<any>console).overloaded.logArray = true;
+        (<any>console).logArray = () => {
+          return Object.entries(ConsoleTool.brtLogCacheLength)
+            .filter(v => v[1] > 0)
+            .map(v => ConsoleTool.logByLevel[v[0]])
+            .reduce((logArray, logsLevel) => logArray.concat(logsLevel), [])
+            .sort((logA, logB) => logA.timestamp.getTime() - logB.timestamp.getTime());
+        };
+      }
+      if (!(<any>console).overloaded.click) {
+        (<any>console).overloaded.click = true;
+        (<any>console).click = function() {
+          return ConsoleTool.handleLogMessage(BrtLogType.CLICK, arguments);
+        };
+        ClickTool.init();
+      }
+      if (!(<any>console).overloaded.url) {
+        (<any>console).overloaded.url = true;
+        (<any>console).url = function() {
+          return ConsoleTool.handleLogMessage(BrtLogType.URL, arguments);
+        };
+        UrlTool.init();
+      }
+      if (!(<any>console).overloaded.network) {
+        (<any>console).overloaded.network = true;
+        (<any>console).network = function() {
+          return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
+        };
+        HttpTool.init();
+      }
+      if (!(<any>console).overloaded.log) {
+        (<any>console).overloaded.log = true;
+        const _log = console.log;
+        console.log = function() {
+          return _log.apply(console, ConsoleTool.handleLogMessage(BrtLogType.LOG, arguments));
+        };
+      }
+      if (!(<any>console).overloaded.debug) {
+        (<any>console).overloaded.debug = true;
+        const _debug = console.debug;
+        console.debug = function() {
+          return _debug.apply(console, ConsoleTool.handleLogMessage(BrtLogType.DEBUG, arguments));
+        };
+      }
+      if (!(<any>console).overloaded.error) {
+        (<any>console).overloaded.error = true;
+        const _error = console.error;
+        console.error = function() {
+          const args = ConsoleTool.handleLogMessage(BrtLogType.ERROR, arguments);
+          args.push(new Error().stack);
+          return _error.apply(console, args);
+        };
+      }
+      if (!(<any>console).overloaded.warn) {
+        (<any>console).overloaded.warn = true;
+        const _warn = console.warn;
+        console.warn = function() {
+          return _warn.apply(console, ConsoleTool.handleLogMessage(BrtLogType.WARN, arguments));
+        };
+      }
+      if (!(<any>console).overloaded.info) {
+        (<any>console).overloaded.info = true;
+        const _info = console.info;
+        console.info = function() {
+          return _info.apply(console, ConsoleTool.handleLogMessage(BrtLogType.INFO, arguments));
+        };
+      }
     } else {
       // console.info('BRUIT.IO - console already overloaded or disabled');
     }
@@ -162,7 +188,7 @@ export class ConsoleTool {
     if (type && args && args.length > 0) {
       const parentArgs = Array.from(args);
 
-      const thisLog = {
+      const currentLog = {
         type: type,
         timestamp: new Date(),
         arguments: []
@@ -176,14 +202,14 @@ export class ConsoleTool {
             arg = '';
           }
         }
-        thisLog.arguments.push(arg);
+        currentLog.arguments.push(arg);
       });
-      if (!Array.isArray(ConsoleTool.logByLevel[thisLog.type])) {
-        ConsoleTool.logByLevel[thisLog.type] = [];
+      if (!Array.isArray(ConsoleTool.logByLevel[currentLog.type])) {
+        ConsoleTool.logByLevel[currentLog.type] = [];
       }
-      ConsoleTool.logByLevel[thisLog.type].push(thisLog);
-      if (ConsoleTool.logByLevel[thisLog.type].length > ConsoleTool.BUFFER_SIZE) {
-        ConsoleTool.logByLevel[thisLog.type].shift();
+      ConsoleTool.logByLevel[currentLog.type].push(currentLog);
+      if (ConsoleTool.logByLevel[currentLog.type].length > ConsoleTool.brtLogCacheLength[currentLog.type]) {
+        ConsoleTool.logByLevel[currentLog.type].shift();
       }
       return parentArgs;
     } else {

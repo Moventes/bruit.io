@@ -1,8 +1,6 @@
-import { Component, Prop, State, Watch, EventEmitter, Event, Element } from '@stencil/core';
+import { Component, Prop, State, Watch, EventEmitter, Event, Element, Method } from '@stencil/core';
 import { BrtError, BrtData, BrtConfig } from '@bruit/types';
-import { BruitConfig } from '../../models/bruit-config.class';
-import { Feedback } from '../../api/feedback';
-import { SubmitButtonState } from '../../enums/submitButtonState.enum';
+import { BruitIoConfig } from '../../models/bruit-io-config.class';
 @Component({
   tag: 'bruit-io',
   styleUrl: 'bruit-io.scss',
@@ -36,10 +34,10 @@ export class BruitIo {
       _newConfig = newConfig as BrtConfig;
     }
     if (!configError) {
-      configError = BruitConfig.haveError(_newConfig);
+      configError = BruitIoConfig.haveError(_newConfig);
     }
     if (!configError) {
-      this._config = new BruitConfig(_newConfig);
+      this._config = new BruitIoConfig(_newConfig);
     } else {
       this.onError.emit(configError);
       console.error(configError);
@@ -59,6 +57,17 @@ export class BruitIo {
   @Prop()
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
+  @Method()
+  start(brtCoreConfig) {
+    var modal = document.getElementsByTagName('bruit-core');
+    if (modal.length <= 0) {
+      var bruitCore = document.createElement('bruit-core');
+      if (brtCoreConfig) {
+        bruitCore.config = brtCoreConfig;
+      }
+      document.body.appendChild(bruitCore);
+    }
+  }
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved
   /**
@@ -68,19 +77,14 @@ export class BruitIo {
   @Event() onError: EventEmitter;
 
   /**
-   * the current feedback (created when the modal opens)
-   */
-  private _currentFeedback: Feedback;
-
-  /**
    * the current and complete config
    */
   @State()
-  _config: BruitConfig;
+  _config: BruitIoConfig;
 
   // dom element of bruit-io component
   @Element()
-  bruitElement: HTMLStencilElement;
+  bruitIoElement: HTMLStencilElement;
   private _haveInnerElement: boolean;
 
   /**
@@ -90,7 +94,7 @@ export class BruitIo {
     // first init
     this.initConfig(this.config);
 
-    this._haveInnerElement = !!this.bruitElement.innerHTML ? !!this.bruitElement.innerHTML.trim() : false;
+    this._haveInnerElement = !!this.bruitIoElement.innerHTML ? !!this.bruitIoElement.innerHTML.trim() : false;
   }
 
   /**
@@ -98,78 +102,12 @@ export class BruitIo {
    * init a feedback, wait user submit, send feedback
    */
   newFeedback() {
-    //if there's already a current feedback, we have a probleme!!! => destroy it
-    if (this._currentFeedback) {
-      this.destroyFeedback();
+    const modal = document.getElementsByTagName('bruit-core')[0];
+    if (modal) {
+      modal.newFeedback(this._config, this.data, this.dataFn);
+    } else {
+      //error
     }
-    //create a new feedback
-    const feedback = new Feedback(this._config.apiKey);
-    // init feedback (screenshot) -> open modal =>  wait user submit
-    feedback
-      .init()
-      .then(() => this.openModal())
-      .then(() => this.waitOnSubmit())
-      .then(dataFromModal => {
-        //user submit with data dataFromModal
-        const sendFeedback = feedback.send(dataFromModal, this.data, this.dataFn);
-        // if the configuration says that the modal must be closed directly
-        if (this._config.closeModalOnSubmit) {
-          // close the modal and send feedback
-          this.closeModal();
-          return sendFeedback;
-        } else {
-          // else, we display de loader
-          this.setSubmitButtonState(SubmitButtonState.LOADING);
-          // send feedback
-          return sendFeedback.then(() => {
-            // we display the "validation" for <durationBeforeClosing> milliseconds
-            this.setSubmitButtonState(SubmitButtonState.CHECKED);
-            return new Promise(resolve => {
-              setTimeout(() => resolve(), this._config.durationBeforeClosing);
-            });
-          });
-        }
-      })
-      .then(() => {
-        // feedback is send !
-        this.destroyFeedback();
-        // end
-      })
-      .catch(err => {
-        if (err === 'close') {
-          this.destroyFeedback();
-          //console.log('feedback canceled');
-        } else {
-          this.onError.emit(err);
-          if (err && err.text) {
-            this.modalError = err;
-          } else {
-            this.modalError = {
-              code: 0,
-              text: 'An Unexpected Error Occurred'
-            };
-          }
-          console.error('BRUIT.IO error : ', err);
-          setTimeout(() => this.destroyFeedback(), 3000);
-        }
-      });
-  }
-
-  /**
-   * close the modal and destroy the _currentFeedback
-   */
-  destroyFeedback() {
-    this.closeModal();
-    if (this._currentFeedback) {
-      this._currentFeedback = undefined;
-    }
-  }
-
-  /**
-   * reset the modal values and open it
-   */
-  openModal() {
-    this.setSubmitButtonState(SubmitButtonState.SUBMIT);
   }
 
   // --------------------- TSX - HTML ------------------
