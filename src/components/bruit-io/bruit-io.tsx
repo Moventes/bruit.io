@@ -59,14 +59,14 @@ export class BruitIo {
 
   @Method()
   start(brtCoreConfig) {
-    console.log('start')
+    console.log('start');
     var modal = document.getElementsByTagName('bruit-core');
     if (modal.length <= 0) {
       var bruitCore = document.createElement('bruit-core');
       if (brtCoreConfig) {
         bruitCore.config = brtCoreConfig;
       }
-      console.log('append!')
+      console.log('append!');
       document.body.appendChild(bruitCore);
     }
   }
@@ -78,11 +78,11 @@ export class BruitIo {
    */
   @Event() onError: EventEmitter;
 
-  @Event({
-    bubbles:true
-  }) onReady: EventEmitter;
+  @Event()
+  onReady: EventEmitter;
 
-  componentDidLoad(){
+  componentDidLoad() {
+    console.log('emit true');
     this.onReady.emit(true);
   }
   /**
