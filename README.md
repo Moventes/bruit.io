@@ -48,7 +48,25 @@ And we do no data retention at all about those feedbacks 👏
 
 # Getting started
 
-<a href="https://bruit.io/"><button>start on bruit.io</button></a>
+<a href="https://bruit.io/"><button style="min-height: 3em;
+    background-color: #579b83;
+    color: #fff;    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    border: none;     text-align: center;     padding: 0 16px;
+    border-radius: 4px; cursor: pointer;">start on bruit.io</button></a>
+
+bruit.io component uses bruit.io servers by default. If you wish, It can be connected with your own server.
+
+bruit.io servers allow to transmit feedbacks for free on tools such as
+
+<p align="left">
+    <img alt="Mail" src="https://cdn.icon-icons.com/icons2/614/PNG/512/mail-black-envelope-symbol_icon-icons.com_56519.png" height="30px">
+    <img alt="GitLab" src="https://bruit.io/assets/imgs/GitLab.png" height="30px">
+    <img alt="Trello" src="https://bruit.io/assets/imgs/trello.png" height="30px">
+    <img alt="GitHub" src="https://banner2.kisspng.com/20180716/tza/kisspng-github-computer-icons-clip-art-gits-5b4d20ab1f4131.145288281531781291128.jpg" height="30px">
+    <img alt="Slack" src="https://img.icons8.com/office/1600/slack.png" height="30px">
+    <img alt="Basecamp" src="https://bruit.io/assets/imgs/basecamp-icon.png" height="30px">
+
+</p>
 
 # Table of Contents
 
@@ -56,10 +74,11 @@ And we do no data retention at all about those feedbacks 👏
 **[Usage](#usage)**<br>
 **[Configuration](#Configuration)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtConfig](#BrtConfig)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtCoreConfig](#BrtCoreConfig)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtField](#BrtField)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogLevels](#BrtLogLevels)**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogCacheLength](#BrtLogCacheLength)**<br>
 **[Add data in feedbacks](#add-data-in-feedback)**<br>
 **[Handle errors](#handle-errors)**<br>
 **[Frameworks integration](#Framework-integrations)**<br>
@@ -125,6 +144,8 @@ Integration code examples are available for these platforms:
 
 > `bruit-io` Web Component has a `config` attribute, which takes a value of [BrtConfig](#brtconfig) type.
 
+> `defineBruitElements` function which takes a value of [BrtCoreConfig](#brtcoreconfig) type.
+
 ### _BrtConfig_
 
 Describes the options for the `bruit-io` component
@@ -134,29 +155,45 @@ interface BrtConfig {
   apiKey?: string;
   form: Array<BrtField>;
   labels?: BrtLabels;
-  logLevels?: BrtLogLevels;
-  maxLogLines?: number;
   colors?: BrtColors;
   closeModalOnSubmit?: boolean;
   apiUrl?: string;
 }
 ```
 
-| Attribute          | Type                          | Description                                                                        | Mandatory | Default value                   |
-| ------------------ | ----------------------------- | ---------------------------------------------------------------------------------- | --------- | ------------------------------- |
-| apiKey             | string                        | your personal api key [(create an api key)](https://bruit.io/get-started)          | no        | -                               |
-| **form**           | array<[BrtField](#brtfield)>  | inputs list for the generated form                                                 | **yes**   | -                               |
-| labels             | [BrtLabels](#brtlabels)       | describes the labels of the modal (title / button / ...)                           | no        | [see](#brtlabels)               |
-| logLevels          | [BrtLogLevels](#BrtLogLevels) | Used to filter the logs to send by their level (debug, warn, error, etc)           | no        | [see](#BrtLogLevels)            |
-| maxLogLines        | number                        | Defines the number of log lines to send in the feedback                            | no        | 100                             |
-| colors             | [BrtColors](#BrtColors)       | Allows to pick your colors in the modal theming                                    | no        | [see](#BrtColors)               |
-| closeModalOnSubmit | boolean                       | true to have modal closed automatically on submit (feedback is sent in background) | no        | false                           |
-| apiUrl             | string                        | Allows to use some third party backend for feedback processing                     | no        | <https://api.bruit.io/feedback> |
+| Attribute          | Type                         | Description                                                                        | Mandatory | Default value                   |
+| ------------------ | ---------------------------- | ---------------------------------------------------------------------------------- | --------- | ------------------------------- |
+| apiKey             | string                       | your personal api key [(create an api key)](https://bruit.io/get-started)          | no        | -                               |
+| **form**           | array<[BrtField](#brtfield)> | inputs list for the generated form                                                 | **yes**   | -                               |
+| labels             | [BrtLabels](#brtlabels)      | describes the labels of the modal (title / button / ...)                           | no        | [see](#brtlabels)               |
+| colors             | [BrtColors](#BrtColors)      | Allows to pick your colors in the modal theming                                    | no        | [see](#BrtColors)               |
+| closeModalOnSubmit | boolean                      | true to have modal closed automatically on submit (feedback is sent in background) | no        | false                           |
+| apiUrl             | string                       | Allows to use some third party backend for feedback processing                     | no        | <https://api.bruit.io/feedback> |
 
 Typescript import :
 
 ```javascript
 import { BrtConfig } from '@bruit/component';
+```
+
+### _BrtCoreConfig_
+
+Describes the options for the bruit core
+
+```ts
+interface BrtCoreConfig {
+  logCacheLength?: BrtLogCacheLength;
+}
+```
+
+| Attribute      | Type                                    | Description                                              | Mandatory | Default value             |
+| -------------- | --------------------------------------- | -------------------------------------------------------- | --------- | ------------------------- |
+| logCacheLength | [BrtLogCacheLength](#brtlogcachelength) | describes the labels of the modal (title / button / ...) | no        | [see](#brtlogcachelength) |
+
+Typescript import :
+
+```javascript
+import { BrtCoreConfig } from '@bruit/component';
 ```
 
 ### _BrtField_
@@ -250,33 +287,31 @@ Typescript import:
 import { BrtColors } from '@bruit/component';
 ```
 
-### _BrtLogLevels_
+### _BrtLogCacheLength_
 
-By default, all log levels (log, warn, errors, ...) are sent in the feedback. `BrtLogLevels` allows to disable specific ones.
+By default, all log levels (log, warn, errors, ...) are sent in the feedback. `BrtLogCacheLength` allows to disable specific ones.
 
-To disable a type, just set the related type to false in the logLevels section:
+To disable a type, just set the related type to 0 in the logCacheLength section of core configuration:
 
 ```json
 {
-  "apiKey": "xxxxxxxxxx",
-  "form": ["..."],
-  "logLevels": {
-    "log": false,
+  "logCacheLength": {
+    "log": 0,
     ...
   }
 }
 ```
 
 ```ts
-interface BrtLogLevels {
-  log?: boolean;
-  debug?: boolean;
-  info?: boolean;
-  warn?: boolean;
-  error?: boolean;
-  network?: boolean;
-  click?: boolean;
-  url?: boolean;
+interface BrtLogCacheLength {
+  log?: number;
+  debug?: number;
+  info?: number;
+  warn?: number;
+  error?: number;
+  network?: number;
+  click?: number;
+  url?: number;
 }
 ```
 
@@ -289,7 +324,7 @@ bruit.io adds special types of logs:
 Typescript import:
 
 ```javascript
-import { BrtLogLevels } from '@bruit/component';
+import { BrtLogCacheLength } from '@bruit/component';
 ```
 
 # Add data to the feedback

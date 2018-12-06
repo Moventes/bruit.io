@@ -9,16 +9,31 @@ import '@stencil/core';
 
 
 import {
+  BruitIoConfig,
+} from './models/bruit-io-config.class';
+import {
   BrtConfig,
   BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
-import {
-  BruitIoConfig,
-} from './models/bruit-io-config.class';
 
 
 export namespace Components {
+
+  interface BruitCore {
+    'config': BrtCoreConfig | string;
+    /**
+    * called on click on component init a feedback, wait user submit, send feedback
+    */
+    'newFeedback': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
+  }
+  interface BruitCoreAttributes extends StencilHTMLAttributes {
+    'config'?: BrtCoreConfig | string;
+    /**
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent) => void;
+  }
 
   interface BruitIo {
     'config': BrtConfig | string;
@@ -30,7 +45,7 @@ export namespace Components {
     * FN or PROMISE return field array to add in feedback
     */
     'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
-    'start': (brtCoreConfig: any) => void;
+    'start': (brtCoreConfig: BrtCoreConfig) => void;
   }
   interface BruitIoAttributes extends StencilHTMLAttributes {
     'config'?: BrtConfig | string;
@@ -48,40 +63,19 @@ export namespace Components {
     'onOnError'?: (event: CustomEvent) => void;
     'onOnReady'?: (event: CustomEvent) => void;
   }
-
-  interface BruitCore {
-    'config': BrtCoreConfig | string;
-    /**
-    * called on click on component init a feedback, wait user submit, send feedback
-    */
-    'newFeedback': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => void;
-  }
-  interface BruitCoreAttributes extends StencilHTMLAttributes {
-    'config'?: BrtCoreConfig | string;
-    /**
-    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
-    */
-    'onOnError'?: (event: CustomEvent) => void;
-  }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'BruitIo': Components.BruitIo;
     'BruitCore': Components.BruitCore;
+    'BruitIo': Components.BruitIo;
   }
 
   interface StencilIntrinsicElements {
-    'bruit-io': Components.BruitIoAttributes;
     'bruit-core': Components.BruitCoreAttributes;
+    'bruit-io': Components.BruitIoAttributes;
   }
 
-
-  interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
-  var HTMLBruitIoElement: {
-    prototype: HTMLBruitIoElement;
-    new (): HTMLBruitIoElement;
-  };
 
   interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement {}
   var HTMLBruitCoreElement: {
@@ -89,14 +83,20 @@ declare global {
     new (): HTMLBruitCoreElement;
   };
 
+  interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
+  var HTMLBruitIoElement: {
+    prototype: HTMLBruitIoElement;
+    new (): HTMLBruitIoElement;
+  };
+
   interface HTMLElementTagNameMap {
-    'bruit-io': HTMLBruitIoElement
     'bruit-core': HTMLBruitCoreElement
+    'bruit-io': HTMLBruitIoElement
   }
 
   interface ElementTagNameMap {
-    'bruit-io': HTMLBruitIoElement;
     'bruit-core': HTMLBruitCoreElement;
+    'bruit-io': HTMLBruitIoElement;
   }
 
 

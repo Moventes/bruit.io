@@ -1,6 +1,7 @@
 import { Component, Prop, State, Watch, EventEmitter, Event, Element, Method } from '@stencil/core';
-import { BrtError, BrtData, BrtConfig } from '@bruit/types';
+import { BrtError, BrtData, BrtConfig, BrtCoreConfig } from '@bruit/types';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
+import { appendCore } from './../../appendCore';
 @Component({
   tag: 'bruit-io',
   styleUrl: 'bruit-io.scss',
@@ -58,17 +59,8 @@ export class BruitIo {
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
   @Method()
-  start(brtCoreConfig) {
-    console.log('start');
-    var modal = document.getElementsByTagName('bruit-core');
-    if (modal.length <= 0) {
-      var bruitCore = document.createElement('bruit-core');
-      if (brtCoreConfig) {
-        bruitCore.config = brtCoreConfig;
-      }
-      console.log('append!');
-      document.body.appendChild(bruitCore);
-    }
+  start(brtCoreConfig: BrtCoreConfig) {
+    appendCore(brtCoreConfig);
   }
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved

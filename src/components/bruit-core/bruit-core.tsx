@@ -25,7 +25,6 @@ export class BruitCore {
    */
   @Watch('config')
   initConfig(newConfig: BrtCoreConfig | string) {
-
     let _newConfig: BrtCoreConfig;
     let configError: BrtError | void;
     if (newConfig) {
@@ -121,42 +120,50 @@ export class BruitCore {
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
   ) {
     //if there's already a current feedback, we have a probleme!!! => destroy it
+    let preparePromise: Promise<void>;
     if (this._currentFeedback) {
-      this.destroyFeedback();
+      preparePromise = this.destroyFeedback();
+    } else {
+      preparePromise = Promise.resolve();
     }
-    //create a new feedback
-    this._bruitIoConfig = bruitIoConfig;
-    const feedback = new Feedback(this._bruitIoConfig.apiKey);
-    // init feedback (screenshot) -> open modal =>  wait user submit
-    feedback
-      .init()
-      .then(() => this.openModal())
-      .then(() => this.waitOnSubmit())
-      .then(dataFromModal => {
-        //user submit with data dataFromModal
-        const sendFeedback = feedback.send(dataFromModal, data, dataFn);
-        // if the configuration says that the modal must be closed directly
-        if (this._bruitIoConfig.closeModalOnSubmit) {
-          // close the modal and send feedback
-          this.closeModal();
-          return sendFeedback;
-        } else {
-          // else, we display de loader
-          this.setSubmitButtonState(SubmitButtonState.LOADING);
-          // send feedback
-          return sendFeedback.then(() => {
-            // we display the "validation" for <durationBeforeClosing> milliseconds
-            this.setSubmitButtonState(SubmitButtonState.CHECKED);
-            return new Promise(resolve => {
-              setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
-            });
-          });
-        }
-      })
+    return preparePromise
       .then(() => {
-        // feedback is send !
-        this.destroyFeedback();
-        // end
+        this._bruitIoConfig = bruitIoConfig;
+        const feedback = new Feedback(this._bruitIoConfig.apiKey);
+
+        //create a new feedback
+
+        // init feedback (screenshot) -> open modal =>  wait user submit
+        return feedback
+          .init()
+          .then(() => this.openModal())
+          .then(() => this.waitOnSubmit())
+          .then(dataFromModal => {
+            //user submit with data dataFromModal
+            const sendFeedback = feedback.send(dataFromModal, data, dataFn);
+            // if the configuration says that the modal must be closed directly
+            if (this._bruitIoConfig.closeModalOnSubmit) {
+              // close the modal and send feedback
+              this.closeModal();
+              return sendFeedback;
+            } else {
+              // else, we display de loader
+              this.setSubmitButtonState(SubmitButtonState.LOADING);
+              // send feedback
+              return sendFeedback.then(() => {
+                // we display the "validation" for <durationBeforeClosing> milliseconds
+                this.setSubmitButtonState(SubmitButtonState.CHECKED);
+                return new Promise(resolve => {
+                  setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
+                });
+              });
+            }
+          })
+          .then(() => {
+            // feedback is send !
+            return this.destroyFeedback();
+            // end
+          });
       })
       .catch(err => {
         if (err === 'close') {
@@ -182,19 +189,26 @@ export class BruitCore {
    * close the modal and destroy the _currentFeedback
    */
   destroyFeedback() {
-    this.closeModal();
-    if (this._currentFeedback) {
-      this._currentFeedback = undefined;
-    }
+    return this.closeModal().then(() => {
+      if (this._currentFeedback) {
+        this._currentFeedback = undefined;
+      }
+      return;
+    });
   }
 
   /**
    * reset the modal values and open it
    */
-  openModal() {
-    this.setSubmitButtonState(SubmitButtonState.SUBMIT);
-    this.modalBrtField = JSON.parse(JSON.stringify(this._bruitIoConfig.form));
+  openModal(): Promise<void> {
     this.modalOpened = true;
+    this.modalBrtField = JSON.parse(JSON.stringify(this._bruitIoConfig.form));
+    return new Promise(resolve => {
+      setTimeout(() => {
+        this.setSubmitButtonState(SubmitButtonState.SUBMIT);
+        resolve();
+      });
+    });
   }
 
   /**
@@ -202,10 +216,13 @@ export class BruitCore {
    */
   closeModal() {
     this.modalOpened = false;
-    setTimeout(() => {
-      this.modalBrtField = [];
-      this.modalError = undefined;
-    }, 250);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        this.modalBrtField = [];
+        this.modalError = undefined;
+        resolve();
+      }, 250);
+    });
   }
 
   /**
@@ -240,14 +257,14 @@ export class BruitCore {
       //------------------ close modal ----------------------
 
       const _closeModalFn = () => {
-        this.closeModal();
+        this.closeModal().then(() => {
+          // remove event listeners (for memory leaks and disable form)
+          button_close.removeEventListener('click', _closeModalFn, false);
+          modal_wrapper.removeEventListener('click', _closeModalFn, false);
+          form.removeEventListener('submit', _onSubmit, false);
 
-        // remove event listeners (for memory leaks and disable form)
-        button_close.removeEventListener('click', _closeModalFn, false);
-        modal_wrapper.removeEventListener('click', _closeModalFn, false);
-        form.removeEventListener('submit', _onSubmit, false);
-
-        reject('close');
+          reject('close');
+        });
       };
       button_close.addEventListener('click', _closeModalFn, { once: true });
       modal_wrapper.addEventListener('click', _closeModalFn, { once: true });
@@ -270,21 +287,24 @@ export class BruitCore {
    * @param state state of the submit button
    */
   setSubmitButtonState(state: SubmitButtonState) {
-    const buttonClassList = document.getElementById('bruit-io-submit-button').classList;
-    switch (state) {
-      case SubmitButtonState.CHECKED: {
-        buttonClassList.remove('onClick');
-        buttonClassList.add('validate');
-        break;
-      }
-      case SubmitButtonState.LOADING: {
-        buttonClassList.add('onClick');
-        buttonClassList.remove('validate');
-        break;
-      }
-      default: {
-        buttonClassList.remove('validate', 'onClick');
-        break;
+    const submitButton = document.getElementById('bruit-io-submit-button');
+    if (submitButton) {
+      const buttonClassList = submitButton.classList;
+      switch (state) {
+        case SubmitButtonState.CHECKED: {
+          buttonClassList.remove('onClick');
+          buttonClassList.add('validate');
+          break;
+        }
+        case SubmitButtonState.LOADING: {
+          buttonClassList.add('onClick');
+          buttonClassList.remove('validate');
+          break;
+        }
+        default: {
+          buttonClassList.remove('validate', 'onClick');
+          break;
+        }
       }
     }
   }
@@ -301,7 +321,7 @@ export class BruitCore {
         </span>
       );
     } else if (this._bruitCoreConfig) {
-      return <span />;
+      return <span>{this.modal()}</span>;
     } else {
       return <p class="error">missing config</p>;
     }
@@ -312,7 +332,7 @@ export class BruitCore {
       <div
         id="bruit-io-wrapper"
         class={this.modalOpened ? 'open' : 'close'}
-        style={{ 'background-color': this._bruitIoConfig.colors.background }}
+        style={{ 'background-color': this._bruitIoConfig ? this._bruitIoConfig.colors.background : 'transparent' }}
       >
         <div
           class="modal"
@@ -320,8 +340,8 @@ export class BruitCore {
             event.stopPropagation();
           }}
         >
-          {this.modalHeader()}
-          {this.modalContent()}
+          {this._bruitIoConfig ? this.modalHeader() : undefined}
+          {this._bruitIoConfig ? this.modalContent() : undefined}
         </div>
       </div>
     );
