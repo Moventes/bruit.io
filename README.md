@@ -54,9 +54,9 @@ And we do no data retention at all about those feedbacks 👏
     border: none;     text-align: center;     padding: 0 16px;
     border-radius: 4px; cursor: pointer;">start on bruit.io</button></a>
 
-bruit.io component uses bruit.io servers by default. If you wish, It can be connected with your own server.
+By default, bruit.io component posts feedbacks to bruit.io api. If you wish, It can be connected with your own.
 
-bruit.io servers allow to transmit feedbacks for free on tools such as
+The free bruit.io api allows to pass feedbacks on to tools such as
 
 <p align="left">
     <img alt="Mail" src="https://cdn.icon-icons.com/icons2/614/PNG/512/mail-black-envelope-symbol_icon-icons.com_56519.png" height="30px">
@@ -144,7 +144,7 @@ Integration code examples are available for these platforms:
 
 > `bruit-io` Web Component has a `config` attribute, which takes a value of [BrtConfig](#brtconfig) type.
 
-> `defineBruitElements` function which takes a value of [BrtCoreConfig](#brtcoreconfig) type.
+> `defineBruitElements` function which takes a configuration of [BrtCoreConfig](#brtcoreconfig) type.
 
 ### _BrtConfig_
 
@@ -186,9 +186,9 @@ interface BrtCoreConfig {
 }
 ```
 
-| Attribute      | Type                                    | Description                                              | Mandatory | Default value             |
-| -------------- | --------------------------------------- | -------------------------------------------------------- | --------- | ------------------------- |
-| logCacheLength | [BrtLogCacheLength](#brtlogcachelength) | describes the labels of the modal (title / button / ...) | no        | [see](#brtlogcachelength) |
+| Attribute      | Type                                    | Description                                                              | Mandatory | Default value             |
+| -------------- | --------------------------------------- | ------------------------------------------------------------------------ | --------- | ------------------------- |
+| logCacheLength | [BrtLogCacheLength](#brtlogcachelength) | Used to filter the logs to send by their level (debug, warn, error, etc) | no        | [see](#brtlogcachelength) |
 
 Typescript import :
 
