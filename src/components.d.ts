@@ -9,12 +9,31 @@ import '@stencil/core';
 
 
 import {
+  BruitIoConfig,
+} from './models/bruit-io-config.class';
+import {
   BrtConfig,
+  BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
 
 
 export namespace Components {
+
+  interface BruitCore {
+    'config': BrtCoreConfig | string;
+    /**
+    * called on click on component init a feedback, wait user submit, send feedback
+    */
+    'newFeedback': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
+  }
+  interface BruitCoreAttributes extends StencilHTMLAttributes {
+    'config'?: BrtCoreConfig | string;
+    /**
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent) => void;
+  }
 
   interface BruitIo {
     'config': BrtConfig | string;
@@ -26,6 +45,7 @@ export namespace Components {
     * FN or PROMISE return field array to add in feedback
     */
     'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
+    'start': (brtCoreConfig: BrtCoreConfig) => void;
   }
   interface BruitIoAttributes extends StencilHTMLAttributes {
     'config'?: BrtConfig | string;
@@ -41,18 +61,27 @@ export namespace Components {
     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */
     'onOnError'?: (event: CustomEvent) => void;
+    'onOnReady'?: (event: CustomEvent) => void;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
+    'BruitCore': Components.BruitCore;
     'BruitIo': Components.BruitIo;
   }
 
   interface StencilIntrinsicElements {
+    'bruit-core': Components.BruitCoreAttributes;
     'bruit-io': Components.BruitIoAttributes;
   }
 
+
+  interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement {}
+  var HTMLBruitCoreElement: {
+    prototype: HTMLBruitCoreElement;
+    new (): HTMLBruitCoreElement;
+  };
 
   interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
   var HTMLBruitIoElement: {
@@ -61,10 +90,12 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'bruit-core': HTMLBruitCoreElement
     'bruit-io': HTMLBruitIoElement
   }
 
   interface ElementTagNameMap {
+    'bruit-core': HTMLBruitCoreElement;
     'bruit-io': HTMLBruitIoElement;
   }
 

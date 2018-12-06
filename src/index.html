@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
   <title>serv:BRUIT</title>
   <script src="/build/bruit.js"></script>
+  <!-- <script type="module">
+    import { defineCustomElements } from '/build/bruit/';
+    defineCustomElements(window);
+  </script> -->
 </head>
 
 <body>
@@ -18,9 +22,13 @@
       font: italic bold 20px/30px Georgia, serif;
     }
 
+    #viewport {
+      transform: rotate(5deg);
+    }
+
   </style>
 
-  <bruit-io> </bruit-io>
+
 
   <div>
     <ul>
@@ -30,14 +38,24 @@
         <ul>
           <li>try me !</li>
           <li id="second">me to!</li>
+          <li id="viewport">
+            <bruit-io> </bruit-io>
+          </li>
         </ul>
       </li>
     </ul>
   </div>
 
-  <script>
-    var bruitCmp = document.querySelector('bruit-io');
 
+
+  <script>
+    // window.addEventListener('load', function () {
+    var bruitCmp = document.querySelector('bruit-io');
+    console.log('start', bruitCmp);
+    bruitCmp.addEventListener('onReady', function () {
+      console.log('ready');
+      bruitCmp.start();
+    });
     bruitCmp.config =
       JSON.stringify({
         apiKey: 'JlcerWZLcVw0mxWkRaYY',
@@ -84,6 +102,7 @@
         data: 'lamstutz'
       }]);
     });
+    // });
 
   </script>
 </body>

@@ -21,15 +21,20 @@ export class Feedback implements BrtFeedback {
     this.cookies = NavigatorTool.getCookies();
     this.navigator = NavigatorTool.getInfo();
     this.display = ScreenTool.getInfo();
-    this.logs = (<any>console).logArray();
+    if ((<any>console).overloadable && (<any>console).overloaded && (<any>console).overloaded.logArray) {
+      this.logs = (<any>console).logArray();
+    } else {
+      this.logs = [];
+    }
   }
 
   init(): Promise<void> {
     // take screenShot
-    return ScreenTool.getScreenshot().then(screenshot => {
-      this.canvas = screenshot;
-      return;
-    });
+    return Promise.resolve();
+    // return ScreenTool.getScreenshot().then(screenshot => {
+    //   this.canvas = screenshot;
+    //   return;
+    // });
   }
 
   /**

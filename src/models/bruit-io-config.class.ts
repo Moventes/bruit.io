@@ -2,24 +2,13 @@ import { BrtConfig, BrtField, BrtError } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { ComponentConfig } from '../config/config';
 
-export class BruitConfig implements BrtConfig {
+export class BruitIoConfig implements BrtConfig {
   apiKey: string;
   labels = {
     title: 'bruit.io',
     introduction: '',
     button: 'send'
   };
-  logLevels = {
-    log: true,
-    debug: true,
-    info: true,
-    warn: true,
-    error: true,
-    network: true,
-    click: true,
-    url: true
-  };
-  maxLogLines = 100;
   colors = {
     header: '#2D8297',
     body: '#eee',
@@ -33,6 +22,7 @@ export class BruitConfig implements BrtConfig {
 
   constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
+
     this.form = config.form.map((field, index) => {
       field.id = field.id
         ? field.id.trim().toLowerCase()
@@ -43,15 +33,7 @@ export class BruitConfig implements BrtConfig {
             .toLowerCase()}`;
       return field;
     });
-    if (config.logLevels) {
-      this.logLevels = {
-        ...this.logLevels,
-        ...config.logLevels
-      };
-    }
-    if (config.maxLogLines) {
-      this.maxLogLines = config.maxLogLines;
-    }
+
     if (config.labels) {
       this.labels = {
         ...this.labels,

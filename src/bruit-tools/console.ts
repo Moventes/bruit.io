@@ -1,34 +1,30 @@
-import { BrtLogLevels } from '@bruit/types';
-import { BruitConfig } from './../models/bruit-config.class';
+import { HttpTool } from './http';
+import { UrlTool } from './url';
+import { ClickTool } from './click';
+import { BrtLog, BrtLogCacheLength } from '@bruit/types';
+import { BrtLogType } from '@bruit/types/dist/enums/brt-log-type';
+
 export class ConsoleTool {
-  private static BUFFER_SIZE = 100;
-  private static logArray = [];
+  private static brtLogCacheLength: BrtLogCacheLength;
+  private static logByLevel: { [level: string]: Array<BrtLog> } = {};
 
-  public static LOG_ENABLED = true;
-
-  static init(config: BruitConfig) {
+  static init(brtLogCacheLengthConfig: BrtLogCacheLength) {
     if (
       !(
         !!(<any>window).cordova ||
-        (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0) ||
-        (config.logLevels.click ||
-          config.logLevels.debug ||
-          config.logLevels.error ||
-          config.logLevels.info ||
-          config.logLevels.log ||
-          config.logLevels.network ||
-          config.logLevels.url ||
-          config.logLevels.warn)
+        (document.URL.indexOf('http://localhost') !== 0 && document.URL.indexOf('http://127.0.0.1') !== 0)
       )
     ) {
-      ConsoleTool.LOG_ENABLED = false;
+      (<any>console).overloadable = false;
       console.info('BRUIT.IO - logs reports are disabled in localhost mode');
+    } else {
+      (<any>console).overloadable = true;
     }
-    ConsoleTool.BUFFER_SIZE = config.maxLogLines;
-    ConsoleTool.configure(config.logLevels);
+    ConsoleTool.brtLogCacheLength = brtLogCacheLengthConfig;
+    ConsoleTool.configure();
   }
 
-  private static configure(levels: BrtLogLevels) {
+  private static configure() {
     if (typeof (<any>JSON).decycle !== 'function') {
       (<any>JSON).decycle = function decycle(object, replacer) {
         const objects = new WeakMap();
@@ -110,71 +106,89 @@ export class ConsoleTool {
       };
     }
 
-    if (this.LOG_ENABLED && !(<any>console).overloaded) {
-      (<any>console).overloaded = true;
+    if ((<any>console).overloadable) {
+      if (!(<any>console).overloaded) {
+        (<any>console).overloaded = {};
+      }
 
-      (<any>console).logArray = function() {
-        return JSON.parse(JSON.stringify(ConsoleTool.logArray));
-      };
-
-      if (levels.click) {
+      if (!(<any>console).overloaded.logArray) {
+        (<any>console).overloaded.logArray = true;
+        (<any>console).logArray = () => {
+          return Object.entries(ConsoleTool.brtLogCacheLength)
+            .filter(v => v[1] > 0)
+            .map(v => ConsoleTool.logByLevel[v[0]])
+            .reduce((logArray, logsLevel) => logArray.concat(logsLevel), [])
+            .sort((logA, logB) => logA.timestamp.getTime() - logB.timestamp.getTime());
+        };
+      }
+      if (!(<any>console).overloaded.click) {
+        (<any>console).overloaded.click = true;
         (<any>console).click = function() {
-          return ConsoleTool.handleLogMessage('click', arguments);
+          return ConsoleTool.handleLogMessage(BrtLogType.CLICK, arguments);
         };
+        ClickTool.init();
       }
-      if (levels.url) {
+      if (!(<any>console).overloaded.url) {
+        (<any>console).overloaded.url = true;
         (<any>console).url = function() {
-          return ConsoleTool.handleLogMessage('url', arguments);
+          return ConsoleTool.handleLogMessage(BrtLogType.URL, arguments);
         };
+        UrlTool.init();
       }
-
-      if (levels.network) {
+      if (!(<any>console).overloaded.network) {
+        (<any>console).overloaded.network = true;
         (<any>console).network = function() {
-          return ConsoleTool.handleLogMessage('network', arguments);
+          return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
         };
+        HttpTool.init();
       }
-      if (levels.log) {
+      if (!(<any>console).overloaded.log) {
+        (<any>console).overloaded.log = true;
         const _log = console.log;
         console.log = function() {
-          return _log.apply(console, ConsoleTool.handleLogMessage('log', arguments));
+          return _log.apply(console, ConsoleTool.handleLogMessage(BrtLogType.LOG, arguments));
         };
       }
-      if (levels.debug) {
+      if (!(<any>console).overloaded.debug) {
+        (<any>console).overloaded.debug = true;
         const _debug = console.debug;
         console.debug = function() {
-          return _debug.apply(console, ConsoleTool.handleLogMessage('debug', arguments));
+          return _debug.apply(console, ConsoleTool.handleLogMessage(BrtLogType.DEBUG, arguments));
         };
       }
-      if (levels.error) {
+      if (!(<any>console).overloaded.error) {
+        (<any>console).overloaded.error = true;
         const _error = console.error;
         console.error = function() {
-          const args = ConsoleTool.handleLogMessage('error', arguments);
+          const args = ConsoleTool.handleLogMessage(BrtLogType.ERROR, arguments);
           args.push(new Error().stack);
           return _error.apply(console, args);
         };
       }
-      if (levels.warn) {
+      if (!(<any>console).overloaded.warn) {
+        (<any>console).overloaded.warn = true;
         const _warn = console.warn;
         console.warn = function() {
-          return _warn.apply(console, ConsoleTool.handleLogMessage('warn', arguments));
+          return _warn.apply(console, ConsoleTool.handleLogMessage(BrtLogType.WARN, arguments));
         };
       }
-      if (levels.info) {
+      if (!(<any>console).overloaded.info) {
+        (<any>console).overloaded.info = true;
         const _info = console.info;
         console.info = function() {
-          return _info.apply(console, ConsoleTool.handleLogMessage('info', arguments));
+          return _info.apply(console, ConsoleTool.handleLogMessage(BrtLogType.INFO, arguments));
         };
       }
     } else {
-      console.info('BRUIT.IO - console already overloaded or disabled');
+      // console.info('BRUIT.IO - console already overloaded or disabled');
     }
   }
 
-  private static handleLogMessage(type: string, args: IArguments): Array<any> {
+  private static handleLogMessage(type: BrtLogType, args: IArguments): Array<any> {
     if (type && args && args.length > 0) {
       const parentArgs = Array.from(args);
 
-      const thisLog = {
+      const currentLog = {
         type: type,
         timestamp: new Date(),
         arguments: []
@@ -188,11 +202,14 @@ export class ConsoleTool {
             arg = '';
           }
         }
-        thisLog.arguments.push(arg);
+        currentLog.arguments.push(arg);
       });
-      ConsoleTool.logArray.push(thisLog);
-      if (ConsoleTool.logArray.length > ConsoleTool.BUFFER_SIZE) {
-        ConsoleTool.logArray.shift();
+      if (!Array.isArray(ConsoleTool.logByLevel[currentLog.type])) {
+        ConsoleTool.logByLevel[currentLog.type] = [];
+      }
+      ConsoleTool.logByLevel[currentLog.type].push(currentLog);
+      if (ConsoleTool.logByLevel[currentLog.type].length > ConsoleTool.brtLogCacheLength[currentLog.type]) {
+        ConsoleTool.logByLevel[currentLog.type].shift();
       }
       return parentArgs;
     } else {
