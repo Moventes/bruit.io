@@ -74,7 +74,6 @@ export class BruitIo {
   onReady: EventEmitter;
 
   componentDidLoad() {
-    console.log('emit true');
     this.onReady.emit(true);
   }
   /**

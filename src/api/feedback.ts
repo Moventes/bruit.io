@@ -30,11 +30,10 @@ export class Feedback implements BrtFeedback {
 
   init(): Promise<void> {
     // take screenShot
-    return Promise.resolve();
-    // return ScreenTool.getScreenshot().then(screenshot => {
-    //   this.canvas = screenshot;
-    //   return;
-    // });
+    return ScreenTool.getScreenshot().then(screenshot => {
+      this.canvas = screenshot;
+      return null;
+    });
   }
 
   /**

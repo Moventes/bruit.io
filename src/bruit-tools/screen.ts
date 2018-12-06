@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import html2canvas from '@bruit/html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
 
 export class ScreenTool {
@@ -10,7 +10,7 @@ export class ScreenTool {
     };
   }
 
-  static getScreenshot(): Promise<string> {
+  static async getScreenshot(): Promise<string> {
     const div = document.body;
     const options = {
       background: 'white',
@@ -18,6 +18,12 @@ export class ScreenTool {
       width: div.clientWidth,
       logging: false
     };
-    return html2canvas(div, options).then(canvas => canvas.toDataURL());
+    try {
+      const canvas = await html2canvas(div, options);
+      const base64 = await canvas.toDataURL();
+      return base64;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
