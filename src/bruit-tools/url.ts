@@ -4,6 +4,7 @@ export class UrlTool {
       window.addEventListener('hashchange', () => {
         this.logUrl(window.location.href);
       });
+      this.logUrl(window.location.href);
     }
   }
 

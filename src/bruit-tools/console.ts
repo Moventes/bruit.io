@@ -115,7 +115,7 @@ export class ConsoleTool {
         (<any>console).overloaded.logArray = true;
         (<any>console).logArray = () => {
           return Object.entries(ConsoleTool.brtLogCacheLength)
-            .filter(v => v[1] > 0)
+            .filter(v => v[1] > 0 && ConsoleTool.logByLevel[v[0]])
             .map(v => ConsoleTool.logByLevel[v[0]])
             .reduce((logArray, logsLevel) => logArray.concat(logsLevel), [])
             .sort((logA, logB) => logA.timestamp.getTime() - logB.timestamp.getTime());
