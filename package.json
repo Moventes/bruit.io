@@ -8,7 +8,6 @@
   "main": "dist/index.js",
   "types": "dist/types/typings.d.ts",
   "collection": "dist/collection/collection-manifest.json",
-  "man": "README.md",
   "files": [
     "dist/"
   ],
@@ -50,5 +49,6 @@
   "dependencies": {
     "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
     "@bruit/types": "^0.2.3"
-  }
+  },
+  "man": "README.md"
 }
