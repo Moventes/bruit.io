@@ -45,6 +45,6 @@
   "homepage": "https://bruit.io/",
   "dependencies": {
     "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
-    "@bruit/types": "^0.2.1"
+    "@bruit/types": "^0.2.3"
   }
 }

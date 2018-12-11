@@ -443,6 +443,9 @@ export class BruitCore {
         case BrtFieldType.TEXTAREA: {
           return this.textareaField(field);
         }
+        case BrtFieldType.RATING: {
+          return this.ratingField(field);
+        }
         default: {
           const err = { code: 116, text: `"${field.type}" field type is not supported` };
           console.error('BRUIT.IO error : ', err);
@@ -523,6 +526,23 @@ export class BruitCore {
         >
           {field.label}
         </a>
+      </div>
+    );
+  }
+
+  ratingField(field: BrtField) {
+    return (
+      <div class="group without-bar">
+        <bruit-rating
+          class="has-value"
+          id={field.id}
+          onColor={this._bruitIoConfig.colors.focus}
+          offColor="#999"
+          value={field.value}
+          max={field.max}
+          onValueChange={e => (field.value = e.detail)}
+        />
+        <label htmlFor={field.id}>{field.label}</label>
       </div>
     );
   }

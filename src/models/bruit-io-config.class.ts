@@ -125,7 +125,7 @@ export class BruitIoConfig implements BrtConfig {
     }
     // control types
     const allTypes = Object.keys(BrtFieldType).map(BrtFieldTypeKey => BrtFieldType[BrtFieldTypeKey]);
-    const badTypes = form.map(field => field.type).filter(id => !allTypes.includes(id));
+    const badTypes = form.map(field => field.type).filter(type => !allTypes.includes(type));
     if (badTypes.length > 0) {
       return {
         code: 116,

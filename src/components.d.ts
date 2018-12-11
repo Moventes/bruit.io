@@ -63,17 +63,33 @@ export namespace Components {
     'onOnError'?: (event: CustomEvent) => void;
     'onOnReady'?: (event: CustomEvent) => void;
   }
+
+  interface BruitRating {
+    'max': number;
+    'offColor': string;
+    'onColor': string;
+    'value': number;
+  }
+  interface BruitRatingAttributes extends StencilHTMLAttributes {
+    'max'?: number;
+    'offColor'?: string;
+    'onColor'?: string;
+    'onValueChange'?: (event: CustomEvent) => void;
+    'value'?: number;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'BruitCore': Components.BruitCore;
     'BruitIo': Components.BruitIo;
+    'BruitRating': Components.BruitRating;
   }
 
   interface StencilIntrinsicElements {
     'bruit-core': Components.BruitCoreAttributes;
     'bruit-io': Components.BruitIoAttributes;
+    'bruit-rating': Components.BruitRatingAttributes;
   }
 
 
@@ -89,14 +105,22 @@ declare global {
     new (): HTMLBruitIoElement;
   };
 
+  interface HTMLBruitRatingElement extends Components.BruitRating, HTMLStencilElement {}
+  var HTMLBruitRatingElement: {
+    prototype: HTMLBruitRatingElement;
+    new (): HTMLBruitRatingElement;
+  };
+
   interface HTMLElementTagNameMap {
     'bruit-core': HTMLBruitCoreElement
     'bruit-io': HTMLBruitIoElement
+    'bruit-rating': HTMLBruitRatingElement
   }
 
   interface ElementTagNameMap {
     'bruit-core': HTMLBruitCoreElement;
     'bruit-io': HTMLBruitIoElement;
+    'bruit-rating': HTMLBruitRatingElement;
   }
 
 

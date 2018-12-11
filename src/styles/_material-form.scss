@@ -7,6 +7,10 @@
   max-width: 400px;
   white-space: normal;
 
+  &.without-bar {
+    margin-bottom: 35px;
+  }
+
 
   input:not([type="checkbox"]),
   textarea {
@@ -44,7 +48,8 @@
 
   /* active state */
   input:not([type="checkbox"]),
-  textarea {
+  textarea,
+  bruit-rating {
     font-size: 14px;
 
     &:focus,
@@ -130,9 +135,14 @@
     // }
   }
 
+  $grey: #555;
+
+  bruit-rating~label {
+    color: $grey
+  }
+
 
   $green: #22b573;
-  $grey: #555;
   $transitionSpeed: 200ms;
 
   input[type="checkbox"]+label {
