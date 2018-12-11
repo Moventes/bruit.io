@@ -1,12 +1,14 @@
 {
   "name": "@bruit/component",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "send your feedbacks with bruit.io",
+  "keywords": ["bruit", "bruit.io", "webcomponent", "feedback", "issues", "stencil", "user", "connect"],
   "private": false,
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
   "types": "dist/types/typings.d.ts",
   "collection": "dist/collection/collection-manifest.json",
+  "man": "README.md",
   "files": [
     "dist/"
   ],
@@ -32,15 +34,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ionic-team/stencil-component-starter.git"
+    "url": "git+https://github.com/Moventes/bruit.io.git"
   },
   "author": {
     "name": "moventes",
-    "email": "dev@moventes.com"
+    "email": "dev@moventes.com",
+    "url": "https://moventes.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/moventes/bruit"
+    "url": "https://github.com/Moventes/bruit.io/issues",
+    "email": "dev@bruit.io"
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
