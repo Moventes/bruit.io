@@ -78,7 +78,7 @@ export class Feedback implements BrtFeedback {
     // dataFn (function or promise)
     if (dataFn) {
       if (typeof dataFn === 'function') {
-        Promise.resolve((<() => Array<BrtData>>dataFn)());
+        return Promise.resolve((<() => Array<BrtData>>dataFn)());
       } else if (typeof dataFn === 'object' && (<Promise<Array<BrtData>>>dataFn).then) {
         return <Promise<Array<BrtData>>>dataFn;
       }
