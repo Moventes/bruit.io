@@ -530,42 +530,42 @@ export class BruitCore {
   theming() {
     return (
       <style>
-        {'bruit-io .group .bar:before, bruit-io .group .bar:after{' +
+        {'bruit-core .group .bar:before, bruit-core .group .bar:after{' +
           'background-color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-io .group input:not([type="checkbox"]):invalid ~.bar:before, bruit-io .group input:not([type="checkbox"]):invalid ~.bar:after{' +
+          'bruit-core .group input:not([type="checkbox"]):invalid ~.bar:before, bruit-core .group input:not([type="checkbox"]):invalid ~.bar:after{' +
           'background-color: ' +
           this._bruitIoConfig.colors.errors +
           '}' +
-          'bruit-io button#bruit-io-submit-button:hover{' +
+          'bruit-core button#bruit-io-submit-button:hover{' +
           'background-color: ' +
           this._bruitIoConfig.colors.header +
           '!important ;' +
           'color: white !important;' +
           '}' +
-          'bruit-io button#bruit-io-submit-button.onClick{' +
+          'bruit-core button#bruit-io-submit-button.onClick{' +
           'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
           this._bruitIoConfig.colors.header +
           '!important;}' +
-          'bruit-io .group input[type="checkbox"]:checked+label, bruit-io .group input[type="checkbox"]+label:after{' +
+          'bruit-core .group input[type="checkbox"]:checked+label, bruit-core .group input[type="checkbox"]+label:after{' +
           'border-color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-io .group input:not([type="checkbox"]).has-value:invalid~label, bruit-io .group input:not([type="checkbox"]):focus:invalid~label{' +
+          'bruit-core .group input:not([type="checkbox"]).has-value:invalid~label, bruit-core .group input:not([type="checkbox"]):focus:invalid~label{' +
           'color: ' +
           this._bruitIoConfig.colors.errors +
           '}' +
-          'bruit-io .group input:not([type="checkbox"]).has-value~label, bruit-io .group input:not([type="checkbox"]):focus~label{' +
+          'bruit-core .group input:not([type="checkbox"]).has-value~label, bruit-core .group input:not([type="checkbox"]):focus~label{' +
           'color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-io .group textarea.has-value~label, bruit-io .group textarea:focus~label{' +
+          'bruit-core .group textarea.has-value~label, bruit-core .group textarea:focus~label{' +
           'color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-io .group textarea.has-value:invalid~label{' +
+          'bruit-core .group textarea.has-value:invalid~label{' +
           'color: ' +
           this._bruitIoConfig.colors.errors +
           '}'}
