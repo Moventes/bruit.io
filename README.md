@@ -70,7 +70,7 @@ The free bruit.io api allows to pass feedbacks on to tools such as
 
 # Table of Contents
 
-**[Installation](#install)**<br>
+**[Installation](#installation)**<br>
 **[Usage](#usage)**<br>
 **[Configuration](#Configuration)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtConfig](#BrtConfig)**<br>
@@ -79,11 +79,11 @@ The free bruit.io api allows to pass feedbacks on to tools such as
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogCacheLength](#BrtLogCacheLength)**<br>
-**[Add data in feedbacks](#add-data-in-feedback)**<br>
+**[Add data in feedbacks](#add-data-to-the-feedback)**<br>
 **[Handle errors](#handle-errors)**<br>
 **[Frameworks integration](#Framework-integrations)**<br>
 **[Contributing](#Contributing)**<br>
-**[Having troubles?](#Having-troubles-?)**<br>
+**[Having troubles?](#Having-troubles-)**<br>
 
 # Installation
 
