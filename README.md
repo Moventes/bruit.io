@@ -161,14 +161,14 @@ interface BrtConfig {
 }
 ```
 
-| Attribute          | Type                         | Description                                                                        | Mandatory | Default value                   |
-| ------------------ | ---------------------------- | ---------------------------------------------------------------------------------- | --------- | ------------------------------- |
-| apiKey             | string                       | your personal api key [(create an api key)](https://bruit.io/get-started)          | no        | -                               |
-| **form**           | array<[BrtField](#brtfield)> | inputs list for the generated form                                                 | **yes**   | -                               |
-| labels             | [BrtLabels](#brtlabels)      | describes the labels of the modal (title / button / ...)                           | no        | [see](#brtlabels)               |
-| colors             | [BrtColors](#BrtColors)      | Allows to pick your colors in the modal theming                                    | no        | [see](#BrtColors)               |
-| closeModalOnSubmit | boolean                      | true to have modal closed automatically on submit (feedback is sent in background) | no        | false                           |
-| apiUrl             | string                       | Allows to use some third party backend for feedback processing                     | no        | <https://api.bruit.io/feedback> |
+| Attribute          | Type                         | Description                                                                        | Mandatory | Default value       |
+| ------------------ | ---------------------------- | ---------------------------------------------------------------------------------- | --------- | ------------------- |
+| apiKey             | string                       | your personal api key [(create an api key)](https://bruit.io/get-started)          | no        | -                   |
+| **form**           | array<[BrtField](#brtfield)> | inputs list for the generated form                                                 | **yes**   | -                   |
+| labels             | [BrtLabels](#brtlabels)      | describes the labels of the modal (title / button / ...)                           | no        | [see](#brtlabels)   |
+| colors             | [BrtColors](#BrtColors)      | Allows to pick your colors in the modal theming                                    | no        | [see](#BrtColors)   |
+| closeModalOnSubmit | boolean                      | true to have modal closed automatically on submit (feedback is sent in background) | no        | false               |
+| apiUrl             | string                       | Allows to use some third party backend for feedback processing                     | no        | [see](#BrtFeedback) |
 
 Typescript import :
 
@@ -204,9 +204,10 @@ Describes both the fields displayed in the popup form and the users' answers.
 interface BrtField {
   id?: string;
   label: string;
-  type: string;
+  type: BrtFieldType;
   required?: boolean;
   value?: any;
+  max?: number;
 }
 ```
 
@@ -217,6 +218,7 @@ interface BrtField {
 | **type**  | BrtFieldType | The input type of the field                          | **yes**   |
 | required  | boolean      | true to make the field required to send the feedback | no        |
 | value     | any          | The value typed by the user                          | no        |
+| max       | number       | max number for rating type                           | no        |
 
 `BrtConfig.form` must contain one `BrtField` with `id="agreement"` and `type="checkbox"`, used to check whether personal data should be sent with the feedback.
 
@@ -325,6 +327,35 @@ Typescript import:
 
 ```javascript
 import { BrtLogCacheLength } from '@bruit/component';
+```
+
+### _BrtFeedback_
+
+By default, bruit.io component posts a feedback to bruit.io API (<https://api.bruit.io/feedback>).
+
+If you wish, it can be connected with your own API.
+
+To do it, you must provide a API endpoint, to be passed to [BrtConfig](#brtconfig) as `apiUrl`.
+
+bruit.io component posts a `BrtFeedback` to your API endpoint.
+
+```ts
+interface BrtFeedback {
+  apiKey?: string;
+  canvas?: string;
+  url?: string;
+  cookies?: BrtCookies;
+  navigator?: BrtNavigatorInfo;
+  display?: BrtScreenInfo;
+  logs?: Array<BrtLog>;
+  data: Array<BrtData>;
+}
+```
+
+Typescript import:
+
+```javascript
+import { BrtFeedback } from '@bruit/types';
 ```
 
 # Add data to the feedback
