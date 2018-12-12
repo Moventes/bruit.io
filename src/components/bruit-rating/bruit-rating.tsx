@@ -10,13 +10,13 @@ export class BruitRatingComponent {
   value: number = 1;
   @Watch('value')
   watchValue(newValue: number, oldValue: number) {
-    if (!newValue || newValue > this.max || newValue <= 0) {
+    if (!newValue || newValue <= 0) {
       this.value = 1;
+    } else if (newValue > this.max) {
+      this.value = this.max;
     }
-    console.log('watchValue', this.value, newValue, oldValue);
 
-    if (newValue !== oldValue) {
-      console.log('emit', this.value);
+    if (this.value !== oldValue) {
       this.valueChange.emit(this.value);
     }
   }
@@ -30,6 +30,10 @@ export class BruitRatingComponent {
   watchMax(newValue: number) {
     if (!newValue || newValue <= 0) {
       this.max = 5;
+    }
+
+    if (this.value > this.max) {
+      this.value = this.max;
     }
   }
 
@@ -76,7 +80,6 @@ export class BruitRatingComponent {
   }
 
   starsRating() {
-    console.log(this.stars);
     return this.stars.map((on, index) => this.star(index + 1, on));
   }
 
