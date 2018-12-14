@@ -1,8 +1,17 @@
 {
   "name": "@bruit/component",
-  "version": "0.6.3-1",
+  "version": "0.6.4",
   "description": "send your feedbacks with bruit.io",
-  "keywords": ["bruit", "bruit.io", "webcomponent", "feedback", "issues", "stencil", "user", "connect"],
+  "keywords": [
+    "bruit",
+    "bruit.io",
+    "webcomponent",
+    "feedback",
+    "issues",
+    "stencil",
+    "user",
+    "connect"
+  ],
   "private": false,
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -21,7 +30,7 @@
     "docs": "stencil build --docs"
   },
   "devDependencies": {
-    "@stencil/core": "0.16.0",
+    "@stencil/core": "0.16.1",
     "@stencil/sass": "^0.1.1",
     "@types/jest": "^23.3.5",
     "@types/puppeteer": "1.9.0",
@@ -48,7 +57,7 @@
   "homepage": "https://bruit.io/",
   "dependencies": {
     "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
-    "@bruit/types": "^0.2.3"
+    "@bruit/types": "^0.2.6"
   },
   "man": "README.md"
 }

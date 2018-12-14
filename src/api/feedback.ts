@@ -19,7 +19,7 @@ export class Feedback implements BrtFeedback {
     this.apiKey = apiKey;
     this.url = NavigatorTool.getUrl();
     this.cookies = NavigatorTool.getCookies();
-    this.navigator = NavigatorTool.getInfo();
+
     this.display = ScreenTool.getInfo();
     if ((<any>console).overloadable && (<any>console).overloaded && (<any>console).overloaded.logArray) {
       this.logs = (<any>console).logArray();
@@ -30,10 +30,16 @@ export class Feedback implements BrtFeedback {
 
   init(): Promise<void> {
     // take screenShot
-    return ScreenTool.getScreenshot().then(screenshot => {
-      this.canvas = screenshot;
-      return null;
-    });
+    return Promise.all([
+      ScreenTool.getScreenshot().then(screenshot => {
+        this.canvas = screenshot;
+        return;
+      }),
+      NavigatorTool.getInfo().then(navigator => {
+        this.navigator = navigator;
+        return;
+      })
+    ]).then(() => {});
   }
 
   /**
