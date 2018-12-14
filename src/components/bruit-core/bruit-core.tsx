@@ -536,7 +536,7 @@ export class BruitCore {
         <bruit-rating
           class="has-value"
           id={field.id}
-          onColor={this._bruitIoConfig.colors.focus}
+          color={this._bruitIoConfig.colors.focus}
           offColor="#999"
           value={field.value}
           max={field.max}

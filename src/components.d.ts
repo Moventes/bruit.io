@@ -65,15 +65,15 @@ export namespace Components {
   }
 
   interface BruitRating {
+    'color': string;
     'max': number;
     'offColor': string;
-    'onColor': string;
     'value': number;
   }
   interface BruitRatingAttributes extends StencilHTMLAttributes {
+    'color'?: string;
     'max'?: number;
     'offColor'?: string;
-    'onColor'?: string;
     'onValueChange'?: (event: CustomEvent) => void;
     'value'?: number;
   }

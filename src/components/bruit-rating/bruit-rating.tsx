@@ -38,9 +38,9 @@ export class BruitRatingComponent {
   }
 
   @Prop()
-  onColor: string = '#ffd83d';
-  @Watch('onColor')
-  watchOnColor(newValue: string, oldValue: string) {
+  color: string = '#ffd83d';
+  @Watch('color')
+  watchColor(newValue: string, oldValue: string) {
     if (newValue && newValue !== oldValue) {
       this.onBorderColor = newValue; //colorLuminance(newValue, -0.2);
     }
@@ -56,7 +56,7 @@ export class BruitRatingComponent {
 
   componentWillLoad() {
     this.setStars();
-    this.watchOnColor(this.onColor, null);
+    this.watchColor(this.color, null);
   }
 
   componentWillUpdate() {
@@ -89,7 +89,7 @@ export class BruitRatingComponent {
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30">
           <path
             d="M17.5,12.5h-8.5l6.8,5-2.6,8.1,6.8-5,6.8,5-2.6-8.1,6.8-5h-8.5l-2.6-8.1z"
-            fill={on ? this.onColor : this.offColor}
+            fill={on ? this.color : this.offColor}
             stroke={on ? this.onBorderColor : this.offColor}
           />
         </svg>
