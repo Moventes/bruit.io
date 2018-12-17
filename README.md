@@ -443,6 +443,9 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
     <bruit-io></bruit-io>
     <script>
       var bruitCmp = document.querySelector('bruit-io');
+      bruitCmp.addEventListener('onReady', function () {
+        bruitCmp.start();
+      });
       bruitCmp.config = {
         apiKey: 'xxxxxxxxxxxxxxxxx',
         form: [...]
@@ -459,7 +462,7 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 Using `bruit-io` component within an Angular project is a two-step process. You need to:
 
 1. Include the `CUSTOM_ELEMENTS_SCHEMA` in the modules that use the components
-2. Call `defineCustomElements(window)` from `main.ts` (or some other appropriate place)
+2. Call `defineBruitElements()` from `main.ts` (or some other appropriate place)
 
 ### Including the Custom Elements Schema
 
@@ -481,9 +484,9 @@ export class AppModule {}
 
 The `CUSTOM_ELEMENTS_SCHEMA` needs to be included in any module that uses bruit.io.
 
-### Calling defineCustomElements
+### Calling defineBruitElements
 
-bruit.io component includes a function used to load itself in the application window object. That function is called `defineCustomElements()` and needs to be executed once during the bootstrapping of your application. One convenient place to add it is in the `main.ts` file as follows:
+bruit.io component includes a function used to load itself in the application window object. That function is called `defineBruitElements()` and needs to be executed once during the bootstrapping of your application. One convenient place to add it is in the `main.ts` file as follows:
 
 ```ts
 import { enableProdMode } from '@angular/core';
@@ -492,7 +495,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-import { defineCustomElements } from '@bruit/component/dist/loader';
+import { defineBruitElements } from '@bruit/component/dist/init';
 
 if (environment.production) {
   enableProdMode();
@@ -501,7 +504,7 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch(err => console.log(err));
-defineCustomElements(window);
+defineBruitElements();
 ```
 
 ### Using bruit.io in an Angular component
@@ -554,7 +557,7 @@ handleBruitError(error: BrtError){
 
 ## React
 
-With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineCustomElements(window)` method in the `index.js` file.
+With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineBruitElements()` method in the `index.js` file.
 
 ```tsx
 import React from 'react';
@@ -563,11 +566,11 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { defineCustomElements } from '@bruit/component/dist/loader';
+import { defineBruitElements } from '@bruit/component/dist/init';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
-defineCustomElements(window);
+defineBruitElements();
 ```
 
 [_from stencil documentation_](https://github.com/ionic-team/stencil-site/blob/master/src/docs/framework-integration/react.md)
@@ -581,12 +584,12 @@ In order to use the `bruit-io` Web Component inside of a Vue application, it sho
 ```tsx
 import Vue from 'vue';
 import App from './App.vue';
-import { defineCustomElements } from '@bruit/component/dist/loader';
+import { defineBruitElements } from '@bruit/component/dist/init';
 
 Vue.config.productionTip = false;
 Vue.config.ignoredElements = [/bruit-\w*/];
 
-defineCustomElements(window);
+defineBruitElements();
 
 new Vue({
   render: h => h(App)
