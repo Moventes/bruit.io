@@ -3,15 +3,55 @@ import { BrtPermissionName } from '@bruit/types/dist/enums/brt-permission-name';
 import { BrtPermissionStatus } from '@bruit/types/dist/enums/brt-permission-status';
 
 export class NavigatorTool {
-  static getInfo(): Promise<BrtNavigatorInfo> {
-    return NavigatorTool.getPermissions().then(permissions => ({
-      cookieEnabled: window.navigator.cookieEnabled,
-      userAgent: window.navigator.userAgent,
-      platform: window.navigator.platform,
-      language: window.navigator.language,
-      doNotTrack: window.navigator.doNotTrack,
-      permissions
-    }));
+  static async getInfo(): Promise<BrtNavigatorInfo> {
+    try {
+      const [permissions, storage] = await Promise.all([
+        NavigatorTool.getPermissions(),
+        NavigatorTool.getStorageInformation()
+      ]);
+      const { cookieEnabled, userAgent, platform, language, doNotTrack } = window.navigator;
+      const network = this.getNetworkInformation();
+      const plugins = this.getPluginsInformation();
+      return {
+        cookieEnabled,
+        userAgent,
+        platform,
+        language,
+        doNotTrack,
+        permissions,
+        network,
+        storage,
+        plugins
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  static getNetworkInformation(): BrtNetwork {
+    if ('connection' in window.navigator) {
+      const { downlink, effectiveType, type } = window.navigator['connection'];
+      return { downlink, effectiveType, type };
+    } else {
+      return null;
+    }
+  }
+
+  static getPluginsInformation(): Array<string> {
+    if ('plugins' in window.navigator) {
+      const plugins = [];
+      for (let i = 0; i < window.navigator.plugins.length; i++) {
+        const plugin = window.navigator.plugins.item(i);
+        if (plugin) plugins.push(plugin.name);
+      }
+      return plugins;
+    } else {
+      return null;
+    }
+  }
+
+  static async getStorageInformation(): Promise<BrtStorageEstimate> {
+    return navigator.storage.estimate();
   }
 
   static getCookies(): BrtCookies {
@@ -29,7 +69,7 @@ export class NavigatorTool {
     return window.location.href;
   }
 
-  static getPermissions(): Promise<BrtPermissions> {
+  static async getPermissions(): Promise<BrtPermissions> {
     if (navigator && (<any>navigator).permissions && (<any>navigator).permissions.query) {
       const permissionsQueries = Object.keys(BrtPermissionName).map(permissionKey =>
         (<any>navigator).permissions
