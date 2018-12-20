@@ -19,5 +19,6 @@ export const config: Config = {
     { src: 'core.js', dest: './../core.js' },
     { src: 'appendCore.js', dest: './../appendCore.js' }
   ],
-  plugins: [sass()]
+  plugins: [sass()],
+  hashFileNames: false
 };

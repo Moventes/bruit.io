@@ -185,6 +185,27 @@ export class BruitCore {
       });
   }
 
+  static async send(apiKey, agreement, data, dataFn) {
+    if (!apiKey) {
+      console.error('[BRUIT] apiKey must be defined !');
+      return;
+    }
+
+    if (!data) {
+      data = [];
+    }
+
+    data.push({
+      id: 'agreement',
+      label: 'agreement',
+      value: agreement || false,
+      type: 'checkbox'
+    });
+
+    var feedback = new Feedback(apiKey);
+    return feedback.init().then(() => feedback.send(data, undefined, dataFn));
+  }
+
   /**
    * close the modal and destroy the _currentFeedback
    */
