@@ -14,6 +14,10 @@ export const config: Config = {
       serviceWorker: null
     }
   ],
-  copy: [{ src: 'init.js', dest: './../init.js' }, { src: 'appendCore.js', dest: './../appendCore.js' }],
+  copy: [
+    { src: 'init.js', dest: './../init.js' },
+    { src: 'core.js', dest: './../core.js' },
+    { src: 'appendCore.js', dest: './../appendCore.js' }
+  ],
   plugins: [sass()]
 };
