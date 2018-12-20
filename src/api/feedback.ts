@@ -1,4 +1,13 @@
-import { BrtFeedback, BrtCookies, BrtNavigatorInfo, BrtScreenInfo, BrtLog, BrtData, BrtField } from '@bruit/types';
+import {
+  BrtFeedback,
+  BrtCookies,
+  BrtNavigatorInfo,
+  BrtScreenInfo,
+  BrtLog,
+  BrtData,
+  BrtField,
+  BrtServiceWorker
+} from '@bruit/types';
 
 import { Api } from './api';
 import { ScreenTool } from '../bruit-tools/screen';
@@ -14,6 +23,7 @@ export class Feedback implements BrtFeedback {
   display: BrtScreenInfo;
   logs: Array<BrtLog>;
   data: Array<BrtData>;
+  serviceWorkers: Array<BrtServiceWorker>;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -28,18 +38,20 @@ export class Feedback implements BrtFeedback {
     }
   }
 
-  init(): Promise<void> {
-    // take screenShot
-    return Promise.all([
-      ScreenTool.getScreenshot().then(screenshot => {
-        this.canvas = screenshot;
-        return;
-      }),
-      NavigatorTool.getInfo().then(navigator => {
-        this.navigator = navigator;
-        return;
-      })
-    ]).then(() => {});
+  public async init(): Promise<void> {
+    try {
+      const [screenshot, navigator, serviceWorkers] = await Promise.all([
+        ScreenTool.getScreenshot(),
+        NavigatorTool.getInfo(),
+        NavigatorTool.getServiceWorkersList()
+      ]);
+
+      this.canvas = screenshot;
+      this.navigator = navigator;
+      this.serviceWorkers = serviceWorkers;
+    } catch (e) {
+      throw e;
+    }
   }
 
   /**
@@ -48,19 +60,22 @@ export class Feedback implements BrtFeedback {
    * @param data
    * @param dataFn
    */
-  send(
+  public async send(
     formData: Array<BrtField>,
     data: Array<BrtData> = [],
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
   ): Promise<any> {
-    const agreementField = formData.find(field => field.id === 'agreement');
-    const agreement = agreementField ? agreementField.value : true;
-    return this.getDataFromFn(dataFn).then((dataFromFn: Array<BrtData>) => {
+    try {
+      const agreementField = formData.find(field => field.id === 'agreement');
+      const agreement = agreementField ? agreementField.value : true;
+      const dataFromFn: Array<BrtData> = await this.getDataFromFn(dataFn);
+
       this.data = [
         ...formData.map(ff => <BrtData>{ type: ff.type, value: ff.value, label: ff.label, id: ff.id }),
         ...data,
         ...dataFromFn
       ];
+
       return Api.postFeedback({
         apiKey: this.apiKey,
         canvas: agreement ? this.canvas : undefined,
@@ -69,9 +84,12 @@ export class Feedback implements BrtFeedback {
         navigator: agreement ? this.navigator : undefined,
         display: agreement ? this.display : undefined,
         logs: agreement ? this.logs : undefined,
+        serviceWorkers: agreement ? this.serviceWorkers : undefined,
         data: this.data
       });
-    });
+    } catch (e) {
+      throw e;
+    }
   }
 
   /**
@@ -80,16 +98,16 @@ export class Feedback implements BrtFeedback {
    *
    * @return a promise of Array<Field>
    */
-  private getDataFromFn(dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>): Promise<Array<BrtData>> {
+  private async getDataFromFn(dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>): Promise<Array<BrtData>> {
     // dataFn (function or promise)
     if (dataFn) {
       if (typeof dataFn === 'function') {
-        return Promise.resolve((<() => Array<BrtData>>dataFn)());
+        return dataFn();
       } else if (typeof dataFn === 'object' && (<Promise<Array<BrtData>>>dataFn).then) {
         return <Promise<Array<BrtData>>>dataFn;
       }
     } else {
-      return Promise.resolve([]);
+      return [];
     }
   }
 }
