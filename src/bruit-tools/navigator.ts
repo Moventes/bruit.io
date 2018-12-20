@@ -1,4 +1,12 @@
-import { BrtNavigatorInfo, BrtCookies, BrtPermissions } from '@bruit/types';
+import {
+  BrtNavigatorInfo,
+  BrtCookies,
+  BrtPermissions,
+  BrtNetwork,
+  BrtStorageEstimate,
+  BrtServiceWorker,
+  BrtServiceWorkerState
+} from '@bruit/types';
 import { BrtPermissionName } from '@bruit/types/dist/enums/brt-permission-name';
 import { BrtPermissionStatus } from '@bruit/types/dist/enums/brt-permission-status';
 
@@ -12,8 +20,10 @@ export class NavigatorTool {
       const { cookieEnabled, userAgent, platform, language, doNotTrack } = window.navigator;
       const network = this.getNetworkInformation();
       const plugins = this.getPluginsInformation();
+      const serviceWorkersSupported = 'serviceWorker' in window.navigator;
       return {
         cookieEnabled,
+        serviceWorkersSupported,
         userAgent,
         platform,
         language,
@@ -24,13 +34,13 @@ export class NavigatorTool {
         plugins
       };
     } catch (error) {
-      return Promise.reject(error);
+      throw error;
     }
   }
 
   static getNetworkInformation(): BrtNetwork {
     if ('connection' in window.navigator) {
-      const { downlink, effectiveType, type } = window.navigator['connection'];
+      const { downlink, effectiveType, type } = <any>window.navigator['connection'];
       return { downlink, effectiveType, type };
     } else {
       return null;
@@ -51,7 +61,19 @@ export class NavigatorTool {
   }
 
   static async getStorageInformation(): Promise<BrtStorageEstimate> {
-    return navigator.storage.estimate();
+    if ('storage' in window.navigator) {
+      try {
+        const { quota, usage } = await window.navigator.storage.estimate();
+        return {
+          quota: quota || null,
+          usage: usage || null
+        };
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      return { quota: null, usage: null };
+    }
   }
 
   static getCookies(): BrtCookies {
@@ -90,7 +112,32 @@ export class NavigatorTool {
           }, {})
       );
     } else {
-      return Promise.resolve({});
+      return {};
     }
+  }
+
+  static async getServiceWorkersList(): Promise<Array<BrtServiceWorker>> {
+    if ('serviceWorker' in window.navigator) {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        return registrations.map(registration => ({
+          scope: registration.scope,
+          state: NavigatorTool.getServiceWorkerState(registration)
+        }));
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  static getServiceWorkerState(registration: ServiceWorkerRegistration): BrtServiceWorkerState {
+    const { waiting, installing, active } = registration;
+    return {
+      waiting: waiting ? waiting.state : null,
+      installing: installing ? installing.state : null,
+      active: active ? active.state : null
+    };
   }
 }
