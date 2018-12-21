@@ -14,8 +14,8 @@ export class ScreenTool {
     const div = document.body;
     const options = {
       background: 'white',
-      height: div.clientHeight,
-      width: div.clientWidth,
+      height: div.scrollHeight,
+      width: div.scrollWidth,
       logging: false
     };
     try {
