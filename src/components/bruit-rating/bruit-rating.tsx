@@ -1,4 +1,4 @@
-import { Component, Prop, Watch, State, EventEmitter, Event } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 // import { colorLuminance } from './f-tool.module';
 
 @Component({
@@ -7,11 +7,11 @@ import { Component, Prop, Watch, State, EventEmitter, Event } from '@stencil/cor
 })
 export class BruitRatingComponent {
   @Prop({ mutable: true, reflectToAttr: true })
-  value: number = 1;
+  value: number = 0;
   @Watch('value')
   watchValue(newValue: number, oldValue: number) {
-    if (!newValue || newValue <= 0) {
-      this.value = 1;
+    if (!newValue || newValue < 0) {
+      this.value = 0;
     } else if (newValue > this.max) {
       this.value = this.max;
     }
@@ -64,7 +64,7 @@ export class BruitRatingComponent {
   }
 
   setStars() {
-    if (this.value && this.value <= this.max && this.value > 0 && this.max && this.max > 1) {
+    if (typeof this.value === 'number' && this.value <= this.max && this.value >= 0 && this.max && this.max > 1) {
       const stars = new Array(this.max);
       for (let i = 0; i < stars.length; i++) {
         stars[i] = i < this.value ? true : false;
