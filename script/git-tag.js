@@ -13,9 +13,9 @@ function getLastGitTag() {
       } else {
         resolve(
           stdout
-            .split('\n')
-            .filter(version => version.length >= 5)
-            .pop()
+          .split('\n')
+          .filter(version => version.length >= 5)
+          .pop()
         );
       }
     });
@@ -28,7 +28,7 @@ getLastGitTag()
     console.log('current version = ', currentVersion);
     console.log('latest tag      = ', lastGitTag);
     if (currentVersion !== lastGitTag) {
-      exec(`git tag ${currentVersion} & git push --tags`, err => {
+      exec(`git tag -s ${currentVersion} & git push --tags`, err => {
         if (err) {
           console.error('git tag error : ', err);
         } else {
