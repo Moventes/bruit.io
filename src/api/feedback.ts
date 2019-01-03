@@ -1,17 +1,17 @@
 import {
-  BrtFeedback,
   BrtCookies,
+  BrtData,
+  BrtFeedback,
+  BrtField,
+  BrtLog,
   BrtNavigatorInfo,
   BrtScreenInfo,
-  BrtLog,
-  BrtData,
-  BrtField,
   BrtServiceWorker
 } from '@bruit/types';
-
-import { Api } from './api';
-import { ScreenTool } from '../bruit-tools/screen';
+import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { NavigatorTool } from '../bruit-tools/navigator';
+import { ScreenTool } from '../bruit-tools/screen';
+import { Api } from './api';
 
 export class Feedback implements BrtFeedback {
   //FeedbackModel:
@@ -56,25 +56,22 @@ export class Feedback implements BrtFeedback {
 
   /**
    *
-   * @param formData
+   * @param formFields
    * @param data
    * @param dataFn
    */
   public async send(
-    formData: Array<BrtField>,
+    formFields: Array<BrtField>,
     data: Array<BrtData> = [],
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
   ): Promise<any> {
     try {
-      const agreementField = formData.find(field => field.id === 'agreement');
+      const agreementField = formFields.find(field => field.id === 'agreement');
       const agreement = agreementField ? agreementField.value : true;
       const dataFromFn: Array<BrtData> = await this.getDataFromFn(dataFn);
+      const formData = formFields.map(field => this.fieldToData(field));
 
-      this.data = [
-        ...formData.map(ff => <BrtData>{ type: ff.type, value: ff.value, label: ff.label, id: ff.id }),
-        ...data,
-        ...dataFromFn
-      ];
+      this.data = [...formData, ...data, ...dataFromFn];
 
       return Api.postFeedback({
         apiKey: this.apiKey,
@@ -109,5 +106,19 @@ export class Feedback implements BrtFeedback {
     } else {
       return [];
     }
+  }
+
+  /**
+   *
+   * @param field : BrtField from form
+   *
+   * @return a BrtData
+   */
+  private fieldToData(field: BrtField): BrtData {
+    const data = <BrtData>{ type: field.type, value: field.value, label: field.label, id: field.id };
+    if (data.type === BrtFieldType.RATING) {
+      data.max = field.max || 5;
+    }
+    return data;
   }
 }
