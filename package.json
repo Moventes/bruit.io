@@ -58,7 +58,7 @@
   "homepage": "https://bruit.io/",
   "dependencies": {
     "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
-    "@bruit/types": "^0.2.10"
+    "@bruit/types": "^0.2.11"
   },
   "man": "README.md"
 }
