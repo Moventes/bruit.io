@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "0.7.5",
+  "version": "0.7.5-2",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -58,7 +58,7 @@
   "homepage": "https://bruit.io/",
   "dependencies": {
     "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
-    "@bruit/types": "^0.2.11"
+    "@bruit/types": "^0.2.12"
   },
   "man": "README.md"
 }

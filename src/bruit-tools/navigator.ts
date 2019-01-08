@@ -22,8 +22,7 @@ export class NavigatorTool {
         cookieEnabled,
         userAgent,
         platform,
-        language,
-        doNotTrack
+        language
       } = window.navigator;
       const network = this.getNetworkInformation();
       const plugins = this.getPluginsInformation();
@@ -34,7 +33,6 @@ export class NavigatorTool {
         userAgent,
         platform,
         language,
-        doNotTrack,
         privateMode,
         permissions,
         network,
