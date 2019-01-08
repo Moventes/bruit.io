@@ -152,7 +152,7 @@ export class NavigatorTool {
   }
 
   // test if incognito from https://gist.github.com/jherax/a81c8c132d09cc354a0e2cb911841ff1
-  static async isIncognito(): Promise<boolean> {
+  static isIncognito(): Promise<boolean> {
     return new Promise(resolve => {
       const on = () => resolve(true); // is in private mode
       const off = () => resolve(false); // not private mode
