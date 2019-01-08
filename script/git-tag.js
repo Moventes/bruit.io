@@ -28,13 +28,16 @@ getLastGitTag()
     console.log("current version = ", currentVersion);
     console.log("latest tag      = ", lastGitTag);
     if (currentVersion !== lastGitTag) {
-      exec(`git tag -s ${currentVersion} && git push --tags`, err => {
-        if (err) {
-          console.error("git tag error : ", err);
-        } else {
-          console.log("successfully tagged to ", currentVersion);
+      exec(
+        `git tag -s ${currentVersion} -m v${currentVersion} && git push --tags`,
+        err => {
+          if (err) {
+            console.error("git tag error : ", err);
+          } else {
+            console.log("successfully tagged to ", currentVersion);
+          }
         }
-      });
+      );
     } else {
       console.log("same tag/version => no need to tag.");
     }
