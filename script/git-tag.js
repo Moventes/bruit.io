@@ -29,7 +29,7 @@ getLastGitTag()
     console.log("latest tag      = ", lastGitTag);
     if (currentVersion !== lastGitTag) {
       exec(
-        `git tag -s ${currentVersion} -m v${currentVersion} && git push --tags`,
+        `git tag ${currentVersion} -m v${currentVersion} && git push --tags`,
         err => {
           if (err) {
             console.error("git tag error : ", err);

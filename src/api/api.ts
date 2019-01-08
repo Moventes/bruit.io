@@ -20,7 +20,8 @@ export class Api {
           }
         }
       };
-      xhr.send(JSON.stringify(feedback));
+
+      xhr.send(JSON.stringify(JSON['decycle']?JSON['decycle'](feedback):feedback));
     });
   }
 
