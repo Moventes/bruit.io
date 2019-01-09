@@ -430,12 +430,12 @@ Typescript import:
 import { BrtError } from '@bruit/component';
 ```
 
-# Send a feedback without modal
+# Send a feedback silently
 
 You may want to skip bruit-io default modal, for example :
 
 - to send a feedback from an another modal
-- to send a feedback from an error catched
+- to send a feedback from a catched error
 - to send a feedback on a particular situation in your application
 
 To programatically send a feedback, use Bruit's `send` core function:
