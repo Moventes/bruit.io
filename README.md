@@ -82,8 +82,10 @@ The free bruit.io api allows to pass feedbacks on to tools such as
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogCacheLength](#BrtLogCacheLength)**<br>
 **[Add data in feedbacks](#add-data-to-the-feedback)**<br>
 **[Handle errors](#handle-errors)**<br>
+**[Send a feedback without modal](#send-a-feedback-without-modal)**<br>
 **[Frameworks integration](#Framework-integrations)**<br>
 **[Contributing](#Contributing)**<br>
+**[Known issues](#known-issues)**<br>
 **[Having troubles?](#Having-troubles-)**<br>
 
 # Installation
