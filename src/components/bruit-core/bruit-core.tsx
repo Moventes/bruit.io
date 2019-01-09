@@ -1,11 +1,11 @@
-import { Component, Prop, State, Watch, EventEmitter, Event, Element, Method } from '@stencil/core';
-import { BrtError, BrtField, BrtData, BrtCoreConfig } from '@bruit/types';
+import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
+import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
+import { Feedback } from '../../api/feedback';
+import { ConsoleTool } from '../../bruit-tools/console';
+import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 import { BruitCoreConfig } from '../../models/bruit-core-config.class';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
-import { ConsoleTool } from '../../bruit-tools/console';
-import { Feedback } from '../../api/feedback';
-import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 
 @Component({
   tag: 'bruit-core',
@@ -185,6 +185,7 @@ export class BruitCore {
       });
   }
 
+  @Method()
   static async send(apiKey, agreement, data, dataFn) {
     if (!apiKey) {
       console.error('[BRUIT] apiKey must be defined !');

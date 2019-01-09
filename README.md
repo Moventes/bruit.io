@@ -34,6 +34,7 @@ Available on all frameworks that support Web Components such as
     <img alt="Meteor" src="https://cdn.freebiesupply.com/logos/large/2x/meteor-icon-logo-png-transparent.png" height="40px">
     <img alt="Backbone" src="https://seeklogo.com/images/B/backbone-logo-5471D69D9B-seeklogo.com.png" height="40px">
     <img alt="Aurelia" src="https://banner2.kisspng.com/20180907/wko/kisspng-javascript-framework-javascript-library-software-f-aurelia-logo-svg-vector-amp-png-transparent-ve-5b9296d1bb6649.0695022115363335217676.jpg" height="40px">
+    <img alt="Electron" src="https://b.kisscc0.com/20180814/cew/kisscc0-electron-node-js-javascript-computer-icons-npm-electron-by-yyk-mail-ru-5b731fe571cb14.6498724715342714614661.png" height="40px">
 </p>
 
 ---
@@ -427,6 +428,45 @@ Typescript import:
 import { BrtError } from '@bruit/component';
 ```
 
+# Send a feedback without modal
+
+You may want to skip bruit-io default modal, for example :
+
+- to send a feedback from an another modal
+- to send a feedback from an error catched
+- to send a feedback on a particular situation in your application
+
+To programatically send a feedback, use Bruit's `send` core function:
+
+import :
+
+```javascript
+import { Bruit } from '@bruit/component/dist/core';
+```
+
+or
+
+```javascript
+var Bruit = document.querySelector('bruit-core');
+```
+
+usage :
+
+```javascript
+Bruit.send('myApiKey', true, myData, myDataFunction)
+  .then(() => console.log('success'))
+  .catch(error => console.error(error));
+```
+
+`send` function take 4 parameters :
+
+| Parameter | Type                                  | Description                                                                              | Mandatory |
+| --------- | ------------------------------------- | ---------------------------------------------------------------------------------------- | --------- |
+| apiKey    | string                                | your api key                                                                             | **yes**   |
+| agreement | boolean                               | set to true to send user personal data (device, sreenshot, logs, ...)                    | no        |
+| data      | Array<[BrtData](#_BrtData_)>          | an array of additional data to show in feedback                                          | no        |
+| dataFn    | Promise<Array<[BrtData](#_BrtData_)>> | a Promise or a simple function returning an array of additional data to show in feedback | no        |
+
 # Framework integrations
 
 ## JavaScript
@@ -602,6 +642,10 @@ new Vue({
 
 Bruit.io web component is 100% free and open source.
 Contributing to bruit.io may involve writing TypeScript, TSX, Stencil, SCSS or Markdown depending on the component you are working on. We are looking for help in any of these areas!
+
+# Known issues
+
+- [Type 'CustomEvent' is not generic](https://github.com/Moventes/bruit.io/issues/20) : component properties typing requires typescript version **2.7+**.
 
 # Having troubles ?
 
