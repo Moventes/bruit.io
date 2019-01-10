@@ -1,9 +1,6 @@
 # bruit-rating
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -12,16 +9,14 @@
 | `color`    | `color`     |             | `string` | `'#ffd83d'` |
 | `max`      | `max`       |             | `number` | `5`         |
 | `offColor` | `off-color` |             | `string` | `'#c0c0c0'` |
-| `value`    | `value`     |             | `number` | `1`         |
-
+| `value`    | `value`     |             | `number` | `0`         |
 
 ## Events
 
-| Event         | Description | Detail |
-| ------------- | ----------- | ------ |
-| `valueChange` |             | void   |
+| Event         | Description | Type                |
+| ------------- | ----------- | ------------------- |
+| `valueChange` |             | `CustomEvent<void>` |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

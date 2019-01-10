@@ -25,21 +25,13 @@
     "build": "stencil build",
     "prestart": "node config/set_config.js dev",
     "start": "stencil build --dev --watch --serve --port 3332",
-    "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll",
     "docs": "stencil build --docs",
     "prepublishOnly": "npm i && npm run build && node script/git-tag"
   },
   "devDependencies": {
-    "@stencil/core": "0.16.1",
+    "@stencil/core": "0.16.2",
     "@stencil/sass": "^0.1.1",
-    "@types/jest": "^23.3.5",
-    "@types/puppeteer": "1.9.0",
-    "jest": "23.6.0",
-    "jest-cli": "23.6.0",
-    "puppeteer": "1.8.0",
-    "tslint": "^5.11.0",
-    "merge": ">=1.2.1"
+    "tslint": "^5.12.0"
   },
   "repository": {
     "type": "git",

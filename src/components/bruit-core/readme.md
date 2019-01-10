@@ -12,9 +12,9 @@
 
 ## Events
 
-| Event     | Description                                                                                            | Detail |
-| --------- | ------------------------------------------------------------------------------------------------------ | ------ |
-| `onError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | void   |
+| Event     | Description                                                                                            | Type                |
+| --------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
+| `onError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | `CustomEvent<void>` |
 
 
 ## Methods
@@ -35,6 +35,25 @@ init a feedback, wait user submit, send feedback
 #### Returns
 
 Type: `Promise<void>`
+
+
+
+### `send(apiKey: any, agreement: any, data: any, dataFn: any) => Promise<any>`
+
+
+
+#### Parameters
+
+| Name        | Type  | Description |
+| ----------- | ----- | ----------- |
+| `apiKey`    | `any` |             |
+| `agreement` | `any` |             |
+| `data`      | `any` |             |
+| `dataFn`    | `any` |             |
+
+#### Returns
+
+Type: `Promise<any>`
 
 
 

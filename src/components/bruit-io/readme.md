@@ -14,10 +14,10 @@
 
 ## Events
 
-| Event     | Description                                                                                            | Detail |
-| --------- | ------------------------------------------------------------------------------------------------------ | ------ |
-| `onError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | void   |
-| `onReady` |                                                                                                        | void   |
+| Event     | Description                                                                                            | Type                |
+| --------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
+| `onError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | `CustomEvent<void>` |
+| `onReady` |                                                                                                        | `CustomEvent<void>` |
 
 
 ## Methods
