@@ -1,8 +1,8 @@
-import { HttpTool } from './http';
-import { UrlTool } from './url';
-import { ClickTool } from './click';
 import { BrtLog, BrtLogCacheLength } from '@bruit/types';
 import { BrtLogType } from '@bruit/types/dist/enums/brt-log-type';
+import { ClickTool } from './click';
+import { HttpTool } from './http';
+import { UrlTool } from './url';
 
 export class ConsoleTool {
   private static brtLogCacheLength: BrtLogCacheLength;
@@ -22,6 +22,24 @@ export class ConsoleTool {
     }
     ConsoleTool.brtLogCacheLength = brtLogCacheLengthConfig;
     ConsoleTool.configure();
+  }
+
+  private static addEventHandlers() {
+    if ((<any>console).overloadable) {
+      window.addEventListener('online', () => {
+        console.warn('EVENT -------------------- ONLINE --------------------');
+      });
+      window.addEventListener('offline', () => {
+        console.warn('EVENT -------------------- OFFLINE --------------------');
+      });
+      // already loged by browser
+      // window.addEventListener('error', e => {
+      //   console.error('EVENT -------------------- ERROR --------------------', e.error.stack);
+      // });
+      window.addEventListener('abort', e => {
+        console.warn('EVENT -------------------- ABORT --------------------', e.target);
+      });
+    }
   }
 
   private static configure() {
@@ -179,6 +197,7 @@ export class ConsoleTool {
           return _info.apply(console, ConsoleTool.handleLogMessage(BrtLogType.INFO, arguments));
         };
       }
+      ConsoleTool.addEventHandlers();
     } else {
       // console.info('BRUIT.IO - console already overloaded or disabled');
     }

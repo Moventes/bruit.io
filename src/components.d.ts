@@ -26,7 +26,6 @@ export namespace Components {
     * called on click on component init a feedback, wait user submit, send feedback
     */
     'newFeedback': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
-    'send': (apiKey: any, agreement: any, data: any, dataFn: any) => Promise<any>;
   }
   interface BruitCoreAttributes extends StencilHTMLAttributes {
     'config'?: BrtCoreConfig | string;

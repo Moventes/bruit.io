@@ -185,7 +185,6 @@ export class BruitCore {
       });
   }
 
-  @Method()
   static async send(apiKey, agreement, data, dataFn) {
     if (!apiKey) {
       console.error('[BRUIT] apiKey must be defined !');
