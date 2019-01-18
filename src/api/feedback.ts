@@ -26,48 +26,10 @@ export class Feedback implements BrtFeedback {
   data: Array<BrtData>;
   serviceWorkers: Array<BrtServiceWorker>;
 
-  getScreenShoot: Promise<void>;
-
   constructor(apiKey: string) {
     this.apiKey = apiKey;
-    this.url = NavigatorTool.getUrl();
-    this.cookies = NavigatorTool.getCookies();
-
-    this.display = ScreenTool.getInfo();
-    if ((<any>console).overloadable && (<any>console).overloaded && (<any>console).overloaded.logArray) {
-      this.logs = (<any>console).logArray();
-    } else {
-      this.logs = [];
-    }
   }
 
-  public async init(startScreenShot: boolean = false): Promise<void> {
-    try {
-      if (startScreenShot) {
-        this.startScreenShot();
-      }
-      const [navigator, serviceWorkers] = await Promise.all([
-        NavigatorTool.getInfo(),
-        NavigatorTool.getServiceWorkersList()
-      ]);
-
-      this.navigator = navigator;
-      this.serviceWorkers = serviceWorkers;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  public startScreenShot() {
-    this.getScreenShoot = ScreenTool.getScreenshot()
-      .then(screenshot => {
-        this.canvas = screenshot;
-      })
-      .catch(() => {
-        // TODO : emettre une erreur
-        return Promise.resolve();
-      });
-  }
   /**
    *
    * @param formFields
@@ -81,13 +43,33 @@ export class Feedback implements BrtFeedback {
   ): Promise<any> {
     try {
       const agreementField = formFields.find(field => field.id === 'agreement');
-      const agreement = agreementField ? agreementField.value : true;
+      const agreement = agreementField ? agreementField.value : false;
+
+      if (agreement) {
+        const [screenShot, navigator, serviceWorkers] = await Promise.all([
+          ScreenTool.getScreenshot(),
+          NavigatorTool.getInfo(),
+          NavigatorTool.getServiceWorkersList()
+        ]);
+
+        this.navigator = navigator;
+        this.serviceWorkers = serviceWorkers;
+        this.canvas = screenShot;
+
+        this.url = NavigatorTool.getUrl();
+        this.cookies = NavigatorTool.getCookies();
+
+        this.display = ScreenTool.getInfo();
+        if ((<any>console).overloadable && (<any>console).overloaded && (<any>console).overloaded.logArray) {
+          this.logs = (<any>console).logArray();
+        } else {
+          this.logs = [];
+        }
+      }
+
       const dataFromFn: Array<BrtData> = await this.getDataFromFn(dataFn);
       const formData = formFields.map(field => this.fieldToData(field));
-
       this.data = [...formData, ...data, ...dataFromFn];
-
-      await this.getScreenShoot;
 
       return Api.postFeedback({
         date: new Date().toString(),

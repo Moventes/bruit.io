@@ -134,28 +134,28 @@ export class BruitCore {
         //create a new feedback
 
         // init feedback (screenshot) -> open modal =>  wait user submit
-        return feedback
-          .init()
-          .then(() => this.openModal())
-          .then(() => feedback.startScreenShot())
+        return this.openModal()
           .then(() => this.waitOnSubmit())
           .then(dataFromModal => {
             //user submit with data dataFromModal
-            const sendFeedback = feedback.send(dataFromModal, data, dataFn);
             // if the configuration says that the modal must be closed directly
             if (this._bruitIoConfig.closeModalOnSubmit) {
               // close the modal and send feedback
               this.closeModal();
-              return sendFeedback;
+              setTimeout(() => {
+                return feedback.send(dataFromModal, data, dataFn);
+              });
             } else {
               // else, we display de loader
               this.setSubmitButtonState(SubmitButtonState.LOADING);
               // send feedback
-              return sendFeedback.then(() => {
-                // we display the "validation" for <durationBeforeClosing> milliseconds
-                this.setSubmitButtonState(SubmitButtonState.CHECKED);
-                return new Promise(resolve => {
-                  setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
+              return setTimeout(() => {
+                feedback.send(dataFromModal, data, dataFn).then(() => {
+                  // we display the "validation" for <durationBeforeClosing> milliseconds
+                  this.setSubmitButtonState(SubmitButtonState.CHECKED);
+                  return new Promise(resolve => {
+                    setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
+                  });
                 });
               });
             }
@@ -209,7 +209,7 @@ export class BruitCore {
     });
 
     var feedback = new Feedback(apiKey);
-    return feedback.init(true).then(() => feedback.send(data, undefined, dataFn));
+    return feedback.send(data, undefined, dataFn);
   }
 
   /**
@@ -234,7 +234,7 @@ export class BruitCore {
       setTimeout(() => {
         this.setSubmitButtonState(SubmitButtonState.SUBMIT);
         resolve();
-      }, 250);
+      });
     });
   }
 
