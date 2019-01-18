@@ -16,7 +16,8 @@ export class ScreenTool {
       background: 'white',
       height: div.scrollHeight,
       width: div.scrollWidth,
-      logging: false
+      logging: false,
+      imageTimeout: 1500
     };
     try {
       const canvas = await html2canvas(div, options);

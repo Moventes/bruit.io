@@ -446,12 +446,6 @@ import :
 import { Bruit } from '@bruit/component/dist/core';
 ```
 
-or
-
-```javascript
-var Bruit = document.querySelector('bruit-core');
-```
-
 usage :
 
 ```javascript
@@ -460,7 +454,21 @@ Bruit.send('myApiKey', true, myData, myDataFunction)
   .catch(error => console.error(error));
 ```
 
-`send` function take 4 parameters :
+OR
+
+```javascript
+var Bruit = document.querySelector('bruit-core');
+```
+
+usage :
+
+```javascript
+Bruit.sendFeedback('myApiKey', true, myData, myDataFunction)
+  .then(() => console.log('success'))
+  .catch(error => console.error(error));
+```
+
+`send` (or `sendFeedback`) function take 4 parameters :
 
 | Parameter | Type                                  | Description                                                                              | Mandatory |
 | --------- | ------------------------------------- | ---------------------------------------------------------------------------------------- | --------- |

@@ -185,6 +185,11 @@ export class BruitCore {
       });
   }
 
+  @Method()
+  sendFeedBack(apiKey, agreement, data, dataFn) {
+    return BruitCore.send(apiKey, agreement, data, dataFn);
+  }
+
   static async send(apiKey, agreement, data, dataFn) {
     if (!apiKey) {
       console.error('[BRUIT] apiKey must be defined !');
@@ -354,6 +359,7 @@ export class BruitCore {
         id="bruit-io-wrapper"
         class={this.modalOpened ? 'open' : 'close'}
         style={{ 'background-color': this._bruitIoConfig ? this._bruitIoConfig.colors.background : 'transparent' }}
+        data-html2canvas-ignore
       >
         <div
           class="modal"
