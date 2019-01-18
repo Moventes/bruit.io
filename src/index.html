@@ -54,16 +54,21 @@
   <script>
     // window.addEventListener('load', function () {
     // import * as bruit from './../core.js';
+
     var bruitCmp = document.querySelector('bruit-io');
+
     console.log('start', bruitCmp);
+
     bruitCmp.addEventListener('onReady', function () {
       console.log('ready');
       bruitCmp.start();
-      // setTimeout(() => {
-      //   console.log('SENDDDDDD');
-      //   bruit.send('e0470756-44f2-49ec-b077-f3e457ba5ce4', true).then(() => console.log('yeah!!!!')).catch(console.error);
-      // }, 10000)
+      setTimeout(() => {
+        console.log('SENDDDDDD');
+        var Bruit = document.querySelector('bruit-core');
+        Bruit.sendFeedback('440e5f93-8a73-4476-9980-52758b9dc835', true).then(() => console.log('yeah!!!!')).catch(console.error);
+      }, 10000)
     });
+
     bruitCmp.config =
       JSON.stringify({
         apiKey: '440e5f93-8a73-4476-9980-52758b9dc835',

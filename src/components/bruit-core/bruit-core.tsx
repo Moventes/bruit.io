@@ -189,7 +189,7 @@ export class BruitCore {
   }
 
   @Method()
-  sendFeedBack(apiKey, agreement, data, dataFn) {
+  sendFeedback(apiKey, agreement, data, dataFn) {
     return BruitCore.send(apiKey, agreement, data, dataFn);
   }
 
