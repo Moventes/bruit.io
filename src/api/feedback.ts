@@ -41,17 +41,11 @@ export class Feedback implements BrtFeedback {
     }
   }
 
-  public async init(): Promise<void> {
+  public async init(startScreenShot: boolean = false): Promise<void> {
     try {
-      this.getScreenShoot = ScreenTool.getScreenshot()
-        .then(screenshot => {
-          this.canvas = screenshot;
-        })
-        .catch(() => {
-          // TODO : emettre une erreur
-          return Promise.resolve();
-        });
-
+      if (startScreenShot) {
+        this.startScreenShot();
+      }
       const [navigator, serviceWorkers] = await Promise.all([
         NavigatorTool.getInfo(),
         NavigatorTool.getServiceWorkersList()
@@ -64,6 +58,16 @@ export class Feedback implements BrtFeedback {
     }
   }
 
+  public startScreenShot() {
+    this.getScreenShoot = ScreenTool.getScreenshot()
+      .then(screenshot => {
+        this.canvas = screenshot;
+      })
+      .catch(() => {
+        // TODO : emettre une erreur
+        return Promise.resolve();
+      });
+  }
   /**
    *
    * @param formFields

@@ -137,6 +137,7 @@ export class BruitCore {
         return feedback
           .init()
           .then(() => this.openModal())
+          .then(() => feedback.startScreenShot())
           .then(() => this.waitOnSubmit())
           .then(dataFromModal => {
             //user submit with data dataFromModal
@@ -208,7 +209,7 @@ export class BruitCore {
     });
 
     var feedback = new Feedback(apiKey);
-    return feedback.init().then(() => feedback.send(data, undefined, dataFn));
+    return feedback.init(true).then(() => feedback.send(data, undefined, dataFn));
   }
 
   /**
@@ -233,7 +234,7 @@ export class BruitCore {
       setTimeout(() => {
         this.setSubmitButtonState(SubmitButtonState.SUBMIT);
         resolve();
-      });
+      }, 250);
     });
   }
 
