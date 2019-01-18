@@ -109,6 +109,10 @@ export class BruitCore {
     this.initConfig(this.config);
   }
 
+  waitRendering() {
+    return new Promise(resolve => setTimeout(resolve));
+  }
+
   /**
    * called on click on component
    * init a feedback, wait user submit, send feedback
@@ -142,22 +146,20 @@ export class BruitCore {
             if (this._bruitIoConfig.closeModalOnSubmit) {
               // close the modal and send feedback
               this.closeModal();
-              setTimeout(() => {
-                return feedback.send(dataFromModal, data, dataFn);
-              });
+              return this.waitRendering().then(() => feedback.send(dataFromModal, data, dataFn));
             } else {
               // else, we display de loader
               this.setSubmitButtonState(SubmitButtonState.LOADING);
               // send feedback
-              return setTimeout(() => {
+              return this.waitRendering().then(() =>
                 feedback.send(dataFromModal, data, dataFn).then(() => {
                   // we display the "validation" for <durationBeforeClosing> milliseconds
                   this.setSubmitButtonState(SubmitButtonState.CHECKED);
                   return new Promise(resolve => {
                     setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
                   });
-                });
-              });
+                })
+              );
             }
           })
           .then(() => {
