@@ -3,6 +3,7 @@ import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import { Feedback } from '../../api/feedback';
 import { ConsoleTool } from '../../bruit-tools/console';
+import { NavigatorTool } from '../../bruit-tools/navigator';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 import { BruitCoreConfig } from '../../models/bruit-core-config.class';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
@@ -109,6 +110,17 @@ export class BruitCore {
     this.initConfig(this.config);
   }
 
+  hideVirtualKeyboard(): Promise<void> {
+    if (NavigatorTool.isMobileOrTablet()) {
+      return new Promise((resolve) => {
+        document.getElementById('bruit-io-submit-button').focus();
+        setTimeout(() => resolve(), 500);
+      });
+    } else {
+      return Promise.resolve();
+    }
+  }
+
   waitRendering() {
     return new Promise(resolve => setTimeout(resolve));
   }
@@ -146,19 +158,23 @@ export class BruitCore {
             if (this._bruitIoConfig.closeModalOnSubmit) {
               // close the modal and send feedback
               this.closeModal();
-              return this.waitRendering().then(() => feedback.send(dataFromModal, data, dataFn));
+              return this.hideVirtualKeyboard().then(() =>
+                this.waitRendering().then(() => feedback.send(dataFromModal, data, dataFn))
+              );
             } else {
               // else, we display de loader
               this.setSubmitButtonState(SubmitButtonState.LOADING);
               // send feedback
-              return this.waitRendering().then(() =>
-                feedback.send(dataFromModal, data, dataFn).then(() => {
-                  // we display the "validation" for <durationBeforeClosing> milliseconds
-                  this.setSubmitButtonState(SubmitButtonState.CHECKED);
-                  return new Promise(resolve => {
-                    setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
-                  });
-                })
+              return this.hideVirtualKeyboard().then(() =>
+                this.waitRendering().then(() =>
+                  feedback.send(dataFromModal, data, dataFn).then(() => {
+                    // we display the "validation" for <durationBeforeClosing> milliseconds
+                    this.setSubmitButtonState(SubmitButtonState.CHECKED);
+                    return new Promise(resolve => {
+                      setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
+                    });
+                  })
+                )
               );
             }
           })
