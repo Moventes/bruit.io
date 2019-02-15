@@ -38,6 +38,7 @@ bruit-core {
     opacity: 0;
     transition: all 0.25s ease-in-out;
     z-index: 90000;
+    overscroll-behavior: none;
 
     display: flex;
     flex-direction: row;
@@ -74,8 +75,7 @@ bruit-core {
 
       @media #{$mobile} {
         width: 100vw;
-        min-height: 100vh;
-
+        max-height: calc(100vh - 56px);
       }
 
       @media #{$tablet} {
@@ -128,6 +128,7 @@ bruit-core {
         height: 100%;
         overflow-y: auto;
         flex: auto;
+        overscroll-behavior: contain;
 
         .sub-head {
           padding: 32px 32px 0 32px;
