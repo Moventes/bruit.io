@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "0.7.10",
+  "version": "0.7.11",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -29,7 +29,7 @@
     "prepublishOnly": "npm i && npm run build && node script/git-tag"
   },
   "devDependencies": {
-    "@stencil/core": "0.16.4",
+    "@stencil/core": "0.18.0",
     "@stencil/sass": "^0.1.1",
     "tslint": "^5.12.1"
   },
