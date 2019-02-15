@@ -252,7 +252,7 @@ export class BruitCore {
       setTimeout(() => {
         this.setSubmitButtonState(SubmitButtonState.SUBMIT);
         resolve();
-      });
+      }, 300); // we have to wait for opening animation to be done
     });
   }
 
