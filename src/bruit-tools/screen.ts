@@ -21,7 +21,7 @@ export class ScreenTool {
       background: 'white',
       height: div.scrollHeight,
       width: div.scrollWidth,
-      scale: bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio,
+      scale: bruitIoConfig.screenshot && bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio,
       logging: false,
       imageTimeout: 1500
     };
