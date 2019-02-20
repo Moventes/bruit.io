@@ -1,22 +1,15 @@
-import {
-  BrtCookies,
-  BrtData,
-  BrtFeedback,
-  BrtField,
-  BrtLog,
-  BrtNavigatorInfo,
-  BrtScreenInfo,
-  BrtServiceWorker
-} from '@bruit/types';
+import { BrtCookies, BrtData, BrtFeedback, BrtField, BrtLog, BrtNavigatorInfo, BrtScreenInfo, BrtServiceWorker } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { NavigatorTool } from '../bruit-tools/navigator';
 import { ScreenTool } from '../bruit-tools/screen';
+import { BruitIoConfig } from '../models/bruit-io-config.class';
 import { Api } from './api';
 
 export class Feedback implements BrtFeedback {
+  bruitIoConfig: BruitIoConfig;
+
   //FeedbackModel:
   date: string;
-  apiKey: string;
   canvas: string;
   url: string;
   cookies: BrtCookies;
@@ -26,8 +19,8 @@ export class Feedback implements BrtFeedback {
   data: Array<BrtData>;
   serviceWorkers: Array<BrtServiceWorker>;
 
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
+  constructor(bruitIoConfig: BruitIoConfig) {
+    this.bruitIoConfig = bruitIoConfig;
   }
 
   /**
@@ -47,7 +40,7 @@ export class Feedback implements BrtFeedback {
 
       if (agreement) {
         const [screenShot, navigator, serviceWorkers] = await Promise.all([
-          ScreenTool.getScreenshot(),
+          ScreenTool.getScreenshot(this.bruitIoConfig),
           NavigatorTool.getInfo(),
           NavigatorTool.getServiceWorkersList()
         ]);
@@ -73,7 +66,7 @@ export class Feedback implements BrtFeedback {
 
       return Api.postFeedback({
         date: new Date().toString(),
-        apiKey: this.apiKey,
+        apiKey: this.bruitIoConfig.apiKey,
         canvas: agreement ? this.canvas : undefined,
         url: agreement ? this.url : undefined,
         cookies: agreement ? this.cookies : undefined,

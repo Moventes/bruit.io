@@ -1,5 +1,6 @@
 import html2canvas from '@bruit/html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
+import { BruitIoConfig } from '../models/bruit-io-config.class';
 
 export class ScreenTool {
   static getInfo(): BrtScreenInfo {
@@ -10,18 +11,23 @@ export class ScreenTool {
     };
   }
 
-  static async getScreenshot(): Promise<string> {
+  static getScaleFromWidth(width: number): number {
+    return width / screen.width;
+  }
+
+  static async getScreenshot(bruitIoConfig: BruitIoConfig): Promise<string> {
     const div = document.body;
     const options = {
       background: 'white',
       height: div.scrollHeight,
       width: div.scrollWidth,
+      scale: bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio,
       logging: false,
       imageTimeout: 1500
     };
     try {
       const canvas = await html2canvas(div, options);
-      const base64 = await canvas.toDataURL();
+      const base64 = await canvas.toDataURL(bruitIoConfig.screenshot.imageType, bruitIoConfig.screenshot.compression);
       return base64;
     } catch (error) {
       console.error(error);

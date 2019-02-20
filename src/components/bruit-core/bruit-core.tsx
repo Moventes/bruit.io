@@ -145,7 +145,7 @@ export class BruitCore {
     return preparePromise
       .then(() => {
         this._bruitIoConfig = bruitIoConfig;
-        const feedback = new Feedback(this._bruitIoConfig.apiKey);
+        const feedback = new Feedback(this._bruitIoConfig);
 
         //create a new feedback
 

@@ -1,4 +1,4 @@
-import { BrtConfig, BrtField, BrtError } from '@bruit/types';
+import { BrtConfig, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { ComponentConfig } from '../config/config';
 
@@ -19,6 +19,11 @@ export class BruitIoConfig implements BrtConfig {
   closeModalOnSubmit = false;
   durationBeforeClosing = 1000;
   form: Array<BrtField>;
+  screenshot = {
+    desiredWidth: null,
+    imageType: 'image/png',
+    compression: 0.9
+  }
 
   constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
@@ -27,10 +32,10 @@ export class BruitIoConfig implements BrtConfig {
       field.id = field.id
         ? field.id.trim().toLowerCase()
         : `${index}-${field.label
-            .trim()
-            .replace(/[^A-Za-z\s]/g, '')
-            .replace(/\s+/g, '-')
-            .toLowerCase()}`;
+          .trim()
+          .replace(/[^A-Za-z\s]/g, '')
+          .replace(/\s+/g, '-')
+          .toLowerCase()}`;
       return field;
     });
 
@@ -54,6 +59,12 @@ export class BruitIoConfig implements BrtConfig {
     }
     if (config.apiUrl) {
       ComponentConfig.BRUIT_IO_API_URL = config.apiUrl;
+    }
+    if (config.screenshot) {
+      this.screenshot = {
+        ...this.screenshot,
+        ...config.screenshot
+      };
     }
   }
 
