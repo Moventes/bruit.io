@@ -10,7 +10,7 @@ export class Feedback implements BrtFeedback {
 
   //FeedbackModel:
   date: string;
-  canvas: string;
+  canvas: Blob;
   url: string;
   cookies: BrtCookies;
   navigator: BrtNavigatorInfo;
