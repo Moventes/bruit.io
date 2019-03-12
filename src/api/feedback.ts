@@ -7,10 +7,11 @@ import { Api } from './api';
 
 export class Feedback implements BrtFeedback {
   bruitIoConfig: BruitIoConfig;
+  apiKey: string;
 
   //FeedbackModel:
   date: string;
-  canvas: string;
+  canvas: Blob;
   url: string;
   cookies: BrtCookies;
   navigator: BrtNavigatorInfo;
@@ -19,8 +20,11 @@ export class Feedback implements BrtFeedback {
   data: Array<BrtData>;
   serviceWorkers: Array<BrtServiceWorker>;
 
-  constructor(bruitIoConfig: BruitIoConfig) {
+  constructor(bruitIoConfig?: BruitIoConfig, apiKey?: string) {
     this.bruitIoConfig = bruitIoConfig;
+    if (this.bruitIoConfig) this.apiKey = this.bruitIoConfig.apiKey;
+    if (apiKey) this.apiKey = apiKey;
+
   }
 
   /**
@@ -66,9 +70,9 @@ export class Feedback implements BrtFeedback {
 
       return Api.postFeedback({
         date: new Date().toString(),
-        apiKey: this.bruitIoConfig.apiKey,
+        apiKey: this.apiKey,
         canvas: agreement ? this.canvas : undefined,
-        url: agreement ? this.url : undefined,
+        url: this.url,
         cookies: agreement ? this.cookies : undefined,
         navigator: agreement ? this.navigator : undefined,
         display: agreement ? this.display : undefined,

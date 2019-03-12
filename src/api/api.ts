@@ -3,10 +3,14 @@ import { ComponentConfig } from '../config/config';
 export class Api {
   static postFeedback(feedback: BrtFeedback): Promise<any> {
     return new Promise((resolve, reject) => {
+      const screenshot = feedback.canvas;
+      delete feedback.canvas;
+      const formData = new FormData();
+      formData.set('feedback', JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+      formData.set('screenshot', screenshot, 'screenshot.png')
       const xhr = new XMLHttpRequest();
       xhr.open('POST', ComponentConfig.BRUIT_IO_API_URL, true);
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 || (xhr.readyState === 2 && xhr.status === 200)) {
           if (JSON.stringify(xhr.status).startsWith('2') || xhr.status === 304) {
             resolve();
@@ -20,8 +24,7 @@ export class Api {
           }
         }
       };
-
-      xhr.send(JSON.stringify(JSON['decycle']?JSON['decycle'](feedback):feedback));
+      xhr.send(formData);
     });
   }
 
