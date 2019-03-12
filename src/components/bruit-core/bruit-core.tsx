@@ -226,7 +226,7 @@ export class BruitCore {
       type: 'checkbox'
     });
 
-    var feedback = new Feedback(apiKey);
+    var feedback = new Feedback(undefined, apiKey);
     return feedback.send(data, undefined, dataFn);
   }
 

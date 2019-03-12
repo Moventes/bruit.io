@@ -25,7 +25,6 @@
     #viewport {
       transform: rotate(5deg);
     }
-
   </style>
 
 
@@ -44,7 +43,9 @@
         </ul>
       </li>
       </br></br></br></br></br></br>
-      <li>Lorem</br>ipsum</br>dolor</br>sit</br>amet</br>consectetur</br>adipisicing</br>elit.</br>Beatae,</br>doloremque</br>repudiandae</br>quisquam</br>natus</br>magni</br>doloribus</br>iusto</br>perspiciatis</br>quasi</br>iste.</br>Sint,</br>vero</br>ipsa!</br>Distinctio</br>aut</br>error</br>minima</br>sint</br>inventore</br>quo</br>quasi!</li>
+      <li>
+        Lorem</br>ipsum</br>dolor</br>sit</br>amet</br>consectetur</br>adipisicing</br>elit.</br>Beatae,</br>doloremque</br>repudiandae</br>quisquam</br>natus</br>magni</br>doloribus</br>iusto</br>perspiciatis</br>quasi</br>iste.</br>Sint,</br>vero</br>ipsa!</br>Distinctio</br>aut</br>error</br>minima</br>sint</br>inventore</br>quo</br>quasi!
+      </li>
       </br></br></br></br>
     </ul>
   </div>
@@ -54,22 +55,9 @@
   <script>
     // window.addEventListener('load', function () {
     // import * as bruit from './../core.js';
-
     var bruitCmp = document.querySelector('bruit-io');
 
-    console.log('start', bruitCmp);
-
-    bruitCmp.addEventListener('onReady', function () {
-      console.log('ready');
-      bruitCmp.start();
-      setTimeout(() => {
-        console.log('SENDDDDDD');
-        var Bruit = document.querySelector('bruit-core');
-        Bruit.sendFeedback('440e5f93-8a73-4476-9980-52758b9dc835', true).then(() => console.log('yeah!!!!')).catch(console.error);
-      }, 10000)
-    });
-
-    bruitCmp.config =
+    var config =
       JSON.stringify({
         apiKey: '440e5f93-8a73-4476-9980-52758b9dc835',
         labels: {
@@ -78,37 +66,39 @@
           button: 'send now'
         },
         form: [{
-            label: 'email',
-            type: 'email',
-            required: true
-          },
-          {
-            label: 'firstname',
-            type: 'text'
-          },
-          {
-            label: 'lastname',
-            type: 'text'
-          },
-          {
-            label: 'note : ',
-            type: 'rating',
-            value: 0,
-            max: 6
-          },
-          {
-            label: 'message',
-            type: 'textarea',
-            required: true
-          },
-          {
-            label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
-            type: 'checkbox',
-            id: 'agreement',
-            value: true
-          }
+          label: 'email',
+          type: 'email',
+          required: true
+        },
+        {
+          label: 'firstname',
+          type: 'text'
+        },
+        {
+          label: 'lastname',
+          type: 'text'
+        },
+        {
+          label: 'note : ',
+          type: 'rating',
+          value: 0,
+          max: 6
+        },
+        {
+          label: 'message',
+          type: 'textarea',
+          required: true
+        },
+        {
+          label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
+          type: 'checkbox',
+          id: 'agreement',
+          value: true
+        }
         ]
       });
+
+    bruitCmp.config = config;
 
     bruitCmp.data = [{
       label: 'verion',
@@ -121,7 +111,24 @@
         value: '👾'
       }]);
     });
-    // });
+
+    console.log('start', bruitCmp);
+
+    bruitCmp.addEventListener('onReady', () => {
+      console.log('ready');
+
+      // setTimeout(() => {
+      //   console.log('SENDDDDDD');
+      //   var Bruit = document.querySelector('bruit-core');
+      //   Bruit.sendFeedback('440e5f93-8a73-4476-9980-52758b9dc835', true).then(() => console.log('yeah!!!!')).catch(console.error);
+      // }, 5000)
+
+
+
+
+
+      bruitCmp.start();
+    });
 
   </script>
 </body>

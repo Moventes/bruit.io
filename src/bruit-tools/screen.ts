@@ -15,22 +15,29 @@ export class ScreenTool {
     return width / screen.width;
   }
 
-  static async getScreenshot(bruitIoConfig: BruitIoConfig): Promise<Blob> {
+  static async getScreenshot(bruitIoConfig?: BruitIoConfig): Promise<Blob> {
     return new Promise(async (resolve, reject) => {
       const div = document.body;
       const options = {
         background: 'white',
         height: div.scrollHeight,
         width: div.scrollWidth,
-        scale: bruitIoConfig.screenshot && bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio,
         logging: false,
-        imageTimeout: 1500
+        imageTimeout: 1500,
+        scale: null
       };
+      let imageType = 'image/png';
+      let compression = 0.9;
+      if (bruitIoConfig && bruitIoConfig.screenshot) {
+        options.scale = bruitIoConfig.screenshot && bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio;
+        if (bruitIoConfig.screenshot.imageType) imageType = bruitIoConfig.screenshot.imageType;
+        if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
+      }
       try {
         const canvas = await html2canvas(div, options);
         canvas.toBlob((result: Blob) => {
           resolve(result);
-        }, bruitIoConfig.screenshot.imageType, bruitIoConfig.screenshot.compression)
+        }, imageType, compression)
       } catch (error) {
         console.error(error);
         reject(error);
