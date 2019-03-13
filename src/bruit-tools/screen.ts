@@ -27,7 +27,7 @@ export class ScreenTool {
         scale: null
       };
       let imageType = 'image/png';
-      let compression = 0.9;
+      let compression = 0.5;
       if (bruitIoConfig && bruitIoConfig.screenshot) {
         options.scale = bruitIoConfig.screenshot && bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio;
         if (bruitIoConfig.screenshot.imageType) imageType = bruitIoConfig.screenshot.imageType;

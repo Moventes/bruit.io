@@ -1,4 +1,5 @@
 import { BrtFeedback } from '@bruit/types';
+import LZString from 'lz-string';
 import { ComponentConfig } from '../config/config';
 export class Api {
   static postFeedback(feedback: BrtFeedback): Promise<any> {
@@ -6,7 +7,8 @@ export class Api {
       const screenshot = feedback.canvas;
       delete feedback.canvas;
       const formData = new FormData();
-      formData.set('feedback', JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+      const FeedbackCompressed = LZString.compress(JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+      formData.set('feedback', FeedbackCompressed);
       formData.set('screenshot', screenshot, 'screenshot.png')
       const xhr = new XMLHttpRequest();
       xhr.open('POST', ComponentConfig.BRUIT_IO_API_URL, true);
