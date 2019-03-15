@@ -1,0 +1,4 @@
+{
+  "BRUIT_IO_API_URL": "https://api.bruit.io/feedback/multipart",
+  "version": "0.7.19"
+}

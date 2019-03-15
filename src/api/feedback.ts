@@ -2,6 +2,7 @@ import { BrtCookies, BrtData, BrtFeedback, BrtField, BrtLog, BrtNavigatorInfo, B
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { NavigatorTool } from '../bruit-tools/navigator';
 import { ScreenTool } from '../bruit-tools/screen';
+import * as Config from '../config/config.json';
 import { BruitIoConfig } from '../models/bruit-io-config.class';
 import { Api } from './api';
 
@@ -19,9 +20,11 @@ export class Feedback implements BrtFeedback {
   logs: Array<BrtLog>;
   data: Array<BrtData>;
   serviceWorkers: Array<BrtServiceWorker>;
+  version: string;
 
   constructor(bruitIoConfig?: BruitIoConfig, apiKey?: string) {
     this.bruitIoConfig = bruitIoConfig;
+    this.version = Config['version'];
     if (this.bruitIoConfig) this.apiKey = this.bruitIoConfig.apiKey;
     if (apiKey) this.apiKey = apiKey;
 
@@ -71,6 +74,7 @@ export class Feedback implements BrtFeedback {
       return Api.postFeedback({
         date: new Date().toString(),
         apiKey: this.apiKey,
+        version: this.version,
         canvas: agreement ? this.canvas : undefined,
         url: this.url,
         cookies: agreement ? this.cookies : undefined,
