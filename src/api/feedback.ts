@@ -9,6 +9,7 @@ import { Api } from './api';
 export class Feedback implements BrtFeedback {
   bruitIoConfig: BruitIoConfig;
   apiKey: string;
+  apiUrl: string = Config['BRUIT_IO_API_URL'];
 
   //FeedbackModel:
   date: string;
@@ -24,6 +25,7 @@ export class Feedback implements BrtFeedback {
 
   constructor(bruitIoConfig?: BruitIoConfig, apiKey?: string) {
     this.bruitIoConfig = bruitIoConfig;
+    this.apiUrl = bruitIoConfig.apiUrl;
     this.version = Config['version'];
     if (this.bruitIoConfig) this.apiKey = this.bruitIoConfig.apiKey;
     if (apiKey) this.apiKey = apiKey;
@@ -83,7 +85,7 @@ export class Feedback implements BrtFeedback {
         logs: agreement ? this.logs : undefined,
         serviceWorkers: agreement ? this.serviceWorkers : undefined,
         data: this.data
-      });
+      }, this.apiUrl);
     } catch (e) {
       throw e;
     }
