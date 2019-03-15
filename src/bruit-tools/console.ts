@@ -20,6 +20,8 @@ export class ConsoleTool {
     } else {
       (<any>console).overloadable = true;
     }
+    (<any>console).overloadable = true;
+
     ConsoleTool.brtLogCacheLength = brtLogCacheLengthConfig;
     ConsoleTool.configure();
   }
@@ -68,12 +70,12 @@ export class ConsoleTool {
             objects.set(value, path);
             if (Array.isArray(value)) {
               nu = [];
-              value.forEach(function(element, i) {
+              value.forEach(function (element, i) {
                 nu[i] = derez(element, path + '[' + i + ']');
               });
             } else {
               nu = {};
-              Object.keys(value).forEach(function(name) {
+              Object.keys(value).forEach(function (name) {
                 if (value.hasOwnProperty(name)) {
                   nu[name] = derez(value[name], path + '[' + JSON.stringify(name) + ']');
                 }
@@ -95,7 +97,7 @@ export class ConsoleTool {
         (function rez(value) {
           if (value && typeof value === 'object') {
             if (Array.isArray(value)) {
-              value.forEach(function(element, i) {
+              value.forEach(function (element, i) {
                 if (typeof element === 'object' && element !== null) {
                   const path = element.$ref;
                   if (typeof path === 'string' && px.test(path)) {
@@ -106,7 +108,7 @@ export class ConsoleTool {
                 }
               });
             } else {
-              Object.keys(value).forEach(function(name) {
+              Object.keys(value).forEach(function (name) {
                 const item = value[name];
                 if (typeof item === 'object' && item !== null) {
                   const path = item.$ref;
@@ -141,21 +143,21 @@ export class ConsoleTool {
       }
       if (!(<any>console).overloaded.click) {
         (<any>console).overloaded.click = true;
-        (<any>console).click = function() {
+        (<any>console).click = function () {
           return ConsoleTool.handleLogMessage(BrtLogType.CLICK, arguments);
         };
         ClickTool.init();
       }
       if (!(<any>console).overloaded.url) {
         (<any>console).overloaded.url = true;
-        (<any>console).url = function() {
+        (<any>console).url = function () {
           return ConsoleTool.handleLogMessage(BrtLogType.URL, arguments);
         };
         UrlTool.init();
       }
       if (!(<any>console).overloaded.network) {
         (<any>console).overloaded.network = true;
-        (<any>console).network = function() {
+        (<any>console).network = function () {
           return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
         };
         HttpTool.init();
@@ -163,21 +165,21 @@ export class ConsoleTool {
       if (!(<any>console).overloaded.log) {
         (<any>console).overloaded.log = true;
         const _log = console.log;
-        console.log = function() {
+        console.log = function () {
           return _log.apply(console, ConsoleTool.handleLogMessage(BrtLogType.LOG, arguments));
         };
       }
       if (!(<any>console).overloaded.debug) {
         (<any>console).overloaded.debug = true;
         const _debug = console.debug;
-        console.debug = function() {
+        console.debug = function () {
           return _debug.apply(console, ConsoleTool.handleLogMessage(BrtLogType.DEBUG, arguments));
         };
       }
       if (!(<any>console).overloaded.error) {
         (<any>console).overloaded.error = true;
         const _error = console.error;
-        console.error = function() {
+        console.error = function () {
           const args = ConsoleTool.handleLogMessage(BrtLogType.ERROR, arguments);
           args.push(new Error().stack);
           return _error.apply(console, args);
@@ -186,14 +188,14 @@ export class ConsoleTool {
       if (!(<any>console).overloaded.warn) {
         (<any>console).overloaded.warn = true;
         const _warn = console.warn;
-        console.warn = function() {
+        console.warn = function () {
           return _warn.apply(console, ConsoleTool.handleLogMessage(BrtLogType.WARN, arguments));
         };
       }
       if (!(<any>console).overloaded.info) {
         (<any>console).overloaded.info = true;
         const _info = console.info;
-        console.info = function() {
+        console.info = function () {
           return _info.apply(console, ConsoleTool.handleLogMessage(BrtLogType.INFO, arguments));
         };
       }

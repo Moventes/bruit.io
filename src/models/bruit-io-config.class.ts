@@ -1,9 +1,10 @@
 import { BrtConfig, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
-import { ComponentConfig } from '../config/config';
+import * as Config from '../config/config.json';
 
 export class BruitIoConfig implements BrtConfig {
   apiKey: string;
+  apiUrl: string = Config['BRUIT_IO_API_URL'];
   labels = {
     title: 'bruit.io',
     introduction: '',
@@ -58,7 +59,7 @@ export class BruitIoConfig implements BrtConfig {
       this.durationBeforeClosing = config.durationBeforeClosing;
     }
     if (config.apiUrl) {
-      ComponentConfig.BRUIT_IO_API_URL = config.apiUrl;
+      this.apiUrl = config.apiUrl;
     }
     if (config.screenshot) {
       this.screenshot = {
@@ -75,7 +76,7 @@ export class BruitIoConfig implements BrtConfig {
         text: 'config is missing'
       };
     }
-    if (!config.apiKey && (!config.apiUrl || config.apiUrl === ComponentConfig.BRUIT_IO_API_URL)) {
+    if (!config.apiKey && (!config.apiUrl || config.apiUrl === Config['BRUIT_IO_API_URL'])) {
       return {
         code: 101,
         text: 'apiKey is missing'

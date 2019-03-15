@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "0.7.17",
+  "version": "0.7.19-1",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -26,12 +26,15 @@
     "prestart": "node config/set_config.js dev",
     "start": "stencil build --dev --watch --serve --port 3332",
     "docs": "stencil build --docs",
-    "prepublishOnly": "npm i && npm run build && node script/git-tag"
+    "prepublishOnly": "npm i && npm run build && node script/git-tag",
+    "postpublish": "node script/log-update-db.js"
   },
   "devDependencies": {
     "@stencil/core": "0.18.0",
     "@stencil/sass": "^0.1.1",
-    "tslint": "^5.12.1"
+    "tslint": "^5.12.1",
+    "chalk": "^2.4.2",
+    "edit-json-file": "^1.2.1"
   },
   "repository": {
     "type": "git",
@@ -50,7 +53,6 @@
   "homepage": "https://bruit.io/",
   "dependencies": {
     "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
-    "@bruit/types": "^0.2.21"
-  },
-  "man": "README.md"
+    "@bruit/types": ">=0.2.24"
+  }
 }

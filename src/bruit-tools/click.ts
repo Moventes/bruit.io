@@ -9,11 +9,111 @@ export class ClickTool {
   static init() {
     window.addEventListener('click', event => {
       this.logClick(<BrtClickLogArg>{
-        url: window.location.href,
         xpath: this.getXPath(event['path']),
-        dom: event.srcElement.outerHTML
+        partialDom: ClickTool.domToString(event.srcElement)
       });
     });
+  }
+
+  private static domToString(
+    element: Element,
+    maxLevel: number = 3
+  ): string {
+
+    const elements = [];
+    const skipTag = ['BR', 'WBR', 'STYLE', 'SCRIPT', 'HEAD', 'HTML', 'META'];
+    let currentElement = element;
+    while (elements.length <= maxLevel) {
+
+      if (!skipTag.includes(currentElement.tagName.toUpperCase())) {
+        elements.push(currentElement);
+      }
+
+
+      // set next element or break
+      if (!element.hasChildNodes) {
+        break;
+      } else {
+        let children;
+        for (let i = 0; i < currentElement.children.length; i++) {
+          const child = currentElement.children.item(i);
+          if (!skipTag.includes(child.tagName.toUpperCase())) {
+            children = child;
+            break;
+          }
+        }
+        if (children) {
+          currentElement = children;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return elements
+      .map(elem => ClickTool.elementToString(elem))
+      .map((elem: string, idx: number) => `${'$nbsp;'.repeat(2 * idx)}${elem}`)
+      .join('<br>');
+
+  }
+
+  private static elementToString(
+    element: Element
+  ): string {
+
+    if (element.tagName) {
+      switch (element.tagName.toUpperCase()) {
+        case 'SVG':
+        case 'IMG':
+        case 'CANVAS':
+        case 'EMBED':
+          return ClickTool.elementToTagString(element);
+        case 'P':
+        case 'CENTER':
+        case 'EM':
+        case 'STRONG':
+        case 'SUB':
+        case 'SUP':
+        case 'B':
+        case 'SMALL':
+        case 'ABBR':
+          return this.getTextContent(element);
+        default:
+          return `${ClickTool.elementToTagString(element)} ${ClickTool.getTextContent(element)}`;
+      }
+    }
+    return '<unknown>'
+  }
+
+  private static getTextContent(element: Element) {
+    if (element.innerHTML) {
+      const indexOfFirstTag = element.innerHTML.indexOf('<');
+      let txt;
+      if (indexOfFirstTag > 0) {
+        txt = element.innerHTML.slice(0, element.innerHTML.indexOf('<'));
+      } else if (indexOfFirstTag === 0) {
+        txt = '';
+      } else {
+        txt = element.innerHTML;
+      }
+      return txt.replace(/\s+/g, ' ');
+    } else {
+      return '';
+    }
+  }
+
+  private static elementToTagString(
+    element: Element
+  ): string {
+    let string = '';
+    if (element.tagName) string += element.tagName.toLowerCase();
+    if (element.id) string += ` id="${element.id}"`;
+    if (element.className && typeof element.className === 'string' && element.className.length) string += ` class="${element.className.split(' ')[0]}..."`;
+    if (element.getAttribute('type')) string += ` type="${element.getAttribute('type')}"`;
+    if (element.getAttribute('name')) string += ` name="${element.getAttribute('name')}"`;
+    if (element.getAttribute('href') && element.getAttribute('href') !== '#') string += ` href="${element.getAttribute('href')}"`;
+    if (element.getAttribute('value')) string += ` value="${element.getAttribute('value')}"`;
+    return `&lt;${string}&gt;`;
   }
 
   /**

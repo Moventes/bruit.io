@@ -1,15 +1,17 @@
 import { BrtFeedback } from '@bruit/types';
-import { ComponentConfig } from '../config/config';
+import * as Config from '../config/config.json';
 export class Api {
-  static postFeedback(feedback: BrtFeedback): Promise<any> {
+  static postFeedback(feedback: BrtFeedback, apiUrl?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const screenshot = feedback.canvas;
       delete feedback.canvas;
       const formData = new FormData();
-      formData.set('feedback', JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+      //LZString.compress(
+      const FeedbackCompressed = JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback);
+      formData.set('feedback', FeedbackCompressed);
       formData.set('screenshot', screenshot, 'screenshot.png')
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', ComponentConfig.BRUIT_IO_API_URL, true);
+      xhr.open('POST', apiUrl || Config['BRUIT_IO_API_URL'], true);
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 || (xhr.readyState === 2 && xhr.status === 200)) {
           if (JSON.stringify(xhr.status).startsWith('2') || xhr.status === 304) {
