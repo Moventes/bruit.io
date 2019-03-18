@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "0.7.19-1",
+  "version": "1.0.0",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -30,7 +30,7 @@
     "postpublish": "node script/log-update-db.js"
   },
   "devDependencies": {
-    "@stencil/core": "0.18.0",
+    "@stencil/core": "0.18.1",
     "@stencil/sass": "^0.1.1",
     "tslint": "^5.12.1",
     "chalk": "^2.4.2",
