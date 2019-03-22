@@ -1,5 +1,7 @@
 import { BrtFeedback } from '@bruit/types';
 import * as Config from '../config/config.json';
+import * as LZString from 'lz-string';
+
 export class Api {
   static postFeedback(feedback: BrtFeedback, apiUrl?: string): Promise<any> {
     return new Promise((resolve, reject) => {
