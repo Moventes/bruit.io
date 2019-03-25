@@ -15,6 +15,10 @@ export class ScreenTool {
     return width / screen.width;
   }
 
+  static getScaleFromHeight(height: number): number {
+    return height / screen.height;
+  }
+
   static async getScreenshot(bruitIoConfig?: BruitIoConfig): Promise<Blob> {
     return new Promise(async (resolve, reject) => {
       const div = document.body;
@@ -29,7 +33,9 @@ export class ScreenTool {
       let imageType = 'image/png';
       let compression = 0.5;
       if (bruitIoConfig && bruitIoConfig.screenshot) {
-        options.scale = bruitIoConfig.screenshot && bruitIoConfig.screenshot.desiredWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.desiredWidth) : window.devicePixelRatio;
+        const scaleFromWidth = bruitIoConfig.screenshot && bruitIoConfig.screenshot.maxWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.maxWidth) : window.devicePixelRatio;
+        const scaleFromHeight = bruitIoConfig.screenshot && bruitIoConfig.screenshot.maxHeight ? ScreenTool.getScaleFromHeight(bruitIoConfig.screenshot.maxHeight) : window.devicePixelRatio;
+        options.scale = Math.min(scaleFromWidth, scaleFromHeight);
         if (bruitIoConfig.screenshot.imageType) imageType = bruitIoConfig.screenshot.imageType;
         if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
       }

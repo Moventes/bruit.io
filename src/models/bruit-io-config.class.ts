@@ -21,7 +21,8 @@ export class BruitIoConfig implements BrtConfig {
   durationBeforeClosing = 1000;
   form: Array<BrtField>;
   screenshot = {
-    desiredWidth: null,
+    maxWidth: null,
+    maxHeight: null,
     imageType: 'image/png',
     compression: 0.9
   }
