@@ -3,20 +3,24 @@ import { BrtHttpRequest } from '@bruit/types/dist/enums/brt-http-request';
 import { BrtLogHttpType } from '@bruit/types/dist/enums/brt-log-http-type';
 
 export class HttpTool {
-  static init() {
+
+  private static addGetParamsToLog: boolean;
+
+  static init(addGetParamsToLog: boolean = false) {
     HttpTool.overrideXMLHttpRequest();
     HttpTool.overrideFetch();
+    HttpTool.addGetParamsToLog = addGetParamsToLog;
   }
 
   static overrideXMLHttpRequest() {
-    (function(open) {
-      XMLHttpRequest.prototype.open = function() {
+    (function (open) {
+      XMLHttpRequest.prototype.open = function () {
         const method = arguments[0];
         const url = arguments[1];
         HttpTool.logCall(method, url);
 
         this._oldonreadystatechange = this.onreadystatechange;
-        this.onreadystatechange = function(e) {
+        this.onreadystatechange = function (e) {
           if (this.readyState === 2 && !JSON.stringify(this.status).startsWith('2')) {
             HttpTool.logResponseHeaders(method, e.target.responseURL, e.target.status);
           }
@@ -33,8 +37,8 @@ export class HttpTool {
   }
 
   static overrideFetch() {
-    (function(fetchP) {
-      window.fetch = function() {
+    (function (fetchP) {
+      window.fetch = function () {
         let req = {
           method: 'GET',
           body: undefined,
@@ -84,7 +88,7 @@ export class HttpTool {
       type: BrtLogHttpType.REQUEST,
       timestamp: new Date(),
       method: BrtHttpRequest[method.toUpperCase()],
-      url,
+      url: HttpTool.addGetParamsToLog ? url : url.split('?')[0],
       body,
       headers
     };

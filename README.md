@@ -186,12 +186,14 @@ Describes the options for the bruit core
 ```ts
 interface BrtCoreConfig {
   logCacheLength?: BrtLogCacheLength;
+  addGetParamsToLog?: boolean;
 }
 ```
 
 | Attribute      | Type                                    | Description                                                              | Mandatory | Default value             |
 | -------------- | --------------------------------------- | ------------------------------------------------------------------------ | --------- | ------------------------- |
 | logCacheLength | [BrtLogCacheLength](#brtlogcachelength) | Used to filter the logs to send by their level (debug, warn, error, etc) | no        | [see](#brtlogcachelength) |
+| addGetParamsToLog | boolean | Used to tell wether the parameters of the get requests should be displayed in the logs | no | false |
 
 Typescript import :
 

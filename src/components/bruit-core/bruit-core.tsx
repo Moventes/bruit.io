@@ -47,7 +47,7 @@ export class BruitCore {
     }
     if (!configError) {
       this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
-      ConsoleTool.init(this._bruitCoreConfig.logCacheLength);
+      ConsoleTool.init(this._bruitCoreConfig);
     } else {
       this.onError.emit(configError);
       console.error(configError);
