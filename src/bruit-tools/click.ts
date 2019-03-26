@@ -52,7 +52,7 @@ export class ClickTool {
 
     return elements
       .map(elem => ClickTool.elementToString(elem))
-      .map((elem: string, idx: number) => `${'$nbsp;'.repeat(2 * idx)}${elem}`)
+      .map((elem: string, idx: number) => `${'&nbsp;'.repeat(2 * idx)}${elem}`)
       .join('<br>');
 
   }
