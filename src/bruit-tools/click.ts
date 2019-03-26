@@ -1,5 +1,8 @@
 import { BrtClickLogArg } from '@bruit/types';
 
+const SKIP_TAG = ['BR', 'WBR', 'STYLE', 'SCRIPT', 'HEAD', 'HTML', 'META'];
+const SKIP_CHILDREN = ['SVG'];
+
 export class ClickTool {
   /**
    * @param path array of element (from click event)
@@ -21,30 +24,15 @@ export class ClickTool {
   ): string {
 
     const elements = [];
-    const skipTag = ['BR', 'WBR', 'STYLE', 'SCRIPT', 'HEAD', 'HTML', 'META'];
-    let currentElement = element;
-    while (elements.length <= maxLevel) {
+    let currentElement = this.getChildElement(element);
 
-      if (!skipTag.includes(currentElement.tagName.toUpperCase())) {
-        elements.push(currentElement);
-      }
-
-
-      // set next element or break
-      if (!element.hasChildNodes) {
-        break;
-      } else {
-        let children;
-        for (let i = 0; i < currentElement.children.length; i++) {
-          const child = currentElement.children.item(i);
-          if (!skipTag.includes(child.tagName.toUpperCase())) {
-            children = child;
-            break;
-          }
+    if (currentElement) {
+      while (elements.length <= maxLevel) {
+        if (!SKIP_TAG.includes(currentElement.tagName.toUpperCase())) {
+          elements.push(currentElement);
         }
-        if (children) {
-          currentElement = children;
-        } else {
+        currentElement = this.getChildElement(currentElement);
+        if (!currentElement) {
           break;
         }
       }
@@ -181,6 +169,34 @@ export class ClickTool {
       }
     }
     return indexOfElement;
+  }
+
+  /**
+   * returns the first child of an element, or null
+   * 
+   * @param element the element to inspect
+   * 
+   * @return the first child of the element, or null
+   */
+  private static getChildElement(element: Element): Element {
+
+    var currentElement = element;
+
+    if (currentElement.hasChildNodes) {
+      let firstChild: Element = null;
+      for (let i = 0; i < currentElement.children.length; i++) {
+        const child = currentElement.children.item(i);
+        if (!SKIP_TAG.includes(child.tagName.toUpperCase()) && !SKIP_CHILDREN.includes(currentElement.tagName.toUpperCase())) {
+          firstChild = child;
+          break;
+        }
+      }
+      currentElement = firstChild;
+    } else {
+      currentElement = null;
+    }
+
+    return currentElement;
   }
 
   static logClick(...args) {
