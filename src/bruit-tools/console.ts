@@ -1,14 +1,15 @@
-import { BrtLog, BrtLogCacheLength } from '@bruit/types';
+import { BrtLog } from '@bruit/types';
 import { BrtLogType } from '@bruit/types/dist/enums/brt-log-type';
+import { BruitCoreConfig } from '../models/bruit-core-config.class';
 import { ClickTool } from './click';
 import { HttpTool } from './http';
 import { UrlTool } from './url';
 
 export class ConsoleTool {
-  private static brtLogCacheLength: BrtLogCacheLength;
+  private static bruitCoreConfig: BruitCoreConfig;
   private static logByLevel: { [level: string]: Array<BrtLog> } = {};
 
-  static init(brtLogCacheLengthConfig: BrtLogCacheLength) {
+  static init(bruitCoreConfig: BruitCoreConfig) {
     if (
       !(
         !!(<any>window).cordova ||
@@ -22,7 +23,7 @@ export class ConsoleTool {
     }
     (<any>console).overloadable = true;
 
-    ConsoleTool.brtLogCacheLength = brtLogCacheLengthConfig;
+    ConsoleTool.bruitCoreConfig = bruitCoreConfig;
     ConsoleTool.configure();
   }
 
@@ -134,7 +135,7 @@ export class ConsoleTool {
       if (!(<any>console).overloaded.logArray) {
         (<any>console).overloaded.logArray = true;
         (<any>console).logArray = () => {
-          return Object.entries(ConsoleTool.brtLogCacheLength)
+          return Object.entries(ConsoleTool.bruitCoreConfig.logCacheLength)
             .filter(v => v[1] > 0 && ConsoleTool.logByLevel[v[0]])
             .map(v => ConsoleTool.logByLevel[v[0]])
             .reduce((logArray, logsLevel) => logArray.concat(logsLevel), [])
@@ -160,7 +161,7 @@ export class ConsoleTool {
         (<any>console).network = function () {
           return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
         };
-        HttpTool.init();
+        HttpTool.init(ConsoleTool.bruitCoreConfig.addQueryParamsToLog);
       }
       if (!(<any>console).overloaded.log) {
         (<any>console).overloaded.log = true;
@@ -229,7 +230,7 @@ export class ConsoleTool {
         ConsoleTool.logByLevel[currentLog.type] = [];
       }
       ConsoleTool.logByLevel[currentLog.type].push(currentLog);
-      if (ConsoleTool.logByLevel[currentLog.type].length > ConsoleTool.brtLogCacheLength[currentLog.type]) {
+      if (ConsoleTool.logByLevel[currentLog.type].length > ConsoleTool.bruitCoreConfig.logCacheLength[currentLog.type]) {
         ConsoleTool.logByLevel[currentLog.type].shift();
       }
       return parentArgs;

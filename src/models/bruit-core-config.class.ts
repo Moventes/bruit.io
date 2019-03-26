@@ -1,4 +1,4 @@
-import { BrtError, BrtCoreConfig } from '@bruit/types';
+import { BrtCoreConfig, BrtError } from '@bruit/types';
 
 export class BruitCoreConfig implements BrtCoreConfig {
   logCacheLength = {
@@ -11,6 +11,7 @@ export class BruitCoreConfig implements BrtCoreConfig {
     click: 100,
     url: 100
   };
+  addQueryParamsToLog = false;
 
   constructor(config: BrtCoreConfig) {
     if (config && config.logCacheLength) {
@@ -18,6 +19,7 @@ export class BruitCoreConfig implements BrtCoreConfig {
         ...this.logCacheLength,
         ...config.logCacheLength
       };
+      this.addQueryParamsToLog = config.addQueryParamsToLog || false;
     }
   }
 
