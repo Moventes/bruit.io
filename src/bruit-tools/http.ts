@@ -4,12 +4,12 @@ import { BrtLogHttpType } from '@bruit/types/dist/enums/brt-log-http-type';
 
 export class HttpTool {
 
-  private static addGetParamsToLog: boolean;
+  private static addQueryParamsToLog: boolean;
 
-  static init(addGetParamsToLog: boolean = false) {
+  static init(addQueryParamsToLog: boolean = false) {
     HttpTool.overrideXMLHttpRequest();
     HttpTool.overrideFetch();
-    HttpTool.addGetParamsToLog = addGetParamsToLog;
+    HttpTool.addQueryParamsToLog = addQueryParamsToLog;
   }
 
   static overrideXMLHttpRequest() {
@@ -88,7 +88,7 @@ export class HttpTool {
       type: BrtLogHttpType.REQUEST,
       timestamp: new Date(),
       method: BrtHttpRequest[method.toUpperCase()],
-      url: HttpTool.addGetParamsToLog ? url : url.split('?')[0],
+      url: HttpTool.addQueryParamsToLog ? url : url.split('?')[0],
       body,
       headers
     };

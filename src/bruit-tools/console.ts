@@ -161,7 +161,7 @@ export class ConsoleTool {
         (<any>console).network = function () {
           return ConsoleTool.handleLogMessage(BrtLogType.NETWORK, arguments);
         };
-        HttpTool.init(ConsoleTool.bruitCoreConfig.addGetParamsToLog);
+        HttpTool.init(ConsoleTool.bruitCoreConfig.addQueryParamsToLog);
       }
       if (!(<any>console).overloaded.log) {
         (<any>console).overloaded.log = true;

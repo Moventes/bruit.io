@@ -11,7 +11,7 @@ export class BruitCoreConfig implements BrtCoreConfig {
     click: 100,
     url: 100
   };
-  addGetParamsToLog = false;
+  addQueryParamsToLog = false;
 
   constructor(config: BrtCoreConfig) {
     if (config && config.logCacheLength) {
@@ -19,7 +19,7 @@ export class BruitCoreConfig implements BrtCoreConfig {
         ...this.logCacheLength,
         ...config.logCacheLength
       };
-      this.addGetParamsToLog = config.addGetParamsToLog || false;
+      this.addQueryParamsToLog = config.addQueryParamsToLog || false;
     }
   }
 
