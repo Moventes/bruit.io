@@ -85,7 +85,7 @@ export class BruitRatingComponent {
 
   star(value: number, on: boolean) {
     return (
-      <div class="star" onClick={() => (this.value = value)}>
+      <div class="bruit-star" onClick={() => (this.value = value)}>
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30">
           <path
             d="M17.5,12.5h-8.5l6.8,5-2.6,8.1,6.8-5,6.8,5-2.6-8.1,6.8-5h-8.5l-2.6-8.1z"

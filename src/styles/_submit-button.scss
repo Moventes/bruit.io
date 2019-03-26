@@ -5,7 +5,7 @@ $gray: #bbbbbb;
   font-family: 'Roboto', sans-serif;
 }
 
-.button-container {
+.bruit-button-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -33,7 +33,7 @@ button#bruit-io-submit-button {
   cursor: pointer;
   transition: all 0.25s ease;
 
-  .svg-icon {
+  .bruit-svg-icon {
     display: none;
   }
 
@@ -53,7 +53,7 @@ button#bruit-io-submit-button {
     letter-spacing: 2px;
   }
 
-  &.onClick {
+  &.bruit-on-click {
     width: 40px;
     border-color: $gray;
     border-width: 3px;
@@ -73,7 +73,7 @@ button#bruit-io-submit-button {
     // }
   }
 
-  &.validate {
+  &.bruit-validate {
     background: transparent;
     border-color: transparent !important;
 
@@ -85,7 +85,7 @@ button#bruit-io-submit-button {
       content: "";
     }
 
-    .svg-icon {
+    .bruit-svg-icon {
       display: inline-block;
     }
 

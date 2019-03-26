@@ -15,15 +15,10 @@ bruit-core {
   sans-serif !important;
 
 
-  * h1 {
-    font-weight: bold !important;
-  }
-
-
-  .error {
+  .bruit-error {
     color: #c31313 !important;
 
-    svg.svg-icon path {
+    svg.bruit-svg-icon path {
       fill: #c31313 !important;
     }
   }
@@ -55,11 +50,11 @@ bruit-core {
       align-items: center;
     }
 
-    &.open {
+    &.bruit-open {
       opacity: 1;
       visibility: visible;
 
-      .modal {
+      .bruit-modal {
         margin-top: 0;
         opacity: 1;
       }
@@ -67,7 +62,7 @@ bruit-core {
     }
 
 
-    .modal {
+    .bruit-modal {
 
       margin-top: 100vh;
       max-height: 100vh;
@@ -100,7 +95,7 @@ bruit-core {
 
 
 
-      .head {
+      .bruit-head {
         padding: 16px 24px;
         color: #fff;
         display: flex;
@@ -109,7 +104,8 @@ bruit-core {
         align-items: center;
         flex-shrink: 0;
 
-        h1 {
+        h1.bruit-title {
+          font-weight: bold !important;
           font-size: 24px !important;
           color: #fff;
         }
@@ -123,13 +119,13 @@ bruit-core {
 
 
 
-      .content {
+      .bruit-content {
         height: 100%;
         overflow-y: auto;
         flex: auto;
         overscroll-behavior: contain;
 
-        .sub-head {
+        .bruit-sub-head {
           padding: 32px 32px 0 32px;
           color: #555;
 
@@ -139,7 +135,7 @@ bruit-core {
           }
         }
 
-        form {
+        #bruit-io-form {
           padding: 48px;
 
           #bruit-io-fieldset {

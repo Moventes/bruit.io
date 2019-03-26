@@ -337,17 +337,17 @@ export class BruitCore {
       const buttonClassList = submitButton.classList;
       switch (state) {
         case SubmitButtonState.CHECKED: {
-          buttonClassList.remove('onClick');
-          buttonClassList.add('validate');
+          buttonClassList.remove('bruit-on-click');
+          buttonClassList.add('bruit-validate');
           break;
         }
         case SubmitButtonState.LOADING: {
-          buttonClassList.add('onClick');
-          buttonClassList.remove('validate');
+          buttonClassList.add('bruit-on-click');
+          buttonClassList.remove('bruit-validate');
           break;
         }
         default: {
-          buttonClassList.remove('validate', 'onClick');
+          buttonClassList.remove('bruit-validate', 'bruit-on-click');
           break;
         }
       }
@@ -368,7 +368,7 @@ export class BruitCore {
     } else if (this._bruitCoreConfig) {
       return <span>{this.modal()}</span>;
     } else {
-      return <p class="error">missing config</p>;
+      return <p class="bruit-error">missing config</p>;
     }
   }
 
@@ -376,12 +376,12 @@ export class BruitCore {
     return (
       <div
         id="bruit-io-wrapper"
-        class={this.modalOpened ? 'open' : 'close'}
+        class={this.modalOpened ? 'bruit-open' : 'bruit-close'}
         style={{ 'background-color': this._bruitIoConfig ? this._bruitIoConfig.colors.background : 'transparent' }}
         data-html2canvas-ignore
       >
         <div
-          class="modal"
+          class="bruit-modal"
           onClick={event => {
             event.stopPropagation();
           }}
@@ -395,8 +395,8 @@ export class BruitCore {
 
   modalHeader() {
     return (
-      <div class="head" style={{ 'background-color': this._bruitIoConfig.colors.header }}>
-        <h1 class="title">{this._bruitIoConfig.labels.title}</h1>
+      <div class="bruit-head" style={{ 'background-color': this._bruitIoConfig.colors.header }}>
+        <h1 class="bruit-title">{this._bruitIoConfig.labels.title}</h1>
         <a id="bruit-io-btn-close">
           <svg
             width="24"
@@ -416,7 +416,7 @@ export class BruitCore {
   modalSubHeader() {
     if (this._bruitIoConfig.labels.introduction) {
       return (
-        <div class="sub-head">
+        <div class="bruit-sub-head">
           <p>{this._bruitIoConfig.labels.introduction}</p>
         </div>
       );
@@ -426,12 +426,12 @@ export class BruitCore {
   }
   modalContent() {
     return (
-      <div class="content" style={{ 'background-color': this._bruitIoConfig.colors.body }}>
+      <div class="bruit-content" style={{ 'background-color': this._bruitIoConfig.colors.body }}>
         {this.modalSubHeader()}
         <form id="bruit-io-form">
           <fieldset id="bruit-io-fieldset">
             {this.modalFields()}
-            <div class="button-container">{this.modalSubmitButtonOrError()}</div>
+            <div class="bruit-button-container">{this.modalSubmitButtonOrError()}</div>
           </fieldset>
         </form>
       </div>
@@ -446,9 +446,9 @@ export class BruitCore {
           id="bruit-io-submit-button"
           style={{ color: this._bruitIoConfig.colors.header, 'border-color': this._bruitIoConfig.colors.header }}
         >
-          <svg class="svg-icon" viewBox="0 0 20 20">
+          <svg class="bruit-svg-icon" viewBox="0 0 20 20">
             <path
-              class="no-color"
+              class="bruit-no-color"
               fill={this._bruitIoConfig.colors.header}
               d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
             />
@@ -458,13 +458,13 @@ export class BruitCore {
       );
     } else {
       return (
-        <div id="bruit-io-footer-error" class="error">
-          <svg class="svg-icon" viewBox="0 0 20 20">
+        <div id="bruit-io-footer-error" class="bruit-error">
+          <svg class="bruit-svg-icon" viewBox="0 0 20 20">
             <path d="M18.344,16.174l-7.98-12.856c-0.172-0.288-0.586-0.288-0.758,0L1.627,16.217c0.339-0.543-0.603,0.668,0.384,0.682h15.991C18.893,16.891,18.167,15.961,18.344,16.174 M2.789,16.008l7.196-11.6l7.224,11.6H2.789z M10.455,7.552v3.561c0,0.244-0.199,0.445-0.443,0.445s-0.443-0.201-0.443-0.445V7.552c0-0.245,0.199-0.445,0.443-0.445S10.455,7.307,10.455,7.552M10.012,12.439c-0.733,0-1.33,0.6-1.33,1.336s0.597,1.336,1.33,1.336c0.734,0,1.33-0.6,1.33-1.336S10.746,12.439,10.012,12.439M10.012,14.221c-0.244,0-0.443-0.199-0.443-0.445c0-0.244,0.199-0.445,0.443-0.445s0.443,0.201,0.443,0.445C10.455,14.021,10.256,14.221,10.012,14.221" />
           </svg>
           <p>{this.modalError.text}</p>
           <a onClick={() => this.destroyFeedback()}>
-            <svg class="svg-icon big" viewBox="0 0 20 20">
+            <svg class="bruit-svg-icon bruit-big" viewBox="0 0 20 20">
               <path
                 fill="none"
                 d="M12.71,7.291c-0.15-0.15-0.393-0.15-0.542,0L10,9.458L7.833,7.291c-0.15-0.15-0.392-0.15-0.542,0c-0.149,0.149-0.149,0.392,0,0.541L9.458,10l-2.168,2.167c-0.149,0.15-0.149,0.393,0,0.542c0.15,0.149,0.392,0.149,0.542,0L10,10.542l2.168,2.167c0.149,0.149,0.392,0.149,0.542,0c0.148-0.149,0.148-0.392,0-0.542L10.542,10l2.168-2.168C12.858,7.683,12.858,7.44,12.71,7.291z M10,1.188c-4.867,0-8.812,3.946-8.812,8.812c0,4.867,3.945,8.812,8.812,8.812s8.812-3.945,8.812-8.812C18.812,5.133,14.867,1.188,10,1.188z M10,18.046c-4.444,0-8.046-3.603-8.046-8.046c0-4.444,3.603-8.046,8.046-8.046c4.443,0,8.046,3.602,8.046,8.046C18.046,14.443,14.443,18.046,10,18.046z"
@@ -496,7 +496,7 @@ export class BruitCore {
           const err = { code: 116, text: `"${field.type}" field type is not supported` };
           console.error('BRUIT.IO error : ', err);
           this.onError.emit(err);
-          return <span class="error">error</span>;
+          return <span class="bruit-error">error</span>;
         }
       }
     });
@@ -504,24 +504,24 @@ export class BruitCore {
 
   inputField(field: BrtField) {
     return (
-      <div class="group">
+      <div class="bruit-group">
         <input
           id={field.id}
           name={field.id}
           onInput={e => {
             field.value = e.target['value'];
             if (!!field.value) {
-              e.srcElement.classList.add('has-value');
+              e.srcElement.classList.add('bruit-has-value');
             } else {
-              e.srcElement.classList.remove('has-value');
+              e.srcElement.classList.remove('bruit-has-value');
             }
           }}
           type={field.type}
           value={field.value}
-          class={!!field.value ? 'has-value' : ''}
+          class={!!field.value ? 'bruit-has-value' : ''}
           required={!!field.required}
         />
-        <span class="bar" />
+        <span class="bruit-bar" />
         <label htmlFor={field.id}>{field.label}</label>
       </div>
     );
@@ -529,23 +529,23 @@ export class BruitCore {
 
   textareaField(field: BrtField) {
     return (
-      <div class="group">
+      <div class="bruit-group">
         <textarea
           id={field.id}
           name={field.id}
           onInput={e => {
             field.value = e.target['value'];
             if (!!field.value) {
-              e.srcElement.classList.add('has-value');
+              e.srcElement.classList.add('bruit-has-value');
             } else {
-              e.srcElement.classList.remove('has-value');
+              e.srcElement.classList.remove('bruit-has-value');
             }
           }}
           value={field.value}
-          class={!!field.value ? 'has-value' : ''}
+          class={!!field.value ? 'bruit-has-value' : ''}
           required={!!field.required}
         />
-        <span class="bar" />
+        <span class="bruit-bar" />
         <label htmlFor={field.id}>{field.label}</label>
       </div>
     );
@@ -553,7 +553,7 @@ export class BruitCore {
 
   checkboxField(field: BrtField) {
     return (
-      <div class="group">
+      <div class="bruit-group">
         <input
           id={field.id}
           name={field.id}
@@ -564,7 +564,7 @@ export class BruitCore {
         />
         <label htmlFor={field.id} />
         <a
-          class="checkbox-label"
+          class="bruit-checkbox-label"
           onClick={() => {
             field.value = !field.value;
             this.bruitCoreElement.forceUpdate();
@@ -578,9 +578,9 @@ export class BruitCore {
 
   ratingField(field: BrtField) {
     return (
-      <div class="group without-bar">
+      <div class="bruit-group bruit-without-bar">
         <bruit-rating
-          class="has-value"
+          class="bruit-has-value"
           id={field.id}
           color={this._bruitIoConfig.colors.focus}
           offColor="#999"
@@ -596,11 +596,11 @@ export class BruitCore {
   theming() {
     return (
       <style>
-        {'bruit-core .group .bar:before, bruit-core .group .bar:after{' +
+        {'bruit-core .bruit-group .bruit-bar:before, bruit-core .bruit-group .bruit-bar:after{' +
           'background-color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .group input:not([type="checkbox"]):invalid ~.bar:before, bruit-core .group input:not([type="checkbox"]):invalid ~.bar:after{' +
+          'bruit-core .bruit-group input:not([type="checkbox"]):invalid ~.bruit-bar:before, bruit-core .bruit-group input:not([type="checkbox"]):invalid ~.bruit-bar:after{' +
           'background-color: ' +
           this._bruitIoConfig.colors.errors +
           '}' +
@@ -610,28 +610,28 @@ export class BruitCore {
           '!important ;' +
           'color: white !important;' +
           '}' +
-          'bruit-core button#bruit-io-submit-button.onClick{' +
+          'bruit-core button#bruit-io-submit-button.bruit-on-click{' +
           'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
           this._bruitIoConfig.colors.header +
           '!important;}' +
-          'bruit-core .group input[type="checkbox"]:checked+label, bruit-core .group input[type="checkbox"]+label:after{' +
+          'bruit-core .bruit-group input[type="checkbox"]:checked+label, bruit-core .bruit-group input[type="checkbox"]+label:after{' +
           'border-color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .group input:not([type="checkbox"]).has-value:invalid~label, bruit-core .group input:not([type="checkbox"]):focus:invalid~label{' +
+          'bruit-core .bruit-group input:not([type="checkbox"]).bruit-has-value:invalid~label, bruit-core .bruit-group input:not([type="checkbox"]):focus:invalid~label{' +
           'color: ' +
           this._bruitIoConfig.colors.errors +
           '}' +
-          'bruit-core .group input:not([type="checkbox"]).has-value~label, bruit-core .group input:not([type="checkbox"]):focus~label{' +
+          'bruit-core .bruit-group input:not([type="checkbox"]).bruit-has-value~label, bruit-core .bruit-group input:not([type="checkbox"]):focus~label{' +
           'color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .group textarea.has-value~label, bruit-core .group textarea:focus~label{' +
+          'bruit-core .bruit-group textarea.bruit-has-value~label, bruit-core .bruit-group textarea:focus~label{' +
           'color: ' +
           this._bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .group textarea.has-value:invalid~label{' +
+          'bruit-core .bruit-group textarea.bruit-has-value:invalid~label{' +
           'color: ' +
           this._bruitIoConfig.colors.errors +
           '}'}

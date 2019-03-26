@@ -1,5 +1,5 @@
-import { Component, Prop, State, Watch, EventEmitter, Event, Element, Method } from '@stencil/core';
-import { BrtError, BrtData, BrtConfig, BrtCoreConfig } from '@bruit/types';
+import { BrtConfig, BrtCoreConfig, BrtData, BrtError } from '@bruit/types';
+import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
 import { appendCore } from './../../appendCore';
 @Component({
@@ -117,7 +117,7 @@ export class BruitIo {
     if (this._config) {
       return this.principalButton();
     } else {
-      return <p class="error">missing config</p>;
+      return <p class="bruit-error">missing config</p>;
     }
   }
 

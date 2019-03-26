@@ -1,5 +1,5 @@
 /* form starting stylings ------------------------------- */
-.group {
+.bruit-group {
   position: relative;
   margin: 0 auto 45px auto;
   width: 100%;
@@ -7,7 +7,7 @@
   max-width: 400px;
   white-space: normal;
 
-  &.without-bar {
+  &.bruit-without-bar {
     margin-bottom: 35px;
   }
 
@@ -33,7 +33,7 @@
 
   /* LABEL ======================================= */
   label,
-  .checkbox-label {
+  .bruit-checkbox-label {
     color: #999;
     font-size: 14px;
     font-weight: normal;
@@ -53,7 +53,7 @@
     font-size: 14px;
 
     &:focus,
-    &.has-value {
+    &.bruit-has-value {
 
       &~label {
         top: -20px;
@@ -85,7 +85,7 @@
   }
 
   /* BOTTOM BARS ================================= */
-  .bar {
+  .bruit-bar {
     position: relative;
     display: block;
     width: 100%;
@@ -175,7 +175,7 @@
     }
   }
 
-  .checkbox-label {
+  .bruit-checkbox-label {
     width: 100%;
     height: auto;
     background-color: transparent;
