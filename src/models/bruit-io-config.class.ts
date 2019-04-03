@@ -25,7 +25,8 @@ export class BruitIoConfig implements BrtConfig {
     maxHeight: null,
     imageType: 'image/png',
     compression: 0.9
-  }
+  };
+  elementToRenderSelector: string;
 
   constructor(config: BrtConfig) {
     this.apiKey = config.apiKey;
@@ -67,6 +68,9 @@ export class BruitIoConfig implements BrtConfig {
         ...this.screenshot,
         ...config.screenshot
       };
+    }
+    if (config.elementToRenderSelector) {
+      this.elementToRenderSelector = config.elementToRenderSelector;
     }
   }
 
