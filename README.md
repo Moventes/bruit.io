@@ -161,6 +161,14 @@ interface BrtConfig {
   colors?: BrtColors;
   closeModalOnSubmit?: boolean;
   apiUrl?: string;
+  durationBeforeClosing?: number;
+  elementToRenderSelector?: string;
+  screenshot?: {
+    maxWidth?: number,
+    maxHeight?: number,
+    imageType?: string,
+    compression?: number
+  }
 }
 ```
 
@@ -172,6 +180,14 @@ interface BrtConfig {
 | colors             | [BrtColors](#BrtColors)      | Allows to pick your colors in the modal theming                                    | no        | [see](#BrtColors)   |
 | closeModalOnSubmit | boolean                      | true to have modal closed automatically on submit (feedback is sent in background) | no        | false               |
 | apiUrl             | string                       | Allows to use some third party backend for feedback processing                     | no        | [see](#BrtFeedback) |
+| durationBeforeClosing | number | Allows to define a number of milliseconds before the popup gets closed | no | -
+| elementToRenderSelector | string | sets the css selector of the element to use as the root of the rendering for the screenshot | no | document.body
+| screenshot.maxWidth | number | the maximum width of the generated screenshot. Set it to have the screenshot resized when it's too large | no | -
+| screenshot.maxHeight | number | the maximum height of the generated screenshot. Set it to have the screenshot resized when it's too tall | no | -
+| screenshot.imageType | image/png ; image/jpeg | the type of image to generate | no | image/png
+| screenshot.compression | number | the compression to apply to the screenshot between 1 (no compression) and 0 (fully compressed) ; only applies to image/jpeg type | no |0.9
+
+
 
 Typescript import :
 
@@ -483,7 +499,7 @@ Bruit.sendFeedback('myApiKey', true, myData, myDataFunction)
 
 ## JavaScript
 
-Integrating `bruit-io` component to a project without a JavaScript framework is straight forward. If you're using a simple HTML page, you can add bruit.io component via a script tag.
+Integrating `bruit-io` component to a project without a JavaScript framework is pretty straight forward. When using a simple HTML page, bruit.io can be added from a CDN as follows:
 
 ```html
 <!DOCTYPE html>
@@ -491,21 +507,46 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
   <head>
     <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
   </head>
-  <body>
-    <bruit-io></bruit-io>
-    <script>
-      var bruitCmp = document.querySelector('bruit-io');
-      bruitCmp.addEventListener('onReady', function () {
-        bruitCmp.start();
-      });
-      bruitCmp.config = {
-        apiKey: 'xxxxxxxxxxxxxxxxx',
-        form: [...]
-      };
-    </script>
-  </body>
+  ...
 </html>
 ```
+
+Then, you may add the `bruit-io` component directly:
+
+```html
+<body>
+  <bruit-io></bruit-io>
+  ...
+  <script>
+    var bruitCmp = document.querySelector('bruit-io');
+    bruitCmp.addEventListener('onReady', function () {
+      bruitCmp.start();
+    });
+    bruitCmp.config = {
+      // whatever your config is
+    };
+  </script>
+</body>
+```
+
+Or, should you load different pages and the component would not be on the main one, you can include the `bruit-core` component and initialise the framework from the same location
+
+```html
+<body>
+  <bruit-core ></bruit-core>
+  ...
+  <script>
+    var bruitCore = document.querySelector('bruit-core');
+    if (bruitCore) {
+      bruitCore.config = {
+        // whatever your config is
+      };
+    }
+  </script>
+</body>
+```
+
+You may then add `bruit-io` component anywhere else.
 
 [_from stencil documentation_](https://github.com/ionic-team/stencil-site/blob/master/src/docs/framework-integration/javascript.md)
 
