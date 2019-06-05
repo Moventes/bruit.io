@@ -1,8 +1,14 @@
 import { BrtCookies, BrtNavigatorInfo, BrtNetwork, BrtPermissions, BrtServiceWorker, BrtServiceWorkerState, BrtStorageEstimate } from "@bruit/types";
 import { BrtPermissionName } from "@bruit/types/dist/enums/brt-permission-name";
 import { BrtPermissionStatus } from "@bruit/types/dist/enums/brt-permission-status";
+import Bowser from 'bowser';
 
 export class NavigatorTool {
+  static navigatorDoesNotSupportsUtf16(): boolean {
+    const browser = Bowser.getParser(window.navigator.userAgent);
+    return browser.satisfies({ safari: '>0', ie: '>0' })
+  }
+
   static async getInfo(): Promise<BrtNavigatorInfo> {
     try {
       const [permissions, storage, privateMode] = await Promise.all([
