@@ -1,6 +1,7 @@
 import { BrtFeedback } from '@bruit/types';
-import * as Config from '../config/config.json';
 import LZString from 'lz-string';
+import { NavigatorTool } from '../bruit-tools/navigator.js';
+import * as Config from '../config/config.json';
 
 export class Api {
   static postFeedback(feedback: BrtFeedback, apiUrl?: string): Promise<any> {
@@ -8,11 +9,19 @@ export class Api {
       const screenshot = feedback.canvas;
       delete feedback.canvas;
       const formData = new FormData();
-      const FeedbackCompressed = LZString.compressToUTF16(JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+      let FeedbackCompressed;
+      let compression: string;
+      if (NavigatorTool.navigatorDoesNotSupportsUtf16()) {
+        FeedbackCompressed = LZString.compressToBase64(JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+        compression = 'base64'
+      } else {
+        FeedbackCompressed = LZString.compressToUTF16(JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
+        compression = 'utf16'
+      }
       formData.set('feedback', FeedbackCompressed);
       formData.set('screenshot', screenshot, 'screenshot.png')
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', apiUrl || Config['BRUIT_IO_API_URL'], true);
+      xhr.open('POST', `${apiUrl || Config['BRUIT_IO_API_URL']}/${compression}`, true);
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 || (xhr.readyState === 2 && xhr.status === 200)) {
           if (JSON.stringify(xhr.status).startsWith('2') || xhr.status === 304) {
