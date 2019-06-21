@@ -114,9 +114,9 @@ Simply add this tag wherever you want in your project:
 
 These properties are available on the component:
 
-- [_config_](#configuration) (**required**)
-- [_data_](#Add-data-in-feedback) (optional)
-- [_dataFn_](#Add-data-in-feedback) (optional)
+- [_brt-config_](#configuration) (**required**)
+- [_brt-data_](#Add-data-in-feedback) (optional)
+- [_brt-data-fn_](#Add-data-in-feedback) (optional)
 - [_onError_](#Handle-errors) (optional)
 
 Integration code examples are available for these platforms:
