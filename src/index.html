@@ -60,7 +60,7 @@
     var config =
       JSON.stringify({
         apiKey: '8c8b45bd-aa02-4048-9382-c6a115780359',
-        apiUrl: 'https://api.bruit.io/feedback/multipart',
+        apiUrl: 'https://bruit-test-api.moventes.com/feedback/multipart',
         labels: {
           title: 'bruit.io - test',
           introduction: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -99,19 +99,19 @@
         ]
       });
 
-    bruitCmp.config = config;
+    bruitCmp.setAttribute('brt-config', config);
 
-    bruitCmp.data = [{
+    bruitCmp.setAttribute('brt-data', [{
       label: 'verion',
       value: '0.1.54'
-    }];
+    }]);
 
-    bruitCmp.dataFn = new Promise(resolve => {
+    bruitCmp.setAttribute('brt-data-fn', new Promise(resolve => {
       resolve([{
         label: 'user',
         value: '👾'
       }]);
-    });
+    }));
 
     console.log('start', bruitCmp);
 
