@@ -114,10 +114,10 @@ Simply add this tag wherever you want in your project:
 
 These properties are available on the component:
 
-- [_config_](#configuration) (**required**)
-- [_data_](#Add-data-in-feedback) (optional)
-- [_dataFn_](#Add-data-in-feedback) (optional)
-- [_onError_](#Handle-errors) (optional)
+- [_brt-config_](#configuration) (**required**)
+- [_brt-data_](#Add-data-in-feedback) (optional)
+- [_brt-dataFn_](#Add-data-in-feedback) (optional)
+- [_brt-onError_](#Handle-errors) (optional)
 
 Integration code examples are available for these platforms:
 
@@ -604,10 +604,10 @@ defineBruitElements();
 
 ```html
 <bruit-io
-  [config]="bruitConfig"
-  [data]="bruitData"
-  [dataFn]="bruitDataPromise()"
-  (onError)="handleBruitError($event)"
+  [brt-config]="bruitConfig"
+  [brt-data]="bruitData"
+  [brt-dataFn]="bruitDataPromise()"
+  (brt-onError)="handleBruitError($event)"
 ></bruit-io>
 ```
 
