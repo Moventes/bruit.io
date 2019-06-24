@@ -11,7 +11,7 @@ export class BruitIo {
   // attributs on bruit-io component
 
   // configuration
-  @Prop()
+  @Prop({attr: 'brt-config'})
   config: BrtConfig | string;
 
   /**
@@ -48,14 +48,14 @@ export class BruitIo {
   /**
    * field array to add in feedback
    */
-  @Prop()
+  @Prop({attr: 'brt-data'})
   data: Array<BrtData>;
 
   /**
    * FN or PROMISE
    * return field array to add in feedback
    */
-  @Prop()
+  @Prop({attr: 'brt-data-fn'})
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
   @Method()

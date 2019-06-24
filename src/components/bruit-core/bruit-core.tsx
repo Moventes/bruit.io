@@ -17,7 +17,7 @@ export class BruitCore {
   // attributs on bruit-io component
 
   // configuration
-  @Prop()
+  @Prop({ attr: 'brt-config' })
   config: BrtCoreConfig | string;
 
   /**

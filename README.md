@@ -114,9 +114,9 @@ Simply add this tag wherever you want in your project:
 
 These properties are available on the component:
 
-- [_config_](#configuration) (**required**)
-- [_data_](#Add-data-in-feedback) (optional)
-- [_dataFn_](#Add-data-in-feedback) (optional)
+- [_brt-config_](#configuration) (**required**)
+- [_brt-data_](#Add-data-in-feedback) (optional)
+- [_brt-data-fn_](#Add-data-in-feedback) (optional)
 - [_onError_](#Handle-errors) (optional)
 
 Integration code examples are available for these platforms:
@@ -383,17 +383,17 @@ import { BrtFeedback } from '@bruit/types';
 
 It is possible to automatically had technical data in the feedback, for example the version number of your application, the identifier of the user sending the feedback, etc.
 
-This is done by using either the `data` or `dataFn` property on the component.
+This is done by using either the `brt-data` or `brt-data-fn` property on the component.
 
 ## data
 
-`data` property is used to send an array of objects to add to the feedback to the component.
+`brt-data` property is used to send an array of objects to add to the feedback to the component.
 
 The property takes a `BrtData` array as a value.
 
 ## dataFn
 
-`dataFn` property takes a function as a value. The function should return either an array of `BrtData` or a promise of an array of `BrtData`.
+`brt-data-fn` property takes a function as a value. The function should return either an array of `BrtData` or a promise of an array of `BrtData`.
 
 ### _BrtData_
 
@@ -604,10 +604,10 @@ defineBruitElements();
 
 ```html
 <bruit-io
-  [config]="bruitConfig"
-  [data]="bruitData"
-  [dataFn]="bruitDataPromise()"
-  (onError)="handleBruitError($event)"
+  [brt-config]="bruitConfig"
+  [brt-data]="bruitData"
+  [brt-dataFn]="bruitDataPromise()"
+  (brt-onError)="handleBruitError($event)"
 ></bruit-io>
 ```
 
