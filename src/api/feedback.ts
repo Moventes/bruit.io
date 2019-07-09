@@ -3,11 +3,11 @@ import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { NavigatorTool } from '../bruit-tools/navigator';
 import { ScreenTool } from '../bruit-tools/screen';
 import * as Config from '../config/config.json';
-import { BruitIoConfig } from '../models/bruit-io-config.class';
 import { Api } from './api';
+import { BruitCoreConfig } from '../models/bruit-core-config.class';
 
 export class Feedback implements BrtFeedback {
-  bruitIoConfig: BruitIoConfig;
+  bruitCoreConfig: BruitCoreConfig;
   apiKey: string;
   apiUrl: string = Config['BRUIT_IO_API_URL'];
 
@@ -23,13 +23,11 @@ export class Feedback implements BrtFeedback {
   serviceWorkers: Array<BrtServiceWorker>;
   version: string;
 
-  constructor(bruitIoConfig?: BruitIoConfig, apiKey?: string) {
-    this.bruitIoConfig = bruitIoConfig;
-    this.apiUrl = bruitIoConfig.apiUrl;
+  constructor(bruitCoreConfig?: BruitCoreConfig) {
+    this.bruitCoreConfig = bruitCoreConfig;
+    this.apiUrl = bruitCoreConfig.apiUrl;
     this.version = Config['version'];
-    if (this.bruitIoConfig) this.apiKey = this.bruitIoConfig.apiKey;
-    if (apiKey) this.apiKey = apiKey;
-
+    if (this.bruitCoreConfig) this.apiKey = this.bruitCoreConfig.apiKey;
   }
 
   /**
@@ -49,7 +47,7 @@ export class Feedback implements BrtFeedback {
 
       if (agreement) {
         const [screenShot, navigator, serviceWorkers] = await Promise.all([
-          ScreenTool.getScreenshot(this.bruitIoConfig),
+          ScreenTool.getScreenshot(this.bruitCoreConfig),
           NavigatorTool.getInfo(),
           NavigatorTool.getServiceWorkersList()
         ]);

@@ -1,6 +1,9 @@
 import { BrtCoreConfig, BrtError } from '@bruit/types';
+import * as Config from '../config/config.json';
 
 export class BruitCoreConfig implements BrtCoreConfig {
+  apiKey: string;
+  apiUrl: string = Config['BRUIT_IO_API_URL'];
   logCacheLength = {
     log: 100,
     debug: 100,
@@ -21,6 +24,10 @@ export class BruitCoreConfig implements BrtCoreConfig {
       };
       this.addQueryParamsToLog = config.addQueryParamsToLog || false;
     }
+    this.apiKey = config.apiKey;
+    if (config.apiUrl) {
+      this.apiUrl = config.apiUrl;
+    }
   }
 
   static haveError(config: BrtCoreConfig): BrtError | void {
@@ -33,8 +40,17 @@ export class BruitCoreConfig implements BrtCoreConfig {
           };
         }
       }
+      if (!config.apiKey && (!config.apiUrl || config.apiUrl === Config['BRUIT_IO_API_URL'])) {
+        return {
+          code: 101,
+          text: 'apiKey is missing'
+        };
+      }
     } else {
-      // error
+      return {
+        code: 100,
+        text: 'config is missing'
+      };
     }
   }
 }
