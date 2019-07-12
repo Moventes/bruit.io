@@ -6,8 +6,7 @@ import * as Config from '../config/config.json';
 export class Api {
   static postFeedback(feedback: BrtFeedback, apiUrl?: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const screenshot = feedback.canvas;
-      delete feedback.canvas;
+
       const formData = new FormData();
       let FeedbackCompressed;
       let compression: string;
@@ -19,7 +18,11 @@ export class Api {
         compression = 'utf16'
       }
       formData.set('feedback', FeedbackCompressed);
-      formData.set('screenshot', screenshot, 'screenshot.png')
+      if (feedback.canvas) {
+        const screenshot = feedback.canvas;
+        delete feedback.canvas;
+        formData.set('screenshot', screenshot, 'screenshot.png')
+      }
       const xhr = new XMLHttpRequest();
       xhr.open('POST', `${apiUrl || Config['BRUIT_IO_API_URL']}/${compression}`, true);
       xhr.onreadystatechange = function () {

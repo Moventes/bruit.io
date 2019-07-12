@@ -32,6 +32,7 @@ export class Feedback implements BrtFeedback {
     this.apiUrl = bruitCoreConfig.apiUrl;
     this.version = Config['version'];
     if (this.bruitCoreConfig) this.apiKey = this.bruitCoreConfig.apiKey;
+    console.log('constructor feedback');
   }
 
   /**
@@ -46,6 +47,8 @@ export class Feedback implements BrtFeedback {
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>,
     screenshotConfig?: BrtScreenshot,
   ): Promise<any> {
+    console.log('send feedback');
+
     try {
       const agreementField = formFields.find(field => field.id === 'agreement');
       const agreement = agreementField ? agreementField.value : false;
@@ -75,6 +78,7 @@ export class Feedback implements BrtFeedback {
       const dataFromFn: Array<BrtData> = await this.getDataFromFn(dataFn);
       const formData = formFields.map(field => this.fieldToData(field));
       this.data = [...formData, ...data, ...dataFromFn];
+      console.log('send feedback postFeedback');
 
       return Api.postFeedback({
         date: new Date().toString(),

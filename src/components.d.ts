@@ -16,6 +16,9 @@ import {
   BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
+import {
+  BrtScreenshot,
+} from '@bruit/types/dist/interfaces/brt-screenshot';
 
 
 export namespace Components {
@@ -26,6 +29,8 @@ export namespace Components {
     * called on click on component init a feedback, wait user submit, send feedback
     */
     'newFeedbackWithModal': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
+    'sendError': (error: string) => Promise<any>;
+    'sendFeedback': (dataa?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
   }
   interface BruitCoreAttributes extends StencilHTMLAttributes {
     'config'?: BrtCoreConfig | string;

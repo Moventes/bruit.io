@@ -50,6 +50,7 @@ export class BruitCore {
       this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
       BruitCore._staticBruitCoreConfig = this._bruitCoreConfig;
       ConsoleTool.init(this._bruitCoreConfig);
+      console.log('config ok', BruitCore._staticBruitCoreConfig);
     } else {
       this.onError.emit(configError);
       console.error(configError);
@@ -108,7 +109,7 @@ export class BruitCore {
    * fired on component loading before render()
    */
   componentWillLoad() {
-    // console.info('[BRUIT.IO] - bruit started ...');
+    console.info('[BRUIT.IO] - bruit started ...');
     // first init
     this.initConfig(this.config);
   }
@@ -207,7 +208,13 @@ export class BruitCore {
       });
   }
 
-  public static sendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
+  @Method()
+  sendFeedback(dataa: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
+    return BruitCore.SendFeedback(dataa, dataFn, agreement, screenshotConfig);
+  }
+
+
+  public static SendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
 
     var feedback = new Feedback(BruitCore._staticBruitCoreConfig);
 
@@ -223,8 +230,15 @@ export class BruitCore {
     return feedback.send([], data, dataFn, screenshotConfig);
   }
 
-  public static sendError(error: string) {
+  @Method()
+  sendError(error: string) {
+    return BruitCore.SendError(error);
+  }
 
+
+
+  public static SendError(error: string) {
+    console.log('sendError called with ', error);
     var feedback = new Feedback(BruitCore._staticBruitCoreConfig);
 
     return feedback.send([{
