@@ -104,7 +104,7 @@ export class BruitIo {
   newFeedback() {
     const modal = document.getElementsByTagName('bruit-core')[0];
     if (modal) {
-      modal.newFeedback(this._config, this.data, this.dataFn);
+      modal.newFeedbackWithModal(this._config, this.data, this.dataFn);
     } else {
       //error
     }

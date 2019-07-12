@@ -6,7 +6,7 @@ import {
 } from './appendCore';
 
 
-export function defineBruitElements(brtCoreConfig, opts) {
+export function init(brtCoreConfig, opts) {
   var r = defineCustomElements(window, opts);
   window.addEventListener('load', function () {
     appendCore(brtCoreConfig);

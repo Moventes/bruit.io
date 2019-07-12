@@ -13,7 +13,7 @@
 
             var scripts = document.getElementsByTagName("script");
 
-            // Look through them trying to find ourselves
+            // Look through them trying to find unpkg.com/@bruit/component script
             var params = {};
             for (var i = 0; i < scripts.length; i++) {
                 if (scripts[i].src.indexOf("https://unpkg.com/@bruit/component/latest/dist/start.js?") > -1) {
@@ -21,7 +21,7 @@
 
                     var pa = scripts[i].src.split("?").pop().split("&");
 
-                    // Split each key=value into array, the construct js object
+                    // Split each key=value into array, the construct object
 
 
                     for (var j = 0; j < pa.length; j++) {
@@ -30,6 +30,8 @@
                     }
                 }
             }
+
+            // attach bruitCore with url params
 
             bruitCore.config = params;
             document.body.appendChild(bruitCore);

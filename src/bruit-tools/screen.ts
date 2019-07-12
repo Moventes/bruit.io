@@ -1,6 +1,6 @@
 import html2canvas from '@bruit/html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
-import { BruitIoConfig } from '../models/bruit-io-config.class';
+import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
 
 export class ScreenTool {
   static getInfo(): BrtScreenInfo {
@@ -19,9 +19,9 @@ export class ScreenTool {
     return height / screen.height;
   }
 
-  static async getScreenshot(bruitIoConfig?: BruitIoConfig): Promise<Blob> {
+  static async getScreenshot(screenshotConfig?: BrtScreenshot): Promise<Blob> {
     return new Promise(async (resolve, reject) => {
-      const div = bruitIoConfig.elementToRenderSelector ? document.querySelector(bruitIoConfig.elementToRenderSelector) : document.body;
+      const div = screenshotConfig && screenshotConfig.elementToRenderSelector ? document.querySelector(screenshotConfig.elementToRenderSelector) : document.body;
       const options = {
         background: 'white',
         height: div.scrollHeight,
@@ -32,12 +32,12 @@ export class ScreenTool {
       };
       let imageType = 'image/png';
       let compression = 0.5;
-      if (bruitIoConfig && bruitIoConfig.screenshot) {
-        const scaleFromWidth = bruitIoConfig.screenshot.maxWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.maxWidth) : window.devicePixelRatio;
-        const scaleFromHeight = bruitIoConfig.screenshot.maxHeight ? ScreenTool.getScaleFromHeight(bruitIoConfig.screenshot.maxHeight) : window.devicePixelRatio;
+      if (screenshotConfig) {
+        const scaleFromWidth = screenshotConfig.maxWidth ? ScreenTool.getScaleFromWidth(screenshotConfig.maxWidth) : window.devicePixelRatio;
+        const scaleFromHeight = screenshotConfig.maxHeight ? ScreenTool.getScaleFromHeight(screenshotConfig.maxHeight) : window.devicePixelRatio;
         options.scale = Math.min(scaleFromWidth, scaleFromHeight);
-        if (bruitIoConfig.screenshot.imageType) imageType = bruitIoConfig.screenshot.imageType;
-        if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
+        if (screenshotConfig.imageType) imageType = screenshotConfig.imageType;
+        if (screenshotConfig.compression) compression = screenshotConfig.compression;
       }
       try {
         const canvas = await html2canvas(div, options);

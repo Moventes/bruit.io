@@ -1,13 +1,17 @@
 import { BrtCookies, BrtData, BrtFeedback, BrtField, BrtLog, BrtNavigatorInfo, BrtScreenInfo, BrtServiceWorker } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
+import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
 import { NavigatorTool } from '../bruit-tools/navigator';
 import { ScreenTool } from '../bruit-tools/screen';
 import * as Config from '../config/config.json';
-import { Api } from './api';
 import { BruitCoreConfig } from '../models/bruit-core-config.class';
+import { BruitIoConfig } from '../models/bruit-io-config.class';
+import { Api } from './api';
 
 export class Feedback implements BrtFeedback {
   bruitCoreConfig: BruitCoreConfig;
+  bruitIoConfig: BruitIoConfig;
+
   apiKey: string;
   apiUrl: string = Config['BRUIT_IO_API_URL'];
 
@@ -23,7 +27,7 @@ export class Feedback implements BrtFeedback {
   serviceWorkers: Array<BrtServiceWorker>;
   version: string;
 
-  constructor(bruitCoreConfig?: BruitCoreConfig) {
+  constructor(bruitCoreConfig: BruitCoreConfig) {
     this.bruitCoreConfig = bruitCoreConfig;
     this.apiUrl = bruitCoreConfig.apiUrl;
     this.version = Config['version'];
@@ -39,7 +43,8 @@ export class Feedback implements BrtFeedback {
   public async send(
     formFields: Array<BrtField>,
     data: Array<BrtData> = [],
-    dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
+    dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>,
+    screenshotConfig?: BrtScreenshot,
   ): Promise<any> {
     try {
       const agreementField = formFields.find(field => field.id === 'agreement');
@@ -47,7 +52,7 @@ export class Feedback implements BrtFeedback {
 
       if (agreement) {
         const [screenShot, navigator, serviceWorkers] = await Promise.all([
-          ScreenTool.getScreenshot(this.bruitCoreConfig),
+          ScreenTool.getScreenshot(screenshotConfig),
           NavigatorTool.getInfo(),
           NavigatorTool.getServiceWorkersList()
         ]);

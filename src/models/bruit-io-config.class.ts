@@ -22,9 +22,9 @@ export class BruitIoConfig implements BrtConfig {
     maxWidth: null,
     maxHeight: null,
     imageType: 'image/png',
-    compression: 0.9
+    compression: 0.9,
+    elementToRenderSelector: null
   };
-  elementToRenderSelector: string;
 
   constructor(config: BrtConfig) {
 
@@ -63,9 +63,6 @@ export class BruitIoConfig implements BrtConfig {
         ...this.screenshot,
         ...config.screenshot
       };
-    }
-    if (config.elementToRenderSelector) {
-      this.elementToRenderSelector = config.elementToRenderSelector;
     }
   }
 

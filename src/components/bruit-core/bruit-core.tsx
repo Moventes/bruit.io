@@ -1,5 +1,6 @@
 import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
+import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
 import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import { Feedback } from '../../api/feedback';
 import { ConsoleTool } from '../../bruit-tools/console';
@@ -47,6 +48,7 @@ export class BruitCore {
     }
     if (!configError) {
       this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
+      BruitCore._staticBruitCoreConfig = this._bruitCoreConfig;
       ConsoleTool.init(this._bruitCoreConfig);
     } else {
       this.onError.emit(configError);
@@ -59,6 +61,7 @@ export class BruitCore {
    */
   @State()
   _bruitCoreConfig: BruitCoreConfig;
+  public static _staticBruitCoreConfig: BruitCoreConfig;
 
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved
@@ -130,7 +133,7 @@ export class BruitCore {
    * init a feedback, wait user submit, send feedback
    */
   @Method()
-  newFeedback(
+  newFeedbackWithModal(
     bruitIoConfig: BruitIoConfig,
     data?: Array<BrtData>,
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
@@ -145,7 +148,7 @@ export class BruitCore {
     return preparePromise
       .then(() => {
         this._bruitIoConfig = bruitIoConfig;
-        const feedback = new Feedback(this._bruitIoConfig);
+        const feedback = new Feedback(this._bruitCoreConfig);
 
         //create a new feedback
 
@@ -204,31 +207,34 @@ export class BruitCore {
       });
   }
 
-  @Method()
-  sendFeedback(apiKey, agreement, data, dataFn) {
-    return BruitCore.send(apiKey, agreement, data, dataFn);
-  }
+  public static sendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
 
-  static async send(apiKey, agreement, data, dataFn) {
-    if (!apiKey) {
-      console.error('[BRUIT] apiKey must be defined !');
-      return;
+    var feedback = new Feedback(BruitCore._staticBruitCoreConfig);
+
+    if (agreement) {
+      data.push({
+        id: 'agreement',
+        label: 'agreement',
+        value: agreement || false,
+        type: 'checkbox'
+      });
     }
 
-    if (!data) {
-      data = [];
-    }
-
-    data.push({
-      id: 'agreement',
-      label: 'agreement',
-      value: agreement || false,
-      type: 'checkbox'
-    });
-
-    var feedback = new Feedback(undefined, apiKey);
-    return feedback.send(data, undefined, dataFn);
+    return feedback.send([], data, dataFn, screenshotConfig);
   }
+
+  public static sendError(error: string) {
+
+    var feedback = new Feedback(BruitCore._staticBruitCoreConfig);
+
+    return feedback.send([{
+      id: 'error',
+      label: 'error',
+      value: error,
+      type: 'textarea'
+    }]);
+  }
+
 
   /**
    * close the modal and destroy the _currentFeedback
