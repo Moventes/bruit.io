@@ -17,7 +17,8 @@ export const config: Config = {
   copy: [
     { src: 'init.js', dest: './../init.js' },
     { src: 'core.js', dest: './../core.js' },
-    { src: 'appendCore.js', dest: './../appendCore.js' }
+    { src: 'appendCore.js', dest: './../appendCore.js' },
+    { src: 'start.js', dest: './../start.js' }
   ],
   plugins: [sass()],
   hashFileNames: false
