@@ -209,17 +209,18 @@ export class BruitCore {
   }
 
   @Method()
-  sendFeedback(dataa: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
-    return BruitCore.SendFeedback(dataa, dataFn, agreement, screenshotConfig);
+  sendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
+    return BruitCore.SendFeedback(data, dataFn, agreement, screenshotConfig);
   }
 
 
   public static SendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
 
     var feedback = new Feedback(BruitCore._staticBruitCoreConfig);
+    var fields = [];
 
     if (agreement) {
-      data.push({
+      fields.push({
         id: 'agreement',
         label: 'agreement',
         value: agreement || false,
@@ -227,7 +228,7 @@ export class BruitCore {
       });
     }
 
-    return feedback.send([], data, dataFn, screenshotConfig);
+    return feedback.send(fields, data, dataFn, screenshotConfig);
   }
 
   @Method()

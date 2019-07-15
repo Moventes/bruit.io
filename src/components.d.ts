@@ -30,7 +30,7 @@ export namespace Components {
     */
     'newFeedbackWithModal': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
     'sendError': (error: string) => Promise<any>;
-    'sendFeedback': (dataa?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
+    'sendFeedback': (data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
   }
   interface BruitCoreAttributes extends StencilHTMLAttributes {
     'config'?: BrtCoreConfig | string;

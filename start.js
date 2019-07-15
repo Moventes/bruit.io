@@ -18,15 +18,34 @@
             for (var i = 0; i < scripts.length; i++) {
                 if (scripts[i].src.indexOf("https://unpkg.com/@bruit/component@next/dist/start.js?") > -1) {
                     // Get an array of key=value strings of params
+                    var paramsStr = scripts[i].src.split("?").pop();
+                    if (paramsStr && paramsStr.length > 1) {
+                        var pa = paramsStr.split("&");
 
-                    var pa = scripts[i].src.split("?").pop().split("&");
-
-                    // Split each key=value into array, the construct object
+                        // Split each key=value into array, the construct object
 
 
-                    for (var j = 0; j < pa.length; j++) {
-                        var kv = pa[j].split("=");
-                        params[kv[0]] = kv[1];
+                        for (var j = 0; j < pa.length; j++) {
+                            var kv = pa[j].split("=");
+                            switch (kv[0]) {
+                                case 'apiUrl':
+                                    params[kv[0]] = decodeURI(kv[1])
+                                    break;
+                                case 'logCacheLength':
+                                    params[kv[0]] = parseInt(kv[1])
+                                    break;
+                                case 'addQueryParamsToLog':
+                                    if (kv[1] === 'false') {
+                                        params[kv[0]] = false;
+                                    } else {
+                                        params[kv[0]] = true;
+                                    }
+                                    break;
+                                default:
+                                    params[kv[0]] = kv[1];
+                                    break;
+                            }
+                        }
                     }
                 }
             }
