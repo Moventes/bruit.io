@@ -11,6 +11,7 @@ export class NavigatorTool {
 
   static async getInfo(): Promise<BrtNavigatorInfo> {
     try {
+      // console.log('getInfo await');
       const [permissions, storage, privateMode] = await Promise.all([
         NavigatorTool.getPermissions(),
         NavigatorTool.getStorageInformation(),
@@ -22,7 +23,9 @@ export class NavigatorTool {
         platform,
         language
       } = window.navigator;
+      // console.log('getInfo call getNetworkInformation');
       const network = this.getNetworkInformation();
+      // console.log('getInfo call getPluginsInformation');
       const plugins = this.getPluginsInformation();
       const serviceWorkersSupported = "serviceWorker" in window.navigator;
       return {
@@ -38,6 +41,7 @@ export class NavigatorTool {
         plugins
       };
     } catch (error) {
+      // console.log('getInfo catch error ', error);
       throw error;
     }
   }
@@ -98,21 +102,25 @@ export class NavigatorTool {
   }
 
   static async getPermissions(): Promise<BrtPermissions> {
+    // console.log('getInfo getPermissions');
+
     if (
       navigator &&
       (<any>navigator).permissions &&
       (<any>navigator).permissions.query
     ) {
       const permissionsQueries = Object.keys(BrtPermissionName).map(
-        permissionKey =>
-          (<any>navigator).permissions
+        permissionKey => {
+          // console.log('getInfo getPermissions query ', BrtPermissionName[permissionKey]);
+
+          return (<any>navigator).permissions
             .query({ name: BrtPermissionName[permissionKey] })
             .then(pStatus => {
               pStatus.name = BrtPermissionName[permissionKey];
               return pStatus;
             })
             .catch(() => Promise.resolve({ unsupported: true }))
-      );
+        });
 
       return Promise.all(permissionsQueries).then(permisionsStatus =>
         permisionsStatus
@@ -125,21 +133,30 @@ export class NavigatorTool {
             acc[pStatus.name] = pStatus.state;
             return acc;
           }, {})
-      );
+      ).catch(error => {
+        // console.log('getInfo getPermissions query error', error);
+        return Promise.reject(error);
+      });
     } else {
       return {};
     }
   }
 
   static async getServiceWorkersList(): Promise<Array<BrtServiceWorker>> {
+    // console.log('getInfo getServiceWorkersList');
+
     if ("serviceWorker" in window.navigator) {
       try {
+        // console.log('getInfo getServiceWorkersList await navigator.serviceWorker.getRegistrations');
+
         const registrations = await navigator.serviceWorker.getRegistrations();
         return registrations.map(registration => ({
           scope: registration.scope,
           state: NavigatorTool.getServiceWorkerState(registration)
         }));
       } catch (error) {
+        // console.log('getInfo getServiceWorkersList error', error);
+
         throw error;
       }
     } else {
@@ -149,6 +166,8 @@ export class NavigatorTool {
 
   // test if incognito from https://gist.github.com/jherax/a81c8c132d09cc354a0e2cb911841ff1
   static isIncognito(): Promise<boolean> {
+    // console.log('getInfo isIncognito');
+
     return new Promise(resolve => {
       const on = () => resolve(true); // is in private mode
       const off = () => resolve(false); // not private mode

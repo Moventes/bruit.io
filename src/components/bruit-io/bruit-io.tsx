@@ -1,7 +1,6 @@
-import { BrtConfig, BrtCoreConfig, BrtData, BrtError } from '@bruit/types';
+import { BrtConfig, BrtData, BrtError } from '@bruit/types';
 import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
-import { appendCore } from './../../appendCore';
 @Component({
   tag: 'bruit-io',
   styleUrl: 'bruit-io.scss',
@@ -11,7 +10,11 @@ export class BruitIo {
   // attributs on bruit-io component
 
   // configuration
-  @Prop({attr: 'brt-config'})
+  @Prop({
+    attr: 'brt-config',
+    reflectToAttr: true,
+    mutable: true,
+  })
   config: BrtConfig | string;
 
   /**
@@ -48,20 +51,41 @@ export class BruitIo {
   /**
    * field array to add in feedback
    */
-  @Prop({attr: 'brt-data'})
+  @Prop({
+    attr: 'brt-data',
+    reflectToAttr: true,
+    mutable: true,
+  })
   data: Array<BrtData>;
 
   /**
    * FN or PROMISE
    * return field array to add in feedback
    */
-  @Prop({attr: 'brt-data-fn'})
+  @Prop({
+    attr: 'brt-data-fn',
+    reflectToAttr: true,
+    mutable: true,
+})
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
+
+  //SETTER
   @Method()
-  start(brtCoreConfig: BrtCoreConfig) {
-    appendCore(brtCoreConfig);
+  setConfig(conf: BrtConfig | string){
+    this.config = conf;
   }
+
+  @Method()
+  setData(datap:Array<BrtData>){
+    this.data = datap;
+  }
+
+  @Method()
+  setDataFn(fnp:() => Array<BrtData> | Promise<Array<BrtData>>){
+    this.dataFn = fnp;
+  }
+
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved
   /**

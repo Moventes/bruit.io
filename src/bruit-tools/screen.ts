@@ -20,7 +20,10 @@ export class ScreenTool {
   }
 
   static async getScreenshot(screenshotConfig?: BrtScreenshot): Promise<Blob> {
+    // console.log('getScreenshot go');
     return new Promise(async (resolve, reject) => {
+      // console.log('getScreenshot div');
+
       const div = screenshotConfig && screenshotConfig.elementToRenderSelector ? document.querySelector(screenshotConfig.elementToRenderSelector) : document.body;
       const options = {
         background: 'white',
@@ -40,11 +43,18 @@ export class ScreenTool {
         if (screenshotConfig.compression) compression = screenshotConfig.compression;
       }
       try {
+        // console.log('getScreenshot html2canvas');
         const canvas = await html2canvas(div, options);
+        // console.log('getScreenshot toBlob');
+
         canvas.toBlob((result: Blob) => {
+          // console.log('getScreenshot end');
+
           resolve(result);
         }, imageType, compression)
       } catch (error) {
+        // console.log('getScreenshot error');
+
         console.error(error);
         reject(error);
       }

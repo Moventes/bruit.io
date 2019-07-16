@@ -59,7 +59,7 @@ export class HttpTool {
         } else {
           req.url = arguments[0];
         }
-        console.log(arguments);
+        // console.log(arguments);
         HttpTool.logCall(req.method, req.url, req.headers, req.body);
         return fetchP
           .apply(this, arguments)
@@ -122,7 +122,7 @@ export class HttpTool {
     if ((<any>console).network) {
       (<any>console).network((<any>JSON).decycle(requestLog));
     } else {
-      console.log(requestLog);
+      // console.log(requestLog);
     }
   }
 }

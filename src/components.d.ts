@@ -50,7 +50,9 @@ export namespace Components {
     * FN or PROMISE return field array to add in feedback
     */
     'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
-    'start': (brtCoreConfig: BrtCoreConfig) => void;
+    'setConfig': (conf: string | BrtConfig) => void;
+    'setData': (datap: BrtData[]) => void;
+    'setDataFn': (fnp: () => BrtData[] | Promise<BrtData[]>) => void;
   }
   interface BruitIoAttributes extends StencilHTMLAttributes {
     'config'?: BrtConfig | string;

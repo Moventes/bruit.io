@@ -50,7 +50,7 @@ export class BruitCore {
       this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
       BruitCore._staticBruitCoreConfig = this._bruitCoreConfig;
       ConsoleTool.init(this._bruitCoreConfig);
-      console.log('config ok', BruitCore._staticBruitCoreConfig);
+      // console.log('config ok', BruitCore._staticBruitCoreConfig);
     } else {
       this.onError.emit(configError);
       console.error(configError);
@@ -191,7 +191,7 @@ export class BruitCore {
       .catch(err => {
         if (err === 'close') {
           this.destroyFeedback();
-          //console.log('feedback canceled');
+          // console.log('feedback canceled');
         } else {
           this.onError.emit(err);
           if (err && err.text) {
@@ -239,7 +239,7 @@ export class BruitCore {
 
 
   public static SendError(error: string) {
-    console.log('sendError called with ', error);
+    // console.log('sendError called with ', error);
     var feedback = new Feedback(BruitCore._staticBruitCoreConfig);
 
     return feedback.send([{

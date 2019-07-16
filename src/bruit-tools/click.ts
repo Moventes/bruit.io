@@ -203,7 +203,7 @@ export class ClickTool {
     if ((<any>console).click) {
       (<any>console).click(...args);
     } else {
-      console.log(...args);
+      // console.log(...args);
     }
   }
 }
