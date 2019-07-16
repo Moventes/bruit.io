@@ -12,7 +12,6 @@ export class BruitIo {
   // configuration
   @Prop({
     attr: 'brt-config',
-    reflectToAttr: true,
     mutable: true,
   })
   config: BrtConfig | string;
@@ -23,12 +22,17 @@ export class BruitIo {
    */
   @Watch('config')
   initConfig(newConfig: BrtConfig | string) {
+    // console.log('initConfig ', newConfig);
+    // console.log('initConfig ', typeof newConfig);
+    // console.log('initConfig ', newConfig['__proto__'].constructor.name);
     let _newConfig: BrtConfig;
     let configError: BrtError | void;
     if (typeof newConfig === 'string') {
       try {
         _newConfig = JSON.parse(newConfig) as BrtConfig;
-      } catch {
+      } catch(error) {
+        console.log(error)
+        console.log('for',newConfig);
         configError = {
           code: 100,
           text: 'bad config format (must be a json or stringified json)'
@@ -53,7 +57,6 @@ export class BruitIo {
    */
   @Prop({
     attr: 'brt-data',
-    reflectToAttr: true,
     mutable: true,
   })
   data: Array<BrtData>;
@@ -64,25 +67,30 @@ export class BruitIo {
    */
   @Prop({
     attr: 'brt-data-fn',
-    reflectToAttr: true,
     mutable: true,
-})
+  })
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
 
   //SETTER
   @Method()
-  setConfig(conf: BrtConfig | string){
+  async setConfig(conf: BrtConfig | string){
+    // console.log('setConfig ', conf);
+    // console.log('setConfig ', typeof conf);
+    // console.log('setConfig ', conf['__proto__'].constructor.name);
+
     this.config = conf;
   }
 
   @Method()
-  setData(datap:Array<BrtData>){
+  async setData(datap:Array<BrtData>){
+    // console.log('setData ', datap)
     this.data = datap;
   }
 
   @Method()
-  setDataFn(fnp:() => Array<BrtData> | Promise<Array<BrtData>>){
+  async setDataFn(fnp:() => Array<BrtData> | Promise<Array<BrtData>>){
+    // console.log('setDataFn ', fnp)
     this.dataFn = fnp;
   }
 
@@ -116,8 +124,11 @@ export class BruitIo {
    */
   componentWillLoad() {
     // first init
-    this.initConfig(this.config);
-
+    if(this.config && !this._config){
+      // console.log('componentWillLoad config')
+      this.initConfig(this.config);
+    }
+    
     this._haveInnerElement = !!this.bruitIoElement.innerHTML ? !!this.bruitIoElement.innerHTML.trim() : false;
   }
 

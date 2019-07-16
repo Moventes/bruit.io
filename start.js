@@ -5,7 +5,12 @@
 
     //Find our script
     var reg = /https:\/\/unpkg\.com\/@bruit\/component@.*\/dist\/start\.js\?/
-    var scriptUnpkg = scripts.find(url => url.search(reg) === 0);
+    var scriptUnpkg = null;
+    for (i = 0; i < scripts.length; i++) {
+        if (scripts[i].src.search(reg) === 0) {
+            scriptUnpkg = scripts[i].src;
+        }
+    }
 
     if (scriptUnpkg) {
 

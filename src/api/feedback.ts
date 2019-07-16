@@ -54,11 +54,14 @@ export class Feedback implements BrtFeedback {
       const agreement = agreementField ? agreementField.value : false;
 
       if (agreement) {
+        // console.log('get data (agreement)');
         const [screenShot, navigator, serviceWorkers] = await Promise.all([
           ScreenTool.getScreenshot(screenshotConfig),
           NavigatorTool.getInfo(),
           NavigatorTool.getServiceWorkersList()
         ]);
+
+        // console.log('screenshot = ', screenShot);
 
         this.navigator = navigator;
         this.serviceWorkers = serviceWorkers;

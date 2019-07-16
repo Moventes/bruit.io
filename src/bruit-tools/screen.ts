@@ -35,13 +35,11 @@ export class ScreenTool {
       };
       let imageType = 'image/png';
       let compression = 0.5;
-      if (screenshotConfig) {
-        const scaleFromWidth = screenshotConfig.maxWidth ? ScreenTool.getScaleFromWidth(screenshotConfig.maxWidth) : window.devicePixelRatio;
-        const scaleFromHeight = screenshotConfig.maxHeight ? ScreenTool.getScaleFromHeight(screenshotConfig.maxHeight) : window.devicePixelRatio;
-        options.scale = Math.min(scaleFromWidth, scaleFromHeight);
-        if (screenshotConfig.imageType) imageType = screenshotConfig.imageType;
-        if (screenshotConfig.compression) compression = screenshotConfig.compression;
-      }
+      const scaleFromWidth = screenshotConfig && screenshotConfig.maxWidth ? ScreenTool.getScaleFromWidth(screenshotConfig.maxWidth) : window.devicePixelRatio;
+      const scaleFromHeight = screenshotConfig && screenshotConfig.maxHeight ? ScreenTool.getScaleFromHeight(screenshotConfig.maxHeight) : window.devicePixelRatio;
+      options.scale = Math.min(scaleFromWidth, scaleFromHeight);
+      if (screenshotConfig && screenshotConfig.imageType) imageType = screenshotConfig.imageType;
+      if (screenshotConfig && screenshotConfig.compression) compression = screenshotConfig.compression;
       try {
         // console.log('getScreenshot html2canvas');
         const canvas = await html2canvas(div, options);

@@ -18,10 +18,13 @@ export class Api {
         compression = 'utf16'
       }
       formData.set('feedback', FeedbackCompressed);
+      // console.log('canvas ?', feedback.canvas);
       if (feedback.canvas) {
         const screenshot = feedback.canvas;
-        delete feedback.canvas;
         formData.set('screenshot', screenshot, 'screenshot.png')
+        delete feedback.canvas;
+        // console.log('screenshot setted');
+
       }
       const xhr = new XMLHttpRequest();
       xhr.open('POST', `${apiUrl || Config['BRUIT_IO_API_URL']}/${compression}`, true);
