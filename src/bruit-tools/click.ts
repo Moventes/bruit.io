@@ -13,7 +13,7 @@ export class ClickTool {
     window.addEventListener('click', event => {
       this.logClick(<BrtClickLogArg>{
         xpath: this.getXPath(event['path']),
-        partialDom: ClickTool.domToString(event.srcElement)
+        partialDom: ClickTool.domToString((event['srcElement'] as Element))
       });
     });
   }

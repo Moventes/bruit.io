@@ -1,6 +1,6 @@
-import html2canvas from '@bruit/html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
 import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
+import html2canvas from 'html2canvas';
 
 export class ScreenTool {
   static getInfo(): BrtScreenInfo {
@@ -24,7 +24,7 @@ export class ScreenTool {
     return new Promise(async (resolve, reject) => {
       // console.log('getScreenshot div');
 
-      const div = screenshotConfig && screenshotConfig.elementToRenderSelector ? document.querySelector(screenshotConfig.elementToRenderSelector) : document.body;
+      const div = screenshotConfig && screenshotConfig.elementToRenderSelector ? document.querySelector(screenshotConfig.elementToRenderSelector) as HTMLElement : document.body;
       const options = {
         background: 'white',
         height: div.scrollHeight,

@@ -5,24 +5,20 @@
  */
 
 
-import '@stencil/core';
-
-
-import {
-  BruitIoConfig,
-} from './models/bruit-io-config.class';
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   BrtConfig,
   BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
 import {
+  BruitIoConfig,
+} from './models/bruit-io-config.class';
+import {
   BrtScreenshot,
 } from '@bruit/types/dist/interfaces/brt-screenshot';
 
-
 export namespace Components {
-
   interface BruitCore {
     'config': BrtCoreConfig | string;
     /**
@@ -32,14 +28,6 @@ export namespace Components {
     'sendError': (error: string) => Promise<any>;
     'sendFeedback': (data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
   }
-  interface BruitCoreAttributes extends StencilHTMLAttributes {
-    'config'?: BrtCoreConfig | string;
-    /**
-    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
-    */
-    'onOnError'?: (event: CustomEvent) => void;
-  }
-
   interface BruitIo {
     'config': BrtConfig | string;
     /**
@@ -54,50 +42,15 @@ export namespace Components {
     'setData': (datap: BrtData[]) => Promise<void>;
     'setDataFn': (fnp: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
   }
-  interface BruitIoAttributes extends StencilHTMLAttributes {
-    'config'?: BrtConfig | string;
-    /**
-    * field array to add in feedback
-    */
-    'data'?: Array<BrtData>;
-    /**
-    * FN or PROMISE return field array to add in feedback
-    */
-    'dataFn'?: () => Array<BrtData> | Promise<Array<BrtData>>;
-    /**
-    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
-    */
-    'onOnError'?: (event: CustomEvent) => void;
-    'onOnReady'?: (event: CustomEvent) => void;
-  }
-
   interface BruitRating {
     'color': string;
     'max': number;
     'offColor': string;
     'value': number;
   }
-  interface BruitRatingAttributes extends StencilHTMLAttributes {
-    'color'?: string;
-    'max'?: number;
-    'offColor'?: string;
-    'onValueChange'?: (event: CustomEvent) => void;
-    'value'?: number;
-  }
 }
 
 declare global {
-  interface StencilElementInterfaces {
-    'BruitCore': Components.BruitCore;
-    'BruitIo': Components.BruitIo;
-    'BruitRating': Components.BruitRating;
-  }
-
-  interface StencilIntrinsicElements {
-    'bruit-core': Components.BruitCoreAttributes;
-    'bruit-io': Components.BruitIoAttributes;
-    'bruit-rating': Components.BruitRatingAttributes;
-  }
 
 
   interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement {}
@@ -117,26 +70,59 @@ declare global {
     prototype: HTMLBruitRatingElement;
     new (): HTMLBruitRatingElement;
   };
-
   interface HTMLElementTagNameMap {
-    'bruit-core': HTMLBruitCoreElement
-    'bruit-io': HTMLBruitIoElement
-    'bruit-rating': HTMLBruitRatingElement
-  }
-
-  interface ElementTagNameMap {
     'bruit-core': HTMLBruitCoreElement;
     'bruit-io': HTMLBruitIoElement;
     'bruit-rating': HTMLBruitRatingElement;
   }
-
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+declare namespace LocalJSX {
+  interface BruitCore extends JSXBase.HTMLAttributes<HTMLBruitCoreElement> {
+    'config'?: BrtCoreConfig | string;
+    /**
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent<any>) => void;
+  }
+  interface BruitIo extends JSXBase.HTMLAttributes<HTMLBruitIoElement> {
+    'config'?: BrtConfig | string;
+    /**
+    * field array to add in feedback
+    */
+    'data'?: Array<BrtData>;
+    /**
+    * FN or PROMISE return field array to add in feedback
+    */
+    'dataFn'?: () => Array<BrtData> | Promise<Array<BrtData>>;
+    /**
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent<any>) => void;
+    'onOnReady'?: (event: CustomEvent<any>) => void;
+  }
+  interface BruitRating extends JSXBase.HTMLAttributes<HTMLBruitRatingElement> {
+    'color'?: string;
+    'max'?: number;
+    'offColor'?: string;
+    'onValueChange'?: (event: CustomEvent<any>) => void;
+    'value'?: number;
+  }
+
+  interface IntrinsicElements {
+    'bruit-core': BruitCore;
+    'bruit-io': BruitIo;
+    'bruit-rating': BruitRating;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+

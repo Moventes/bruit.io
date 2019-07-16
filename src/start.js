@@ -64,7 +64,7 @@
 
         var s = document.createElement("script");
         s.type = "text/javascript";
-        s.src = baseUrl + version + '/dist/bruit.js';
+        s.src = baseUrl + version + '/dist/bruit/bruit.js';
         s.onload = function () {
             var modal = document.getElementsByTagName('bruit-core');
             if (modal.length <= 0) {
