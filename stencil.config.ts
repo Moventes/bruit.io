@@ -16,6 +16,10 @@ export const config: Config = {
       ]
     },
     {
+      type: 'dist-self-contained',
+      dir: 'dist2',
+    },
+    {
       type: 'www',
       serviceWorker: null
     }
