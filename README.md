@@ -511,6 +511,7 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 </html>
 ```
 
+
 Then, you may add the `bruit-io` component directly:
 
 ```html
