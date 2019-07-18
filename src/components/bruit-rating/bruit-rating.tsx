@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Prop, State, Watch } from '@stencil/core';
 // import { colorLuminance } from './f-tool.module';
 
 @Component({

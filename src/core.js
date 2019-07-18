@@ -1,2 +1,2 @@
-export { BruitCore as BruitModal } from './esm/es5/build/bruit-core.entry';
+export { BruitCore as Bruit } from './esm/bruit-core_3.entry.js';
 

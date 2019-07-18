@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.1.0-19",
+  "version": "1.1.0-22",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -13,7 +13,7 @@
     "connect"
   ],
   "private": false,
-  "module": "dist/esm/index.js",
+  "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "dist/types/typings.d.ts",
   "collection": "dist/collection/collection-manifest.json",
@@ -29,12 +29,12 @@
     "postpublish": "node script/log-update-db.js"
   },
   "devDependencies": {
-    "@stencil/core": "0.18.1",
-    "@stencil/sass": "^0.1.1",
-    "tslint": "^5.12.1",
+    "@stencil/core": "1.1.6",
+    "@stencil/sass": "^1.0.1",
     "chalk": "^2.4.2",
     "edit-json-file": "^1.2.1",
-    "@bruit/types": "0.3.2-1"
+    "@bruit/types": "0.3.2-1",
+    "tslint": "^5.18.0"
   },
   "repository": {
     "type": "git",

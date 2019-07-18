@@ -1,5 +1,5 @@
 import { BrtConfig, BrtData, BrtError } from '@bruit/types';
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch } from '@stencil/core';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
 @Component({
   tag: 'bruit-io',
@@ -110,7 +110,7 @@ export class BruitIo {
 
   // dom element of bruit-io component
   @Element()
-  bruitIoElement: HTMLStencilElement;
+  bruitIoElement: HTMLBruitIoElement;
   private _haveInnerElement: boolean;
 
   /**
@@ -123,7 +123,7 @@ export class BruitIo {
       this.initConfig(this.config);
     }
     
-    this._haveInnerElement = !!this.bruitIoElement.innerHTML ? !!this.bruitIoElement.innerHTML.trim() : false;
+    this._haveInnerElement = !!this.bruitIoElement['innerHTML'] ? !!this.bruitIoElement['innerHTML'].trim() : false;
   }
 
   /**

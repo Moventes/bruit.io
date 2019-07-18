@@ -1,9 +1,5 @@
-import {
-  defineCustomElements
-} from './esm/es5/bruit.define.js';
-import {
-  appendCore
-} from './appendCore';
+import { appendCore } from './appendCore';
+import { defineCustomElements } from './esm/loader.mjs';
 
 
 export function init(brtCoreConfig, opts) {

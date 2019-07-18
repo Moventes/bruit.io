@@ -2,7 +2,7 @@ import { Bruit } from '@bruit/core/lib/bruit';
 import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch } from '@stencil/core';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
 
@@ -93,7 +93,14 @@ export class BruitModal {
 
   // dom element of bruit-io component
   @Element()
-  bruitCoreElement: HTMLStencilElement;
+  bruitCoreHtmlElement: HTMLElement;
+
+  @State()
+  rererenderBool = true;
+
+  rererender() {
+    this.rererenderBool = !!this.rererenderBool;
+  }
 
   /**
    * fired on component loading before render()
@@ -256,9 +263,9 @@ export class BruitModal {
    */
   waitOnSubmit(): Promise<Array<BrtField>> {
     //getting the three clickable dom element (for submit or close modal)
-    const form: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-form');
-    const button_close: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-btn-close');
-    const modal_wrapper: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-wrapper');
+    const form: HTMLElement = this.bruitCoreHtmlElement.querySelector('#bruit-io-form');
+    const button_close: HTMLElement = this.bruitCoreHtmlElement.querySelector('#bruit-io-btn-close');
+    const modal_wrapper: HTMLElement = this.bruitCoreHtmlElement.querySelector('#bruit-io-wrapper');
 
     //show the close button
     button_close.hidden = false;
@@ -491,9 +498,9 @@ export class BruitModal {
           onInput={e => {
             field.value = e.target['value'];
             if (!!field.value) {
-              e.srcElement.classList.add('bruit-has-value');
+              e.srcElement['classList'].add('bruit-has-value');
             } else {
-              e.srcElement.classList.remove('bruit-has-value');
+              e.srcElement['classList'].remove('bruit-has-value');
             }
           }}
           type={field.type}
@@ -516,9 +523,9 @@ export class BruitModal {
           onInput={e => {
             field.value = e.target['value'];
             if (!!field.value) {
-              e.srcElement.classList.add('bruit-has-value');
+              e.srcElement['classList'].add('bruit-has-value');
             } else {
-              e.srcElement.classList.remove('bruit-has-value');
+              e.srcElement['classList'].remove('bruit-has-value');
             }
           }}
           value={field.value}
@@ -547,7 +554,7 @@ export class BruitModal {
           class="bruit-checkbox-label"
           onClick={() => {
             field.value = !field.value;
-            this.bruitCoreElement.forceUpdate();
+            this.rererender();
           }}
         >
           {field.label}

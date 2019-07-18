@@ -70,7 +70,8 @@
 
         var s = document.createElement("script");
         s.type = "text/javascript";
-        s.src = baseUrl + version + '/dist/bruit.js';
+        s.setAttribute('type', 'module');
+        s.src = baseUrl + version + '/dist/bruit/bruit.esm.js';
         s.onload = function () {
             var modal = document.getElementsByTagName('bruit-core');
             if (modal.length <= 0) {
