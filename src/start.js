@@ -31,21 +31,27 @@
             for (var j = 0; j < paramsSplitAND.length; j++) {
                 var kv = paramsSplitAND[j].split("=");
                 switch (kv[0]) {
+                    case 'apiKey':
+                        params.apiKey = kv[1];
+                        break;
                     case 'apiUrl':
-                        params[kv[0]] = decodeURI(kv[1])
+                        params.apiUrl = decodeURI(kv[1]);
                         break;
-                    case 'logCacheLength':
-                        params[kv[0]] = parseInt(kv[1])
-                        break;
-                    case 'addQueryParamsToLog':
-                        if (kv[1] === 'false') {
-                            params[kv[0]] = false;
-                        } else {
-                            params[kv[0]] = true;
+                    case 'log.logCacheLength':
+                        if (!params.log) {
+                            params.log = {};
                         }
+                        params.log.logCacheLength = JSON.parse(decodeURI(kv[1]));
                         break;
-                    default:
-                        params[kv[0]] = kv[1];
+                    case 'log.addQueryParamsToLog':
+                        if (!params.log) {
+                            params.log = {};
+                        }
+                        if (kv[1] === 'false' || kv[1] === false) {
+                            params.log.addQueryParamsToLog = false;
+                        } else {
+                            params.log.addQueryParamsToLog = true;
+                        }
                         break;
                 }
             }
