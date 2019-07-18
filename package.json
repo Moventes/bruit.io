@@ -21,7 +21,6 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "node config/set_config.js prod",
     "build": "stencil build",
     "prestart": "node config/set_config.js dev",
     "start": "stencil build --dev --watch --serve --port 3332",
@@ -34,7 +33,8 @@
     "@stencil/sass": "^0.1.1",
     "tslint": "^5.12.1",
     "chalk": "^2.4.2",
-    "edit-json-file": "^1.2.1"
+    "edit-json-file": "^1.2.1",
+    "@bruit/types": "0.3.2-1"
   },
   "repository": {
     "type": "git",
@@ -52,9 +52,6 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
-    "@bruit/html2canvas": "1.0.0-alpha.12.bruit",
-    "@bruit/types": "0.3.2-1",
-    "bowser": "^2.4.0",
-    "lz-string": "^1.4.4"
+    "@bruit/core": "^2.0.3-plop"
   }
 }

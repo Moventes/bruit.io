@@ -9,36 +9,19 @@ import '@stencil/core';
 
 
 import {
-  BruitIoConfig,
-} from './models/bruit-io-config.class';
-import {
   BrtConfig,
   BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
+import {
+  BruitIoConfig,
+} from './models/bruit-io-config.class';
 import {
   BrtScreenshot,
 } from '@bruit/types/dist/interfaces/brt-screenshot';
 
 
 export namespace Components {
-
-  interface BruitCore {
-    'config': BrtCoreConfig | string;
-    /**
-    * called on click on component init a feedback, wait user submit, send feedback
-    */
-    'newFeedbackWithModal': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
-    'sendError': (error: string) => Promise<any>;
-    'sendFeedback': (data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
-  }
-  interface BruitCoreAttributes extends StencilHTMLAttributes {
-    'config'?: BrtCoreConfig | string;
-    /**
-    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
-    */
-    'onOnError'?: (event: CustomEvent) => void;
-  }
 
   interface BruitIo {
     'config': BrtConfig | string;
@@ -68,7 +51,23 @@ export namespace Components {
     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */
     'onOnError'?: (event: CustomEvent) => void;
-    'onOnReady'?: (event: CustomEvent) => void;
+  }
+
+  interface BruitModal {
+    'config': BrtCoreConfig | string;
+    /**
+    * called on click on component init a feedback, wait user submit, send feedback
+    */
+    'open': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
+    'sendError': (error: string) => Promise<any>;
+    'sendFeedback': (data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
+  }
+  interface BruitModalAttributes extends StencilHTMLAttributes {
+    'config'?: BrtCoreConfig | string;
+    /**
+    * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
+    */
+    'onOnError'?: (event: CustomEvent) => void;
   }
 
   interface BruitRating {
@@ -88,28 +87,28 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
-    'BruitCore': Components.BruitCore;
     'BruitIo': Components.BruitIo;
+    'BruitModal': Components.BruitModal;
     'BruitRating': Components.BruitRating;
   }
 
   interface StencilIntrinsicElements {
-    'bruit-core': Components.BruitCoreAttributes;
     'bruit-io': Components.BruitIoAttributes;
+    'bruit-modal': Components.BruitModalAttributes;
     'bruit-rating': Components.BruitRatingAttributes;
   }
 
-
-  interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement {}
-  var HTMLBruitCoreElement: {
-    prototype: HTMLBruitCoreElement;
-    new (): HTMLBruitCoreElement;
-  };
 
   interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
   var HTMLBruitIoElement: {
     prototype: HTMLBruitIoElement;
     new (): HTMLBruitIoElement;
+  };
+
+  interface HTMLBruitModalElement extends Components.BruitModal, HTMLStencilElement {}
+  var HTMLBruitModalElement: {
+    prototype: HTMLBruitModalElement;
+    new (): HTMLBruitModalElement;
   };
 
   interface HTMLBruitRatingElement extends Components.BruitRating, HTMLStencilElement {}
@@ -119,14 +118,14 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'bruit-core': HTMLBruitCoreElement
     'bruit-io': HTMLBruitIoElement
+    'bruit-modal': HTMLBruitModalElement
     'bruit-rating': HTMLBruitRatingElement
   }
 
   interface ElementTagNameMap {
-    'bruit-core': HTMLBruitCoreElement;
     'bruit-io': HTMLBruitIoElement;
+    'bruit-modal': HTMLBruitModalElement;
     'bruit-rating': HTMLBruitRatingElement;
   }
 

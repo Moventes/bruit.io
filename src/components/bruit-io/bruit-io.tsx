@@ -102,12 +102,6 @@ export class BruitIo {
    */
   @Event() onError: EventEmitter;
 
-  @Event()
-  onReady: EventEmitter;
-
-  componentDidLoad() {
-    this.onReady.emit(true);
-  }
   /**
    * the current and complete config
    */
@@ -137,9 +131,9 @@ export class BruitIo {
    * init a feedback, wait user submit, send feedback
    */
   newFeedback() {
-    const modal = document.getElementsByTagName('bruit-core')[0];
+    const modal = document.getElementsByTagName('bruit-modal')[0];
     if (modal) {
-      modal.newFeedbackWithModal(this._config, this.data, this.dataFn);
+      modal.open(this._config, this.data, this.dataFn);
     } else {
       //error
     }
