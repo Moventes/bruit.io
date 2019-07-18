@@ -1,10 +1,10 @@
-export function appendCore(brtCoreConfig) {
-  var modal = document.getElementsByTagName('bruit-core');
+export function appendModal(brtModalConfig) {
+  var modal = document.getElementsByTagName('bruit-modal');
   if (modal.length <= 0) {
-    var bruitCore = document.createElement('bruit-core');
-    if (brtCoreConfig) {
-      bruitCore.config = brtCoreConfig;
+    var bruitModal = document.createElement('bruit-modal');
+    if (brtModalConfig) {
+      bruitModal.config = brtModalConfig;
     }
-    document.body.appendChild(bruitCore);
+    document.body.appendChild(bruitModal);
   }
 }

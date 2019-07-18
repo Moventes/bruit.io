@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.1.0-22",
+  "version": "2.0.4-plop",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -29,11 +29,10 @@
     "postpublish": "node script/log-update-db.js"
   },
   "devDependencies": {
-    "@stencil/core": "1.1.6",
+    "@stencil/core": "1.1.7",
     "@stencil/sass": "^1.0.1",
     "chalk": "^2.4.2",
     "edit-json-file": "^1.2.1",
-    "@bruit/types": "0.3.2-1",
     "tslint": "^5.18.0"
   },
   "repository": {
@@ -52,6 +51,7 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
-    "@bruit/core": "^2.0.3-plop"
+    "@bruit/core": "^2.0.6-plop",
+    "@bruit/types": "0.3.2-2"
   }
 }

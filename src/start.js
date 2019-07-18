@@ -59,31 +59,30 @@
 
 
 
+        var s2 = document.createElement("script");
+        s2.type = "text/javascript";
+        s2.setAttribute('type', 'module');
+        s2.src = 'https://unpkg.com/@bruit/core@2.0.2-plop/lib/core.js?' + paramsStr;
+        s2.onload = function () {
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.setAttribute('type', 'module');
+            s.src = baseUrl + version + '/dist/bruit/bruit.esm.js';
+            s.onload = function () {
+                var modal = document.getElementsByTagName('bruit-core');
+                if (modal.length <= 0) {
+                    var bruitCore = document.createElement('bruit-core');
 
+                    // attach bruitCore with url params
 
-
-
-
-
-
-
-
-        var s = document.createElement("script");
-        s.type = "text/javascript";
-        s.setAttribute('type', 'module');
-        s.src = baseUrl + version + '/dist/bruit/bruit.esm.js';
-        s.onload = function () {
-            var modal = document.getElementsByTagName('bruit-core');
-            if (modal.length <= 0) {
-                var bruitCore = document.createElement('bruit-core');
-
-                // attach bruitCore with url params
-
-                bruitCore.config = params;
-                document.body.appendChild(bruitCore);
-            }
+                    bruitCore.config = params;
+                    document.body.appendChild(bruitCore);
+                }
+            };
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
         };
         var x = document.getElementsByTagName('script')[0];
-        x.parentNode.insertBefore(s, x);
+        x.parentNode.insertBefore(s2, x);
     }
 })();

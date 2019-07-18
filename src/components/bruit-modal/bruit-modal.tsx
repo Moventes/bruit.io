@@ -1,4 +1,4 @@
-import { Bruit } from '@bruit/core/lib/bruit';
+import { Bruit } from '@bruit/core/src/bruit';
 import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
 import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
@@ -208,12 +208,12 @@ export class BruitModal {
   }
 
   @Method()
-  sendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
+  async sendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
     return Bruit.sendFeedback(data, dataFn, agreement, screenshotConfig);
   }
 
   @Method()
-  sendError(error: string) {
+  async sendError(error: string) {
     return Bruit.sendError(error);
   }
 
