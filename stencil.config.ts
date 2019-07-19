@@ -8,11 +8,6 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'dist',
-      copy: [
-        { src: 'init.js', dest: './../init.js' },
-        { src: 'appendCore.js', dest: './../appendCore.js' },
-        { src: 'start.js', dest: './../start.js' }
-      ]
     },
     {
       type: 'dist-self-contained',

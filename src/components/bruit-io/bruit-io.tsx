@@ -1,6 +1,8 @@
 import { BrtConfig, BrtData, BrtError } from '@bruit/types';
-import { Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Prop, State, Watch } from '@stencil/core';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
+declare const Bruit: any;
+
 @Component({
   tag: 'bruit-io',
   styleUrl: 'bruit-io.scss',
@@ -45,7 +47,7 @@ export class BruitIo {
       configError = BruitIoConfig.haveError(_newConfig);
     }
     if (!configError) {
-      this._config = new BruitIoConfig(_newConfig);
+      this._config = _newConfig;
     } else {
       this.onError.emit(configError);
       console.error(configError);
@@ -72,28 +74,6 @@ export class BruitIo {
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
 
-  //SETTER
-  @Method()
-  async setConfig(conf: BrtConfig | string){
-    // console.log('setConfig ', conf);
-    // console.log('setConfig ', typeof conf);
-    // console.log('setConfig ', conf['__proto__'].constructor.name);
-
-    this.config = conf;
-  }
-
-  @Method()
-  async setData(datap:Array<BrtData>){
-    // console.log('setData ', datap)
-    this.data = datap;
-  }
-
-  @Method()
-  async setDataFn(fnp:() => Array<BrtData> | Promise<Array<BrtData>>){
-    // console.log('setDataFn ', fnp)
-    this.dataFn = fnp;
-  }
-
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved
   /**
@@ -106,7 +86,7 @@ export class BruitIo {
    * the current and complete config
    */
   @State()
-  _config: BruitIoConfig;
+  _config: BrtConfig;
 
   // dom element of bruit-io component
   @Element()
@@ -131,11 +111,10 @@ export class BruitIo {
    * init a feedback, wait user submit, send feedback
    */
   newFeedback() {
-    const modal = document.getElementsByTagName('bruit-modal')[0];
-    if (modal) {
-      modal.open(this._config, this.data, this.dataFn);
+    if (Bruit.bruitModalElement) {
+      Bruit.bruitModalElement.open(this._config, this.data, this.dataFn);
     } else {
-      //error
+      //error?
     }
   }
 

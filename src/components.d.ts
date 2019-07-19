@@ -8,15 +8,8 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   BrtConfig,
-  BrtCoreConfig,
   BrtData,
 } from '@bruit/types';
-import {
-  BruitIoConfig,
-} from './models/bruit-io-config.class';
-import {
-  BrtScreenshot,
-} from '@bruit/types/dist/interfaces/brt-screenshot';
 
 export namespace Components {
   interface BruitIo {
@@ -29,18 +22,12 @@ export namespace Components {
     * FN or PROMISE return field array to add in feedback
     */
     'dataFn': () => Array<BrtData> | Promise<Array<BrtData>>;
-    'setConfig': (conf: string | BrtConfig) => Promise<void>;
-    'setData': (datap: BrtData[]) => Promise<void>;
-    'setDataFn': (fnp: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
   }
   interface BruitModal {
-    'config': BrtCoreConfig | string;
     /**
-    * called on click on component init a feedback, wait user submit, send feedback
+    * called on click on bruit-io init a feedback, wait user submit, send feedback
     */
-    'open': (bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
-    'sendError': (error: string) => Promise<any>;
-    'sendFeedback': (data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement?: boolean, screenshotConfig?: BrtScreenshot) => Promise<any>;
+    'open': (brtConfig?: BrtConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>;
   }
   interface BruitRating {
     'color': string;
@@ -94,7 +81,6 @@ declare namespace LocalJSX {
     'onOnError'?: (event: CustomEvent<any>) => void;
   }
   interface BruitModal extends JSXBase.HTMLAttributes<HTMLBruitModalElement> {
-    'config'?: BrtCoreConfig | string;
     /**
     * emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...)
     */

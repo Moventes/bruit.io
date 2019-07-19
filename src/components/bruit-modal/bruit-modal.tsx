@@ -1,57 +1,16 @@
-import { Bruit } from '@bruit/core/src/bruit';
-import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
+import { BrtConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
-import { BrtScreenshot } from '@bruit/types/dist/interfaces/brt-screenshot';
-import { Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, h, Method, State } from '@stencil/core';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
 
+declare const Bruit: any;
 @Component({
   tag: 'bruit-modal',
   styleUrl: 'bruit-modal.scss',
   shadow: false // set to true when all browser support shadowDom
 })
 export class BruitModal {
-
-  // configuration
-  @Prop({ attr: 'brt-config' })
-  config: BrtCoreConfig | string;
-
-  /**
-   * test validity of config and assign to internal config
-   * @param newConfig the new value of config
-   */
-  @Watch('config')
-  initConfig(newConfig: BrtCoreConfig | string) {
-    let _newConfig: BrtCoreConfig;
-    let configError: BrtError | void;
-    if (newConfig) {
-      if (typeof newConfig === 'string') {
-        try {
-          _newConfig = JSON.parse(newConfig) as BrtCoreConfig;
-        } catch {
-          configError = {
-            code: 100,
-            text: 'bad config format (must be a json or stringified json)'
-          };
-        }
-      } else {
-        _newConfig = newConfig as BrtCoreConfig;
-      }
-    }
-    if (!configError) {
-      try {
-        Bruit.init(_newConfig);
-      } catch (error) {
-        this.onError.emit(error);
-        console.error(error);
-      }
-    } else {
-      this.onError.emit(configError);
-      console.error(configError);
-    }
-  }
-
 
 
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
@@ -89,7 +48,7 @@ export class BruitModal {
    * the current and complete config
    */
   @State()
-  _bruitIoConfig: BruitIoConfig;
+  bruitIoConfig: BruitIoConfig;
 
   // dom element of bruit-io component
   @Element()
@@ -107,8 +66,6 @@ export class BruitModal {
    */
   componentWillLoad() {
     console.info('[BRUIT.IO] - bruit started ...');
-    // first init
-    this.initConfig(this.config);
   }
 
 
@@ -132,91 +89,89 @@ export class BruitModal {
     return new Promise(resolve => setTimeout(resolve));
   }
 
+
   /**
-   * called on click on component
+   * called on click on bruit-io
    * init a feedback, wait user submit, send feedback
    */
   @Method()
   open(
-    bruitIoConfig: BruitIoConfig,
+    brtConfig: BrtConfig = Bruit.modalConfig,
     data?: Array<BrtData>,
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
-  ) {
-    this._bruitIoConfig = bruitIoConfig;
-    //if there's already a current feedback, we have a probleme!!! => destroy it
-    let preparePromise: Promise<void>;
-    if (this._currentFeedback) {
-      preparePromise = this.destroyFeedback();
-    } else {
-      preparePromise = Promise.resolve();
-    }
-    return preparePromise
-      .then(() => {
+  ): Promise<void> {
 
-        return this.openModal()
-          .then(() => this.waitOnSubmit())
-          .then(dataFromModal => {
-            //user submit with data dataFromModal
-            // if the configuration says that the modal must be closed directly
-            if (this._bruitIoConfig.closeModalOnSubmit) {
-              // close the modal and send feedback
-              this.closeModal();
-              return this.hideVirtualKeyboard().then(() =>
-                this.waitRendering().then(() => Bruit.sendFeedbackFromModal(dataFromModal, data, dataFn, this._bruitIoConfig.screenshot))
-              );
-            } else {
-              // else, we display de loader
-              this.setSubmitButtonState(SubmitButtonState.LOADING);
-              // send feedback
-              return this.hideVirtualKeyboard().then(() =>
-                this.waitRendering().then(() =>
-                  Bruit.sendFeedbackFromModal(dataFromModal, data, dataFn, this._bruitIoConfig.screenshot).then(() => {
-                    // we display the "validation" for <durationBeforeClosing> milliseconds
-                    this.setSubmitButtonState(SubmitButtonState.CHECKED);
-                    return new Promise(resolve => {
-                      setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
-                    });
-                  })
-                )
-              );
-            }
-          })
-          .then(() => {
-            // feedback is send !
-            return this.destroyFeedback();
-            // end
-          });
-      })
-      .catch(err => {
-        if (err === 'close') {
-          this.destroyFeedback();
-          // console.log('feedback canceled');
-        } else {
-          this.onError.emit(err);
-          if (err && err.text) {
-            this.modalError = err;
+    const error = BruitIoConfig.haveError(brtConfig);
+    if (error) {
+      return Promise.reject(error);
+    };
+    this.bruitIoConfig = new BruitIoConfig(brtConfig);
+
+    return this.waitRendering().then(() => {
+      //if there's already a current feedback, we have a probleme!!! => destroy it
+      let destroyFeedbackPromise: Promise<void>;
+      if (this._currentFeedback) {
+        destroyFeedbackPromise = this.destroyFeedback();
+      } else {
+        destroyFeedbackPromise = Promise.resolve();
+      }
+      return destroyFeedbackPromise
+        .then(() => {
+
+          return this.openModal()
+            .then(() => this.waitOnSubmit())
+            .then(dataFromModal => {
+              //user submit with data dataFromModal
+              // if the configuration says that the modal must be closed directly
+              if (this.bruitIoConfig.closeModalOnSubmit) {
+                // close the modal and send feedback
+                this.closeModal();
+                return this.hideVirtualKeyboard().then(() =>
+                  this.waitRendering().then(() => Bruit.sendFeedbackFromModal(dataFromModal, data, dataFn, this.bruitIoConfig.screenshot))
+                );
+              } else {
+                // else, we display de loader
+                this.setSubmitButtonState(SubmitButtonState.LOADING);
+                // send feedback
+                return this.hideVirtualKeyboard().then(() =>
+                  this.waitRendering().then(() =>
+                    Bruit.sendFeedbackFromModal(dataFromModal, data, dataFn, this.bruitIoConfig.screenshot).then(() => {
+                      // we display the "validation" for <durationBeforeClosing> milliseconds
+                      this.setSubmitButtonState(SubmitButtonState.CHECKED);
+                      return new Promise(resolve => {
+                        setTimeout(() => resolve(), this.bruitIoConfig.durationBeforeClosing);
+                      });
+                    })
+                  )
+                );
+              }
+            })
+            .then(() => {
+              // feedback is send !
+              return this.destroyFeedback();
+              // end
+            });
+        })
+        .catch(err => {
+          if (err === 'close') {
+            this.destroyFeedback();
+            // console.log('feedback canceled');
           } else {
-            this.modalError = {
-              code: 0,
-              text: 'An Unexpected Error Occurred'
-            };
+            this.onError.emit(err);
+            if (err && err.text) {
+              this.modalError = err;
+            } else {
+              this.modalError = {
+                code: 0,
+                text: 'An Unexpected Error Occurred'
+              };
+            }
+            console.error('BRUIT.IO error : ', err);
+            setTimeout(() => this.destroyFeedback(), 3000);
           }
-          console.error('BRUIT.IO error : ', err);
-          setTimeout(() => this.destroyFeedback(), 3000);
-        }
-      });
+        });
+    });
   }
-
-  @Method()
-  async sendFeedback(data: BrtData[] = [], dataFn?: () => BrtData[] | Promise<BrtData[]>, agreement: boolean = false, screenshotConfig?: BrtScreenshot) {
-    return Bruit.sendFeedback(data, dataFn, agreement, screenshotConfig);
-  }
-
-  @Method()
-  async sendError(error: string) {
-    return Bruit.sendError(error);
-  }
-
 
   /**
    * close the modal and destroy the _currentFeedback
@@ -235,7 +190,7 @@ export class BruitModal {
    */
   openModal(): Promise<void> {
     this.modalOpened = true;
-    this.modalBrtField = JSON.parse(JSON.stringify(this._bruitIoConfig.form));
+    this.modalBrtField = JSON.parse(JSON.stringify(this.bruitIoConfig.form));
     return new Promise(resolve => {
       setTimeout(() => {
         this.setSubmitButtonState(SubmitButtonState.SUBMIT);
@@ -346,7 +301,7 @@ export class BruitModal {
   // "render()" is called after "componentWillLoad()" and when the state change
 
   render() {
-    if (this._bruitIoConfig) {
+    if (this.bruitIoConfig) {
       return (
         <span>
           {this.modal()}
@@ -364,7 +319,7 @@ export class BruitModal {
       <div
         id="bruit-io-wrapper"
         class={this.modalOpened ? 'bruit-open' : 'bruit-close'}
-        style={{ 'background-color': this._bruitIoConfig ? this._bruitIoConfig.colors.background : 'transparent' }}
+        style={{ 'background-color': this.bruitIoConfig ? this.bruitIoConfig.colors.background : 'transparent' }}
         data-html2canvas-ignore
       >
         <div
@@ -373,8 +328,8 @@ export class BruitModal {
             event.stopPropagation();
           }}
         >
-          {this._bruitIoConfig ? this.modalHeader() : undefined}
-          {this._bruitIoConfig ? this.modalContent() : undefined}
+          {this.bruitIoConfig ? this.modalHeader() : undefined}
+          {this.bruitIoConfig ? this.modalContent() : undefined}
         </div>
       </div>
     );
@@ -382,8 +337,8 @@ export class BruitModal {
 
   modalHeader() {
     return (
-      <div class="bruit-head" style={{ 'background-color': this._bruitIoConfig.colors.header }}>
-        <h1 class="bruit-title">{this._bruitIoConfig.labels.title}</h1>
+      <div class="bruit-head" style={{ 'background-color': this.bruitIoConfig.colors.header }}>
+        <h1 class="bruit-title">{this.bruitIoConfig.labels.title}</h1>
         <a id="bruit-io-btn-close">
           <svg
             width="24"
@@ -401,10 +356,10 @@ export class BruitModal {
   }
 
   modalSubHeader() {
-    if (this._bruitIoConfig.labels.introduction) {
+    if (this.bruitIoConfig.labels.introduction) {
       return (
         <div class="bruit-sub-head">
-          <p>{this._bruitIoConfig.labels.introduction}</p>
+          <p>{this.bruitIoConfig.labels.introduction}</p>
         </div>
       );
     } else {
@@ -413,7 +368,7 @@ export class BruitModal {
   }
   modalContent() {
     return (
-      <div class="bruit-content" style={{ 'background-color': this._bruitIoConfig.colors.body }}>
+      <div class="bruit-content" style={{ 'background-color': this.bruitIoConfig.colors.body }}>
         {this.modalSubHeader()}
         <form id="bruit-io-form">
           <fieldset id="bruit-io-fieldset">
@@ -431,16 +386,16 @@ export class BruitModal {
         <button
           type="submit"
           id="bruit-io-submit-button"
-          style={{ color: this._bruitIoConfig.colors.header, 'border-color': this._bruitIoConfig.colors.header }}
+          style={{ color: this.bruitIoConfig.colors.header, 'border-color': this.bruitIoConfig.colors.header }}
         >
           <svg class="bruit-svg-icon" viewBox="0 0 20 20">
             <path
               class="bruit-no-color"
-              fill={this._bruitIoConfig.colors.header}
+              fill={this.bruitIoConfig.colors.header}
               d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
             />
           </svg>
-          <span id="button-submit-label">{this._bruitIoConfig.labels.button}</span>
+          <span id="button-submit-label">{this.bruitIoConfig.labels.button}</span>
         </button>
       );
     } else {
@@ -569,7 +524,7 @@ export class BruitModal {
         <bruit-rating
           class="bruit-has-value"
           id={field.id}
-          color={this._bruitIoConfig.colors.focus}
+          color={this.bruitIoConfig.colors.focus}
           offColor="#999"
           value={field.value}
           max={field.max}
@@ -583,44 +538,44 @@ export class BruitModal {
   theming() {
     return (
       <style>
-        {'bruit-core .bruit-group .bruit-bar:before, bruit-core .bruit-group .bruit-bar:after{' +
+        {'bruit-modal .bruit-group .bruit-bar:before, bruit-modal .bruit-group .bruit-bar:after{' +
           'background-color: ' +
-          this._bruitIoConfig.colors.focus +
+          this.bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .bruit-group input:not([type="checkbox"]):invalid ~.bruit-bar:before, bruit-core .bruit-group input:not([type="checkbox"]):invalid ~.bruit-bar:after{' +
+          'bruit-modal .bruit-group input:not([type="checkbox"]):invalid ~.bruit-bar:before, bruit-modal .bruit-group input:not([type="checkbox"]):invalid ~.bruit-bar:after{' +
           'background-color: ' +
-          this._bruitIoConfig.colors.errors +
+          this.bruitIoConfig.colors.errors +
           '}' +
-          'bruit-core button#bruit-io-submit-button:hover{' +
+          'bruit-modal button#bruit-io-submit-button:hover{' +
           'background-color: ' +
-          this._bruitIoConfig.colors.header +
+          this.bruitIoConfig.colors.header +
           '!important ;' +
           'color: white !important;' +
           '}' +
-          'bruit-core button#bruit-io-submit-button.bruit-on-click{' +
+          'bruit-modal button#bruit-io-submit-button.bruit-on-click{' +
           'border-color: #bbbbbb!important;' +
           'border-left-color: ' +
-          this._bruitIoConfig.colors.header +
+          this.bruitIoConfig.colors.header +
           '!important;}' +
-          'bruit-core .bruit-group input[type="checkbox"]:checked+label, bruit-core .bruit-group input[type="checkbox"]+label:after{' +
+          'bruit-modal .bruit-group input[type="checkbox"]:checked+label, bruit-modal .bruit-group input[type="checkbox"]+label:after{' +
           'border-color: ' +
-          this._bruitIoConfig.colors.focus +
+          this.bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .bruit-group input:not([type="checkbox"]).bruit-has-value:invalid~label, bruit-core .bruit-group input:not([type="checkbox"]):focus:invalid~label{' +
+          'bruit-modal .bruit-group input:not([type="checkbox"]).bruit-has-value:invalid~label, bruit-modal .bruit-group input:not([type="checkbox"]):focus:invalid~label{' +
           'color: ' +
-          this._bruitIoConfig.colors.errors +
+          this.bruitIoConfig.colors.errors +
           '}' +
-          'bruit-core .bruit-group input:not([type="checkbox"]).bruit-has-value~label, bruit-core .bruit-group input:not([type="checkbox"]):focus~label{' +
+          'bruit-modal .bruit-group input:not([type="checkbox"]).bruit-has-value~label, bruit-modal .bruit-group input:not([type="checkbox"]):focus~label{' +
           'color: ' +
-          this._bruitIoConfig.colors.focus +
+          this.bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .bruit-group textarea.bruit-has-value~label, bruit-core .bruit-group textarea:focus~label{' +
+          'bruit-modal .bruit-group textarea.bruit-has-value~label, bruit-modal .bruit-group textarea:focus~label{' +
           'color: ' +
-          this._bruitIoConfig.colors.focus +
+          this.bruitIoConfig.colors.focus +
           '}' +
-          'bruit-core .bruit-group textarea.bruit-has-value:invalid~label{' +
+          'bruit-modal .bruit-group textarea.bruit-has-value:invalid~label{' +
           'color: ' +
-          this._bruitIoConfig.colors.errors +
+          this.bruitIoConfig.colors.errors +
           '}'}
       </style>
     );
