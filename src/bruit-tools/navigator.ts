@@ -6,7 +6,7 @@ import Bowser from 'bowser';
 export class NavigatorTool {
   static navigatorDoesNotSupportsUtf16(): boolean {
     const browser = Bowser.getParser(window.navigator.userAgent);
-    return browser.satisfies({ safari: '>0', ie: '>0' })
+    return browser.is('safari') || browser.is('ie');
   }
 
   static async getInfo(): Promise<BrtNavigatorInfo> {
