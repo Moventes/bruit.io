@@ -20,7 +20,7 @@ export class ScreenTool {
   }
 
   static async getScreenshot(bruitIoConfig?: BruitIoConfig): Promise<Blob> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       const div = bruitIoConfig.elementToRenderSelector ? document.querySelector(bruitIoConfig.elementToRenderSelector) : document.body;
       const options = {
         height: div.scrollHeight,
@@ -50,7 +50,7 @@ export class ScreenTool {
         }
       } catch (error) {
         console.error(error);
-        reject(error);
+        resolve(null);
       }
     })
   }
