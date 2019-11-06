@@ -36,6 +36,7 @@ export class ScreenTool {
         const scaleFromWidth = bruitIoConfig.screenshot.maxWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.maxWidth) : window.devicePixelRatio;
         const scaleFromHeight = bruitIoConfig.screenshot.maxHeight ? ScreenTool.getScaleFromHeight(bruitIoConfig.screenshot.maxHeight) : window.devicePixelRatio;
         options.scale = Math.min(scaleFromWidth, scaleFromHeight);
+        options.logging = true;
         if (bruitIoConfig.screenshot.imageType) imageType = bruitIoConfig.screenshot.imageType;
         if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
       }
