@@ -23,10 +23,9 @@ export class ScreenTool {
     return new Promise(async (resolve, reject) => {
       const div = bruitIoConfig.elementToRenderSelector ? document.querySelector(bruitIoConfig.elementToRenderSelector) : document.body;
       const options = {
-        background: 'white',
         height: div.scrollHeight,
         width: div.scrollWidth,
-        logging: false,
+        logging: true,
         imageTimeout: 1500,
         scale: null
       };
@@ -36,7 +35,6 @@ export class ScreenTool {
         const scaleFromWidth = bruitIoConfig.screenshot.maxWidth ? ScreenTool.getScaleFromWidth(bruitIoConfig.screenshot.maxWidth) : window.devicePixelRatio;
         const scaleFromHeight = bruitIoConfig.screenshot.maxHeight ? ScreenTool.getScaleFromHeight(bruitIoConfig.screenshot.maxHeight) : window.devicePixelRatio;
         options.scale = Math.min(scaleFromWidth, scaleFromHeight);
-        options.logging = true;
         if (bruitIoConfig.screenshot.imageType) imageType = bruitIoConfig.screenshot.imageType;
         if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
       }
