@@ -1,4 +1,4 @@
-import html2canvas from '@bruit/html2canvas';
+import html2canvas from 'html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
 import { BruitIoConfig } from '../models/bruit-io-config.class';
 
