@@ -19,7 +19,11 @@ export class Api {
         compression = 'utf16'
       }
       formData.append('feedback', FeedbackCompressed);
-      formData.append('screenshot', screenshot, 'screenshot.png')
+
+      if (screenshot) {
+        formData.append('screenshot', screenshot, 'screenshot.png');
+      }
+
       const xhr = new XMLHttpRequest();
       xhr.open('POST', `${apiUrl || Config['BRUIT_IO_API_URL']}/${compression}`, true);
       xhr.onreadystatechange = function () {
