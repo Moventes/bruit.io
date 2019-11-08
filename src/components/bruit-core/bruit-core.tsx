@@ -198,7 +198,7 @@ export class BruitCore {
               text: 'An Unexpected Error Occurred'
             };
           }
-          console.error('BRUIT.IO error : ', err);
+          console.error('BRUIT.IO error : ', JSON.stringify(err));
           setTimeout(() => this.destroyFeedback(), 3000);
         }
       });
@@ -494,7 +494,7 @@ export class BruitCore {
         }
         default: {
           const err = { code: 116, text: `"${field.type}" field type is not supported` };
-          console.error('BRUIT.IO error : ', err);
+          console.error('BRUIT.IO error : ', JSON.stringify(err));
           this.onError.emit(err);
           return <span class="bruit-error">error</span>;
         }

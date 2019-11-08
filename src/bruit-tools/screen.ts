@@ -1,4 +1,4 @@
-import html2canvas from '@bruit/html2canvas';
+import html2canvas from 'html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
 import { BruitIoConfig } from '../models/bruit-io-config.class';
 
@@ -40,13 +40,13 @@ export class ScreenTool {
         if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
       }
       try {
-        const canvas = await html2canvas(div, options);
+        const canvas = await html2canvas(div as HTMLElement, options);
         if (canvas.toBlob) {
           canvas.toBlob((result: Blob) => {
             resolve(result);
           }, imageType, compression)
         } else {
-          const dataUrl = await canvas.toDataUrl(bruitIoConfig.screenshot.imageType, bruitIoConfig.screenshot.compression);
+          const dataUrl = await canvas.toDataURL(bruitIoConfig.screenshot.imageType, bruitIoConfig.screenshot.compression);
           resolve(ScreenTool.dataURLtoBlob(dataUrl));
         }
       } catch (error) {
