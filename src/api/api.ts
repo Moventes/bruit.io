@@ -18,8 +18,12 @@ export class Api {
         FeedbackCompressed = LZString.compressToUTF16(JSON.stringify(JSON['decycle'] ? JSON['decycle'](feedback) : feedback));
         compression = 'utf16'
       }
-      formData.set('feedback', FeedbackCompressed);
-      formData.set('screenshot', screenshot, 'screenshot.png')
+      formData.append('feedback', FeedbackCompressed);
+
+      if (screenshot) {
+        formData.append('screenshot', screenshot, 'screenshot.png');
+      }
+
       const xhr = new XMLHttpRequest();
       xhr.open('POST', `${apiUrl || Config['BRUIT_IO_API_URL']}/${compression}`, true);
       xhr.onreadystatechange = function () {

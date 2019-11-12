@@ -1,4 +1,4 @@
-import html2canvas from '@bruit/html2canvas';
+import html2canvas from 'html2canvas';
 import { BrtScreenInfo } from '@bruit/types';
 import { BruitIoConfig } from '../models/bruit-io-config.class';
 
@@ -40,14 +40,29 @@ export class ScreenTool {
         if (bruitIoConfig.screenshot.compression) compression = bruitIoConfig.screenshot.compression;
       }
       try {
-        const canvas = await html2canvas(div, options);
-        canvas.toBlob((result: Blob) => {
-          resolve(result);
-        }, imageType, compression)
+        const canvas = await html2canvas(div as HTMLElement, options);
+        if (canvas.toBlob) {
+          canvas.toBlob((result: Blob) => {
+            resolve(result);
+          }, imageType, compression)
+        } else {
+          const dataUrl = await canvas.toDataURL(bruitIoConfig.screenshot.imageType, bruitIoConfig.screenshot.compression);
+          resolve(ScreenTool.dataURLtoBlob(dataUrl));
+        }
       } catch (error) {
         console.error(error);
         reject(error);
       }
     })
   }
+
+  static dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, uarr8 = new Uint8Array(n);
+    while (n--) {
+      uarr8[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([uarr8], { type: mime });
+  }
+
 }

@@ -1,15 +1,6 @@
 import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Method,
-  Prop,
-  State,
-  Watch
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import { Feedback } from '../../api/feedback';
 import { ConsoleTool } from '../../bruit-tools/console';
 import { NavigatorTool } from '../../bruit-tools/navigator';
@@ -212,7 +203,7 @@ export class BruitCore {
               text: 'An Unexpected Error Occurred'
             };
           }
-          console.error('BRUIT.IO error : ', err);
+          console.error('BRUIT.IO error : ', JSON.stringify(err));
           setTimeout(() => this.destroyFeedback(), 3000);
         }
       });
@@ -571,11 +562,8 @@ export class BruitCore {
           return this.selectField(field);
         }
         default: {
-          const err = {
-            code: 116,
-            text: `"${field.type}" field type is not supported`
-          };
-          console.error('BRUIT.IO error : ', err);
+          const err = { code: 116, text: `"${field.type}" field type is not supported` };
+          console.error('BRUIT.IO error : ', JSON.stringify(err));
           this.onError.emit(err);
           return <span class="bruit-error">error</span>;
         }
@@ -677,9 +665,9 @@ export class BruitCore {
   selectField(field: BrtField) {
     return (
       <div class="bruit-group">
-        <bruit-select 
-          id={field.id} 
-          options={field.options} 
+        <bruit-select
+          id={field.id}
+          options={field.options}
           required={field.required}
           value={field.value}
           onChange={e => {
