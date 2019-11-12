@@ -52,7 +52,7 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
-    "@bruit/types": ">=0.2.26",
+    "@bruit/types": "0.2.27-2",
     "bowser": "^2.5.2",
     "html2canvas": "^1.0.0-rc.5",
     "lz-string": "^1.4.4"

@@ -19,14 +19,12 @@ export class BruitSelectComponent {
   required: boolean;
 
   render() {
-    let options = [];
-    options.push(<option value=""></option>);
-    for (let i = 0; i < this.options.length; i++) {
-      options.push(<option value={this.options[i]}>{this.options[i]}</option>);
-    }
     return (
       <select id={this.id} required={this.required}>
-        {options}
+        {[
+          <option value=""></option>,
+          ...this.options.map(option => <option value={option}>{option}</option>)
+        ]}
       </select>
     );
   }
