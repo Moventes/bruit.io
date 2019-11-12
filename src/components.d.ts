@@ -78,6 +78,19 @@ export namespace Components {
     'onValueChange'?: (event: CustomEvent) => void;
     'value'?: number;
   }
+
+  interface BruitSelect {
+    'id': string;
+    'options': Array<string>;
+    'required': boolean;
+    'value': string;
+  }
+  interface BruitSelectAttributes extends StencilHTMLAttributes {
+    'id'?: string;
+    'options'?: Array<string>;
+    'required'?: boolean;
+    'value'?: string;
+  }
 }
 
 declare global {
@@ -85,12 +98,14 @@ declare global {
     'BruitCore': Components.BruitCore;
     'BruitIo': Components.BruitIo;
     'BruitRating': Components.BruitRating;
+    'BruitSelect': Components.BruitSelect;
   }
 
   interface StencilIntrinsicElements {
     'bruit-core': Components.BruitCoreAttributes;
     'bruit-io': Components.BruitIoAttributes;
     'bruit-rating': Components.BruitRatingAttributes;
+    'bruit-select': Components.BruitSelectAttributes;
   }
 
 
@@ -112,16 +127,24 @@ declare global {
     new (): HTMLBruitRatingElement;
   };
 
+  interface HTMLBruitSelectElement extends Components.BruitSelect, HTMLStencilElement {}
+  var HTMLBruitSelectElement: {
+    prototype: HTMLBruitSelectElement;
+    new (): HTMLBruitSelectElement;
+  };
+
   interface HTMLElementTagNameMap {
     'bruit-core': HTMLBruitCoreElement
     'bruit-io': HTMLBruitIoElement
     'bruit-rating': HTMLBruitRatingElement
+    'bruit-select': HTMLBruitSelectElement
   }
 
   interface ElementTagNameMap {
     'bruit-core': HTMLBruitCoreElement;
     'bruit-io': HTMLBruitIoElement;
     'bruit-rating': HTMLBruitRatingElement;
+    'bruit-select': HTMLBruitSelectElement;
   }
 
 
