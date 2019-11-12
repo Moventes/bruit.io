@@ -4,9 +4,7 @@ bruit-select {
     margin-left: 5px;
     font-size: 14px;
     min-width: 100%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    outline: none;
   }
 
   select::-ms-expand {
