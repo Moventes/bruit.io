@@ -1,23 +1,23 @@
-import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
+import { Component, h, Prop, Watch, State, EventEmitter, Method, Event, Element } from '@stencil/core';
+import { BrtCoreConfig, BrtError, BrtField, BrtData } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
-import { Feedback } from '../../api/feedback';
+import { BruitCoreConfig } from '../../models/bruit-core-config.class';
 import { ConsoleTool } from '../../bruit-tools/console';
+import { Feedback } from '../../api/feedback';
+import { BruitIoConfig } from '../../models/bruit-io-config.class';
 import { NavigatorTool } from '../../bruit-tools/navigator';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
-import { BruitCoreConfig } from '../../models/bruit-core-config.class';
-import { BruitIoConfig } from '../../models/bruit-io-config.class';
 
 @Component({
   tag: 'bruit-core',
   styleUrl: 'bruit-core.scss',
-  shadow: false // set to true when all browser support shadowDom
+  shadow: true
 })
 export class BruitCore {
   // attributs on bruit-io component
 
   // configuration
-  @Prop({ attr: 'brt-config' })
+  @Prop({ attribute: 'brt-config' })
   config: BrtCoreConfig | string;
 
   /**
@@ -49,7 +49,7 @@ export class BruitCore {
       this._bruitCoreConfig = new BruitCoreConfig(_newConfig);
       ConsoleTool.init(this._bruitCoreConfig);
     } else {
-      this.onError.emit(configError);
+      this.brtError.emit(configError);
       console.error(configError);
     }
   }
@@ -66,7 +66,7 @@ export class BruitCore {
    * emit bruit-error on internal error or config error
    * ex : BruitIo.addEventListener('onError',error=>...)
    */
-  @Event() onError: EventEmitter;
+  @Event() brtError: EventEmitter;
 
   /**
    * modalOpened boolean manages the modal opening/closing action
@@ -99,7 +99,7 @@ export class BruitCore {
 
   // dom element of bruit-io component
   @Element()
-  bruitCoreElement: HTMLStencilElement;
+  bruitCoreElement: HTMLBruitCoreElement;
 
   /**
    * fired on component loading before render()
@@ -112,8 +112,8 @@ export class BruitCore {
 
   hideVirtualKeyboard(): Promise<void> {
     if (NavigatorTool.isMobileOrTablet()) {
-      return new Promise((resolve) => {
-        document.getElementById('bruit-io-submit-button').focus();
+      return new Promise(resolve => {
+        this.bruitCoreElement.shadowRoot.getElementById('bruit-io-submit-button').focus();
         setTimeout(() => resolve(), 500);
       });
     } else {
@@ -130,7 +130,7 @@ export class BruitCore {
    * init a feedback, wait user submit, send feedback
    */
   @Method()
-  newFeedback(
+  async newFeedback(
     bruitIoConfig: BruitIoConfig,
     data?: Array<BrtData>,
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
@@ -159,7 +159,9 @@ export class BruitCore {
               // close the modal and send feedback
               this.closeModal();
               return this.hideVirtualKeyboard().then(() =>
-                this.waitRendering().then(() => feedback.send(dataFromModal, data, dataFn))
+                this.waitRendering().then(() =>
+                  feedback.send(dataFromModal, data, dataFn)
+                )
               );
             } else {
               // else, we display de loader
@@ -171,7 +173,10 @@ export class BruitCore {
                     // we display the "validation" for <durationBeforeClosing> milliseconds
                     this.setSubmitButtonState(SubmitButtonState.CHECKED);
                     return new Promise(resolve => {
-                      setTimeout(() => resolve(), this._bruitIoConfig.durationBeforeClosing);
+                      setTimeout(
+                        () => resolve(),
+                        this._bruitIoConfig.durationBeforeClosing
+                      );
                     });
                   })
                 )
@@ -189,7 +194,7 @@ export class BruitCore {
           this.destroyFeedback();
           //console.log('feedback canceled');
         } else {
-          this.onError.emit(err);
+          this.brtError.emit(err);
           if (err && err.text) {
             this.modalError = err;
           } else {
@@ -205,11 +210,11 @@ export class BruitCore {
   }
 
   @Method()
-  sendFeedback(apiKey, agreement, data, dataFn) {
+  async sendFeedback(apiKey, agreement, data, dataFn) {
     return BruitCore.send(apiKey, agreement, data, dataFn);
   }
 
-  static async send(apiKey, agreement, data, dataFn) {
+  static async send(apiKey, agreement, data, dataFn?) {
     if (!apiKey) {
       console.error('[BRUIT] apiKey must be defined !');
       return;
@@ -228,6 +233,44 @@ export class BruitCore {
 
     var feedback = new Feedback(undefined, apiKey);
     return feedback.send(data, undefined, dataFn);
+  }
+
+  static catchError(apiKey, agreement, error) {
+    const errorInfos = [];
+    errorInfos.push(this.getErrorType(error));
+    this.getErrorData(error).forEach(data => {
+      errorInfos.push(data);
+    });
+
+    BruitCore.send(apiKey, agreement, errorInfos);
+  }
+
+  static getErrorType(error: Error): { label: string; value: string } {
+    // return error class as type
+    return { label: 'Type', value: error.constructor.name };
+  }
+  /**
+   * Search for error keys in error and returns each found keys and its value as BruitData
+   */
+  static getErrorData(error: Error): any[] {
+    const errorData = [];
+    const errorDataWantedKeys = ['Message', 'Stack'];
+    // add wanted data
+    errorDataWantedKeys.forEach(displayKey => {
+      const key =
+        displayKey.substring(0, 1).toLowerCase() + displayKey.substring(1);
+      if (error[key]) {
+        errorData.push({ label: displayKey, value: error[key] });
+      }
+    });
+    // add optionnal type-specific data
+    Object.keys(error.constructor).forEach(key => {
+      const displayKey = key.substring(0, 1).toUpperCase() + key.substring(1);
+      if (!errorDataWantedKeys.includes(displayKey)) {
+        errorData.push({ label: displayKey, value: error[key] });
+      }
+    });
+    return errorData;
   }
 
   /**
@@ -275,9 +318,15 @@ export class BruitCore {
    */
   waitOnSubmit(): Promise<Array<BrtField>> {
     //getting the three clickable dom element (for submit or close modal)
-    const form: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-form');
-    const button_close: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-btn-close');
-    const modal_wrapper: HTMLElement = this.bruitCoreElement.querySelector('#bruit-io-wrapper');
+    const form: HTMLElement = this.bruitCoreElement.shadowRoot.querySelector(
+      '#bruit-io-form'
+    );
+    const button_close: HTMLElement = this.bruitCoreElement.shadowRoot.querySelector(
+      '#bruit-io-btn-close'
+    );
+    const modal_wrapper: HTMLElement = this.bruitCoreElement.shadowRoot.querySelector(
+      '#bruit-io-wrapper'
+    );
 
     //show the close button
     button_close.hidden = false;
@@ -321,7 +370,7 @@ export class BruitCore {
    */
   disabledBrtField(brtFields) {
     brtFields
-      .map(field => document.getElementById(field.id))
+      .map(field => this.bruitCoreElement.shadowRoot.getElementById(field.id))
       .forEach(domField => {
         domField.setAttribute('disabled', 'true');
       });
@@ -377,7 +426,11 @@ export class BruitCore {
       <div
         id="bruit-io-wrapper"
         class={this.modalOpened ? 'bruit-open' : 'bruit-close'}
-        style={{ 'background-color': this._bruitIoConfig ? this._bruitIoConfig.colors.background : 'transparent' }}
+        style={{
+          'background-color': this._bruitIoConfig
+            ? this._bruitIoConfig.colors.background
+            : 'transparent'
+        }}
         data-html2canvas-ignore
       >
         <div
@@ -395,7 +448,10 @@ export class BruitCore {
 
   modalHeader() {
     return (
-      <div class="bruit-head" style={{ 'background-color': this._bruitIoConfig.colors.header }}>
+      <div
+        class="bruit-head"
+        style={{ 'background-color': this._bruitIoConfig.colors.header }}
+      >
         <h1 class="bruit-title">{this._bruitIoConfig.labels.title}</h1>
         <a id="bruit-io-btn-close">
           <svg
@@ -426,12 +482,17 @@ export class BruitCore {
   }
   modalContent() {
     return (
-      <div class="bruit-content" style={{ 'background-color': this._bruitIoConfig.colors.body }}>
+      <div
+        class="bruit-content"
+        style={{ 'background-color': this._bruitIoConfig.colors.body }}
+      >
         {this.modalSubHeader()}
         <form id="bruit-io-form">
           <fieldset id="bruit-io-fieldset">
             {this.modalFields()}
-            <div class="bruit-button-container">{this.modalSubmitButtonOrError()}</div>
+            <div class="bruit-button-container">
+              {this.modalSubmitButtonOrError()}
+            </div>
           </fieldset>
         </form>
       </div>
@@ -444,7 +505,10 @@ export class BruitCore {
         <button
           type="submit"
           id="bruit-io-submit-button"
-          style={{ color: this._bruitIoConfig.colors.header, 'border-color': this._bruitIoConfig.colors.header }}
+          style={{
+            color: this._bruitIoConfig.colors.header,
+            'border-color': this._bruitIoConfig.colors.header
+          }}
         >
           <svg class="bruit-svg-icon" viewBox="0 0 20 20">
             <path
@@ -453,7 +517,9 @@ export class BruitCore {
               d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z"
             />
           </svg>
-          <span id="button-submit-label">{this._bruitIoConfig.labels.button}</span>
+          <span id="button-submit-label">
+            {this._bruitIoConfig.labels.button}
+          </span>
         </button>
       );
     } else {
@@ -492,10 +558,13 @@ export class BruitCore {
         case BrtFieldType.RATING: {
           return this.ratingField(field);
         }
+        case BrtFieldType.SELECT: {
+          return this.selectField(field);
+        }
         default: {
           const err = { code: 116, text: `"${field.type}" field type is not supported` };
           console.error('BRUIT.IO error : ', JSON.stringify(err));
-          this.onError.emit(err);
+          this.brtError.emit(err);
           return <span class="bruit-error">error</span>;
         }
       }
@@ -510,10 +579,12 @@ export class BruitCore {
           name={field.id}
           onInput={e => {
             field.value = e.target['value'];
-            if (!!field.value) {
-              e.srcElement.classList.add('bruit-has-value');
-            } else {
-              e.srcElement.classList.remove('bruit-has-value');
+            if (e.srcElement['classList']) {
+              if (!!field.value) {
+                e.srcElement['classList'].add('bruit-has-value');
+              } else {
+                e.srcElement['classList'].remove('bruit-has-value');
+              }
             }
           }}
           type={field.type}
@@ -535,10 +606,12 @@ export class BruitCore {
           name={field.id}
           onInput={e => {
             field.value = e.target['value'];
-            if (!!field.value) {
-              e.srcElement.classList.add('bruit-has-value');
-            } else {
-              e.srcElement.classList.remove('bruit-has-value');
+            if (e.srcElement['classList']) {
+              if (!!field.value) {
+                e.srcElement['classList'].add('bruit-has-value');
+              } else {
+                e.srcElement['classList'].remove('bruit-has-value');
+              }
             }
           }}
           value={field.value}
@@ -593,6 +666,28 @@ export class BruitCore {
     );
   }
 
+  selectField(field: BrtField) {
+    return (
+      <div class="bruit-group">
+        <bruit-select
+          id={field.id}
+          options={field.options}
+          required={field.required}
+          value={field.value}
+          onChange={e => {
+            field.value = e.target['value'];
+            if (!!field.value) {
+              e.srcElement['classList'].add('bruit-has-value');
+            } else {
+              e.srcElement['classList'].remove('bruit-has-value');
+            }
+          }}
+        />
+        <label htmlFor={field.id}>{field.label}</label>
+      </div>
+    );
+  }
+
   theming() {
     return (
       <style>
@@ -638,4 +733,5 @@ export class BruitCore {
       </style>
     );
   }
+
 }

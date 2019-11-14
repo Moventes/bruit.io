@@ -9,10 +9,10 @@ const env = process.argv[process.argv.length - 1];
 
 console.log(`will update env files`);
 
-var envFileProd = editJsonFile(`config/prod/config.json`, {
+var envFileProd = editJsonFile(`src/environments/config.prod.json`, {
     autosave: true
 });
-var envFileDev = editJsonFile(`config/dev/config.json`, {
+var envFileDev = editJsonFile(`src/environments/config.dev.json`, {
     autosave: true
 });
 
@@ -23,7 +23,7 @@ envFileDev.set('version', package.version);
 
 console.log(`will set conf to : ${env}`);
 
-const read = fs.createReadStream(`config/${env}/config.json`);
+const read = fs.createReadStream(`src/environments/config.${env}.json`);
 read.on('error', err => console.error(err));
 
 const write = fs.createWriteStream('src/config/config.json');

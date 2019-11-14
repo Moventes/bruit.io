@@ -13,18 +13,18 @@ export class ClickTool {
     window.addEventListener('click', event => {
       this.logClick(<BrtClickLogArg>{
         xpath: this.getXPath(event['path']),
-        partialDom: ClickTool.domToString(event.srcElement)
+        partialDom: ClickTool.domToString(event.srcElement || event.target)
       });
     });
   }
 
   private static domToString(
-    element: Element,
+    element: Element | EventTarget,
     maxLevel: number = 3
   ): string {
 
     const elements = [];
-    let currentElement = this.getChildElement(element);
+    let currentElement = this.getChildElement(element as Element);
 
     if (currentElement) {
       while (elements.length <= maxLevel) {

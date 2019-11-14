@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -13,28 +13,34 @@
     "connect"
   ],
   "private": false,
-  "module": "dist/esm/index.js",
   "main": "dist/index.js",
-  "types": "dist/types/typings.d.ts",
+  "module": "dist/index.mjs",
+  "es2015": "dist/esm/index.mjs",
+  "es2017": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/bruit/bruit.js",
   "files": [
-    "dist/"
+    "dist/",
+    "loader/"
   ],
   "scripts": {
-    "prebuild": "node config/set_config.js prod",
-    "build": "stencil build",
-    "prestart": "node config/set_config.js dev",
-    "start": "stencil build --dev --watch --serve --port 3332",
-    "docs": "stencil build --docs",
-    "prepublishOnly": "npm i && npm run build && node script/git-tag",
+    "prebuild": "node script/set_config.js prod",
+    "prestart": "node script/set_config.js dev",
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate",
+    "prepublishOnly": "npm i && npm run build && node script/git-tag.js",
     "postpublish": "node script/log-update-db.js"
   },
   "devDependencies": {
-    "@stencil/core": "0.18.1",
-    "@stencil/sass": "^0.1.1",
-    "tslint": "^5.12.1",
-    "chalk": "^2.4.2",
-    "edit-json-file": "^1.2.1"
+    "@stencil/core": "^1.8.0",
+    "@stencil/sass": "^1.1.1",
+    "chalk": "^3.0.0",
+    "edit-json-file": "^1.3.2"
   },
   "repository": {
     "type": "git",
@@ -52,8 +58,8 @@
   },
   "homepage": "https://bruit.io/",
   "dependencies": {
-    "@bruit/types": ">=0.2.26",
-    "bowser": "^2.5.2",
+    "@bruit/types": "0.2.28-2",
+    "bowser": "^2.7.0",
     "html2canvas": "^1.0.0-rc.5",
     "lz-string": "^1.4.4"
   }

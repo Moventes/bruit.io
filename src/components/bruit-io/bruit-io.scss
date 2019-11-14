@@ -1,8 +1,9 @@
-bruit-io {
+:host {
+  display: block;
+
   a.bruit-button {
     cursor: pointer;
   }
 
   @import './../../styles/icon';
-
 }

@@ -1,6 +1,9 @@
 # bruit-rating
 
+
+
 <!-- Auto Generated Below -->
+
 
 ## Properties
 
@@ -11,12 +14,27 @@
 | `offColor` | `off-color` |             | `string` | `'#c0c0c0'` |
 | `value`    | `value`     |             | `number` | `0`         |
 
+
 ## Events
 
-| Event         | Description | Type                |
-| ------------- | ----------- | ------------------- |
-| `valueChange` |             | `CustomEvent<void>` |
+| Event         | Description | Type               |
+| ------------- | ----------- | ------------------ |
+| `valueChange` |             | `CustomEvent<any>` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+## Dependencies
+
+### Used by
+
+ - [bruit-core](../bruit-core)
+
+### Graph
+```mermaid
+graph TD;
+  bruit-core --> bruit-rating
+  style bruit-rating fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

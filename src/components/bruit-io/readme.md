@@ -1,42 +1,25 @@
 # bruit-io
 
+
+
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property | Attribute | Description                                         | Type                                    | Default     |
-| -------- | --------- | --------------------------------------------------- | --------------------------------------- | ----------- |
-| `config` | `config`  |                                                     | `BrtConfig \| string`                   | `undefined` |
-| `data`   | --        | field array to add in feedback                      | `BrtData[]`                             | `undefined` |
-| `dataFn` | --        | FN or PROMISE return field array to add in feedback | `() => BrtData[] \| Promise<BrtData[]>` | `undefined` |
+| Property | Attribute    | Description                                         | Type                                    | Default     |
+| -------- | ------------ | --------------------------------------------------- | --------------------------------------- | ----------- |
+| `config` | `brt-config` |                                                     | `BrtConfig \| string`                   | `undefined` |
+| `data`   | --           | field array to add in feedback                      | `BrtData[]`                             | `undefined` |
+| `dataFn` | --           | FN or PROMISE return field array to add in feedback | `() => BrtData[] \| Promise<BrtData[]>` | `undefined` |
 
 
 ## Events
 
-| Event     | Description                                                                                            | Type                |
-| --------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
-| `onError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | `CustomEvent<void>` |
-| `onReady` |                                                                                                        | `CustomEvent<void>` |
-
-
-## Methods
-
-### `start(brtCoreConfig: BrtCoreConfig) => void`
-
-
-
-#### Parameters
-
-| Name            | Type            | Description |
-| --------------- | --------------- | ----------- |
-| `brtCoreConfig` | `BrtCoreConfig` |             |
-
-#### Returns
-
-Type: `void`
-
-
+| Event      | Description                                                                                            | Type               |
+| ---------- | ------------------------------------------------------------------------------------------------------ | ------------------ |
+| `brtError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | `CustomEvent<any>` |
+| `ready`    |                                                                                                        | `CustomEvent<any>` |
 
 
 ----------------------------------------------

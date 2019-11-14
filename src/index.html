@@ -2,135 +2,70 @@
 <html dir="ltr" lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-  <title>serv:BRUIT</title>
-  <script src="/build/bruit.js"></script>
-  <!-- <script type="module">
-    import { defineCustomElements } from '/build/bruit/';
-    defineCustomElements(window);
-  </script> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
+
+  <script type="module" src="/build/bruit.esm.js"></script>
+  <script nomodule src="/build/bruit.js"></script>
+  <!-- <script src="/init/start.js"></script> -->
 </head>
 
 <body>
-  <style>
-    html {
-      font-size: calc(1em * .625);
-    }
-
-    body * {
-      font: italic bold 20px/30px Georgia, serif;
-    }
-
-    #viewport {
-      transform: rotate(5deg);
-    }
-  </style>
-
-
-
-  <div>
-    <ul>
-      <li>t1</li>
-      <li>12</li>
-      <li id="first">
-        <ul>
-          <li>try me !</li>
-          <li id="second">me to!</li>
-          <li id="viewport">
-            <bruit-io> </bruit-io>
-          </li>
-        </ul>
-      </li>
-      </br></br></br></br></br></br>
-      <li>
-        Lorem</br>ipsum</br>dolor</br>sit</br>amet</br>consectetur</br>adipisicing</br>elit.</br>Beatae,</br>doloremque</br>repudiandae</br>quisquam</br>natus</br>magni</br>doloribus</br>iusto</br>perspiciatis</br>quasi</br>iste.</br>Sint,</br>vero</br>ipsa!</br>Distinctio</br>aut</br>error</br>minima</br>sint</br>inventore</br>quo</br>quasi!
-      </li>
-      </br></br></br></br>
-    </ul>
-  </div>
-
-
+  <img src="https://test.moventes.com/test/40001102-developer-wallpapers.jpg" alt="">
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam molestiae earum repellendus corrupti distinctio
+    saepe iusto sapiente commodi deserunt expedita tempore dolorum autem, maxime dolor? Culpa ut nemo aspernatur
+    aliquid?
+  </p>
+  <bruit-io class="bruit-io"></bruit-io>
 
   <script>
-    // window.addEventListener('load', function () {
-    // import * as bruit from './../core.js';
     var bruitCmp = document.querySelector('bruit-io');
-
-    var config =
-      JSON.stringify({
-        apiKey: '44a63ba8-d93b-484f-b22f-15bcf45851c8',
-        apiUrl: 'https://api.bruit.io/feedback/multipart',
-        labels: {
-          title: 'bruit.io - test',
-          introduction: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          button: 'send now'
+    // bruitCmp.addEventListener('onReady', function () {
+    //     bruitCmp.start();
+    // });
+    bruitCmp.config = {
+      apiKey: "44a63ba8-d93b-484f-b22f-15bcf45851c8",
+      labels: {
+        title: "Send us a feedback",
+        introduction: "Send us a feedback with bruit.io..."
+      },
+      form: [
+        {
+          label: "Question ?",
+          type: "text",
+          id: "title"
         },
-        form: [{
-          label: 'email',
-          type: 'email',
+        {
+          label: "Rate",
+          type: "rating",
+          required: true,
+          max: 5
+        },
+        {
+          label: "Your email",
+          type: "email",
           required: true
         },
         {
-          label: 'firstname',
-          type: 'text'
+          label: "testtest",
+          type: "select",
+          required: true,
+          options: ['a', 'b', 'c']
         },
         {
-          label: 'lastname',
-          type: 'text'
-        },
-        {
-          label: 'note : ',
-          type: 'rating',
-          value: 0,
-          max: 6
-        },
-        {
-          label: 'message',
-          type: 'textarea',
+          label: "Lorem",
+          type: "textarea",
           required: true
         },
         {
-          label: 'acceptez vous ot ezr tgorez ghrezoghhrezgh ezrfoghoezrhg szerufghhhhhu zoreghi ... ?',
-          type: 'checkbox',
-          id: 'agreement',
-          value: true
+          id: "agreement",
+          type: "checkbox",
+          label: "I agree to send technical information in addition to my answers",
+          value: null
         }
-        ]
-      });
-
-    bruitCmp.setAttribute('brt-config', config);
-
-    bruitCmp.setAttribute('brt-data', [{
-      label: 'verion',
-      value: '0.1.54'
-    }]);
-
-    bruitCmp.setAttribute('brt-data-fn', new Promise(resolve => {
-      resolve([{
-        label: 'user',
-        value: '👾'
-      }]);
-    }));
-
-    console.log('start', bruitCmp);
-
-    bruitCmp.addEventListener('onReady', () => {
-      console.log('ready');
-
-      // setTimeout(() => {
-      //   console.log('SENDDDDDD');
-      //   var Bruit = document.querySelector('bruit-core');
-      //   Bruit.sendFeedback('440e5f93-8a73-4476-9980-52758b9dc835', true).then(() => console.log('yeah!!!!')).catch(console.error);
-      // }, 5000)
-
-
-
-
-
-      bruitCmp.start();
-    });
-
+      ]
+    };
   </script>
 </body>
 

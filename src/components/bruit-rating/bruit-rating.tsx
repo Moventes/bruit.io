@@ -1,11 +1,12 @@
-import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
-// import { colorLuminance } from './f-tool.module';
+import { Component, h, Prop, Watch, EventEmitter, State, Event } from '@stencil/core';
 
 @Component({
   tag: 'bruit-rating',
-  styleUrl: 'bruit-rating.scss'
+  styleUrl: 'bruit-rating.scss',
+  shadow: false
 })
-export class BruitRatingComponent {
+export class BruitRating {
+
   @Prop({ mutable: true, reflectToAttr: true })
   value: number = 0;
   @Watch('value')
@@ -96,4 +97,5 @@ export class BruitRatingComponent {
       </div>
     );
   }
+
 }

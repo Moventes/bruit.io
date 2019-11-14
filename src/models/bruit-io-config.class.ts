@@ -81,12 +81,15 @@ export class BruitIoConfig implements BrtConfig {
         text: 'config is missing'
       };
     }
-    if (!config.apiKey && (!config.apiUrl || config.apiUrl === Config['BRUIT_IO_API_URL'])) {
-      return {
-        code: 101,
-        text: 'apiKey is missing'
-      };
-    }
+    // if (
+    //   !config.apiKey &&
+    //   (!config.apiUrl || config.apiUrl === Config['BRUIT_IO_API_URL'])
+    // ) {
+    //   return {
+    //     code: 101,
+    //     text: 'apiKey is missing'
+    //   };
+    // }
     if (!config.form) {
       return {
         code: 102,
@@ -141,8 +144,12 @@ export class BruitIoConfig implements BrtConfig {
       };
     }
     // control types
-    const allTypes = Object.keys(BrtFieldType).map(BrtFieldTypeKey => BrtFieldType[BrtFieldTypeKey]);
-    const badTypes = form.map(field => field.type).filter(type => !allTypes.includes(type));
+    const allTypes = Object.keys(BrtFieldType).map(
+      BrtFieldTypeKey => BrtFieldType[BrtFieldTypeKey]
+    );
+    const badTypes = form
+      .map(field => field.type)
+      .filter(type => !allTypes.includes(type));
     if (badTypes.length > 0) {
       return {
         code: 116,

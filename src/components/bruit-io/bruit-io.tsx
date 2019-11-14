@@ -1,17 +1,18 @@
-import { BrtConfig, BrtCoreConfig, BrtData, BrtError } from '@bruit/types';
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Prop, Watch,  EventEmitter, State, Event, Element } from '@stencil/core';
+import { BrtConfig, BrtError, BrtData } from '@bruit/types';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
-import { appendCore } from './../../appendCore';
+
 @Component({
   tag: 'bruit-io',
   styleUrl: 'bruit-io.scss',
-  shadow: false // set to true when all browser support shadowDom
+  shadow: true
 })
 export class BruitIo {
-  // attributs on bruit-io component
+
+  // attributes on bruit-io component
 
   // configuration
-  @Prop({attr: 'brt-config'})
+  @Prop({attribute: 'brt-config'})
   config: BrtConfig | string;
 
   /**
@@ -40,7 +41,7 @@ export class BruitIo {
     if (!configError) {
       this._config = new BruitIoConfig(_newConfig);
     } else {
-      this.onError.emit(configError);
+      this.brtError.emit(configError);
       console.error(configError);
     }
   }
@@ -48,33 +49,32 @@ export class BruitIo {
   /**
    * field array to add in feedback
    */
-  @Prop({attr: 'brt-data'})
+  @Prop({attribute: 'brt-data'})
   data: Array<BrtData>;
 
   /**
    * FN or PROMISE
    * return field array to add in feedback
    */
-  @Prop({attr: 'brt-data-fn'})
+  @Prop({attribute: 'brt-data-fn'})
   dataFn: () => Array<BrtData> | Promise<Array<BrtData>>;
 
-  @Method()
-  start(brtCoreConfig: BrtCoreConfig) {
-    appendCore(brtCoreConfig);
-  }
+  // @Method()
+  // async start(brtCoreConfig: BrtCoreConfig) {
+  //   appendCore(brtCoreConfig);
+  // }
   // TODO: Issue https://github.com/ionic-team/stencil/issues/724
   // Instead of generic, replace with EventEmitter<BrtError> once issue solved
   /**
    * emit bruit-error on internal error or config error
    * ex : BruitIo.addEventListener('onError',error=>...)
    */
-  @Event() onError: EventEmitter;
+  @Event() brtError: EventEmitter;
 
-  @Event()
-  onReady: EventEmitter;
+  @Event()  ready: EventEmitter;
 
   componentDidLoad() {
-    this.onReady.emit(true);
+    this.ready.emit(true);
   }
   /**
    * the current and complete config
@@ -84,7 +84,7 @@ export class BruitIo {
 
   // dom element of bruit-io component
   @Element()
-  bruitIoElement: HTMLStencilElement;
+  bruitIoElement: HTMLBruitIoElement;
   private _haveInnerElement: boolean;
 
   /**
@@ -92,17 +92,19 @@ export class BruitIo {
    */
   componentWillLoad() {
     // first init
-    this.initConfig(this.config);
-
+    if(this.config){
+      this.initConfig(this.config);
+    }
     this._haveInnerElement = !!this.bruitIoElement.innerHTML ? !!this.bruitIoElement.innerHTML.trim() : false;
   }
+
 
   /**
    * called on click on component
    * init a feedback, wait user submit, send feedback
    */
   newFeedback() {
-    const modal = document.getElementsByTagName('bruit-core')[0];
+    const modal:HTMLBruitCoreElement = document.getElementsByTagName('bruit-core')[0];
     if (modal) {
       modal.newFeedback(this._config, this.data, this.dataFn);
     } else {
@@ -143,4 +145,5 @@ H67v-3.2c0-1.1-0.1-2.1-0.3-3.2h6.6V35.3z M54.3,60.7H41.7v-6.3h12.7V60.7z M54.3,4
       );
     }
   }
+
 }

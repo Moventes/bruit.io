@@ -148,50 +148,110 @@ export class NavigatorTool {
   }
 
   // test if incognito from https://gist.github.com/jherax/a81c8c132d09cc354a0e2cb911841ff1
+  // static isIncognito(): Promise<boolean> {
+  //   return new Promise(resolve => {
+  //     const on = () => resolve(true); // is in private mode
+  //     const off = () => resolve(false); // not private mode
+  //     const testLocalStorage = () => {
+  //       try {
+  //         if (localStorage.length) off();
+  //         else {
+  //           localStorage.x = 1;
+  //           localStorage.removeItem("x");
+  //           off();
+  //         }
+  //       } catch (e) {
+  //         // Safari only enables cookie in private mode
+  //         // if cookie is disabled then all client side storage is disabled
+  //         // if all client side storage is disabled, then there is no point
+  //         // in using private mode
+  //         navigator.cookieEnabled ? on() : off();
+  //       }
+  //     };
+  //     // Chrome & Opera
+  //     if (window["webkitRequestFileSystem"]) {
+  //       return void window["webkitRequestFileSystem"](0, 0, off, on);
+  //     }
+  //     // Firefox
+  //     if ("MozAppearance" in document.documentElement.style) {
+  //       const db = indexedDB.open("test");
+  //       db.onerror = on;
+  //       db.onsuccess = off;
+  //       return void 0;
+  //     }
+  //     // Safari
+  //     if (/constructor/i.test(window['HTMLElement'])) {
+  //       return testLocalStorage();
+  //     }
+  //     // IE10+ & Edge
+  //     if (
+  //       !window.indexedDB &&
+  //       (window["PointerEvent"] || window["MSPointerEvent"])
+  //     ) {
+  //       return on();
+  //     }
+  //     // others
+  //     return off();
+  //   });
+  // }
+
+
+  // test if incognito from https://gist.github.com/jherax/a81c8c132d09cc354a0e2cb911841ff1
+
+  /**
+ * Lightweight script to detect whether the browser is running in Private mode.
+ */
   static isIncognito(): Promise<boolean> {
-    return new Promise(resolve => {
-      const on = () => resolve(true); // is in private mode
-      const off = () => resolve(false); // not private mode
+    return new Promise((resolve) => {
+      const yes = () => resolve(true); // is in private mode
+      const not = () => resolve(false); // not in private mode
       const testLocalStorage = () => {
         try {
-          if (localStorage.length) off();
+          if (localStorage.length) not();
           else {
             localStorage.x = 1;
-            localStorage.removeItem("x");
-            off();
+            localStorage.removeItem('x');
+            not();
           }
         } catch (e) {
           // Safari only enables cookie in private mode
-          // if cookie is disabled then all client side storage is disabled
+          // if cookie is disabled, then all client side storage is disabled
           // if all client side storage is disabled, then there is no point
           // in using private mode
-          navigator.cookieEnabled ? on() : off();
+          navigator.cookieEnabled ? yes() : not();
         }
       };
       // Chrome & Opera
-      if (window["webkitRequestFileSystem"]) {
-        return void window["webkitRequestFileSystem"](0, 0, off, on);
+      var fs = window['webkitRequestFileSystem'] || window['RequestFileSystem'];
+      if (fs) {
+        return void fs(window['TEMPORARY'], 100, not, yes);
       }
       // Firefox
-      if ("MozAppearance" in document.documentElement.style) {
-        const db = indexedDB.open("test");
-        db.onerror = on;
-        db.onsuccess = off;
+      if ('MozAppearance' in document.documentElement.style) {
+        if (indexedDB === null) return yes();
+        const db = indexedDB.open('test');
+        db.onerror = yes;
+        db.onsuccess = not;
         return void 0;
       }
       // Safari
-      if (/constructor/i.test(window["HTMLElement"])) {
-        return testLocalStorage();
+      const isSafari = navigator.userAgent.match(/Version\/([0-9\._]+).*Safari/);
+      if (isSafari) {
+        const version = parseInt(isSafari[1], 10);
+        if (version < 11) return testLocalStorage();
+        try {
+          window['openDatabase'](null, null, null, null);
+          return not();
+        } catch (_) {
+          return yes();
+        }
       }
-      // IE10+ & Edge
-      if (
-        !window.indexedDB &&
-        (window["PointerEvent"] || window["MSPointerEvent"])
-      ) {
-        return on();
+      // IE10+ & Edge InPrivate
+      if (!window.indexedDB && (window.PointerEvent || window.MSPointerEvent)) {
+        return yes();
       }
-      // others
-      return off();
+      // default navigation mode
+      return not();
     });
   }
 

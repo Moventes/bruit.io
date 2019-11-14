@@ -17,7 +17,9 @@
     "jsxFactory": "h"
   },
   "include": [
-    "src"
+    "src",
+    "types/jsx.d.ts",
+    "script/set_config.js"
   ],
   "exclude": [
     "node_modules"

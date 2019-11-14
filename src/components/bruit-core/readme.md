@@ -1,20 +1,22 @@
-# bruit-io
+# bruit-core
+
+
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property | Attribute | Description | Type                      | Default     |
-| -------- | --------- | ----------- | ------------------------- | ----------- |
-| `config` | `config`  |             | `BrtCoreConfig \| string` | `undefined` |
+| Property | Attribute    | Description | Type                      | Default     |
+| -------- | ------------ | ----------- | ------------------------- | ----------- |
+| `config` | `brt-config` |             | `BrtCoreConfig \| string` | `undefined` |
 
 
 ## Events
 
-| Event     | Description                                                                                            | Type                |
-| --------- | ------------------------------------------------------------------------------------------------------ | ------------------- |
-| `onError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | `CustomEvent<void>` |
+| Event      | Description                                                                                            | Type               |
+| ---------- | ------------------------------------------------------------------------------------------------------ | ------------------ |
+| `brtError` | emit bruit-error on internal error or config error ex : BruitIo.addEventListener('onError',error=>...) | `CustomEvent<any>` |
 
 
 ## Methods
@@ -24,32 +26,15 @@
 called on click on component
 init a feedback, wait user submit, send feedback
 
-#### Parameters
-
-| Name            | Type                                    | Description |
-| --------------- | --------------------------------------- | ----------- |
-| `bruitIoConfig` | `BruitIoConfig`                         |             |
-| `data`          | `BrtData[]`                             |             |
-| `dataFn`        | `() => BrtData[] \| Promise<BrtData[]>` |             |
-
 #### Returns
 
 Type: `Promise<void>`
 
 
 
-### `send(apiKey: any, agreement: any, data: any, dataFn: any) => Promise<any>`
+### `sendFeedback(apiKey: any, agreement: any, data: any, dataFn: any) => Promise<any>`
 
 
-
-#### Parameters
-
-| Name        | Type  | Description |
-| ----------- | ----- | ----------- |
-| `apiKey`    | `any` |             |
-| `agreement` | `any` |             |
-| `data`      | `any` |             |
-| `dataFn`    | `any` |             |
 
 #### Returns
 
@@ -57,6 +42,21 @@ Type: `Promise<any>`
 
 
 
+
+## Dependencies
+
+### Depends on
+
+- [bruit-rating](../bruit-rating)
+- [bruit-select](../bruit-select)
+
+### Graph
+```mermaid
+graph TD;
+  bruit-core --> bruit-rating
+  bruit-core --> bruit-select
+  style bruit-core fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
