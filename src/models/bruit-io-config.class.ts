@@ -81,15 +81,15 @@ export class BruitIoConfig implements BrtConfig {
         text: 'config is missing'
       };
     }
-    // if (
-    //   !config.apiKey &&
-    //   (!config.apiUrl || config.apiUrl === Config['BRUIT_IO_API_URL'])
-    // ) {
-    //   return {
-    //     code: 101,
-    //     text: 'apiKey is missing'
-    //   };
-    // }
+    if (
+      !config.apiKey &&
+      (!config.apiUrl || config.apiUrl === Config['BRUIT_IO_API_URL'])
+    ) {
+      return {
+        code: 101,
+        text: 'apiKey is missing'
+      };
+    }
     if (!config.form) {
       return {
         code: 102,

@@ -6,15 +6,9 @@
  */
 
 
+import { BrtConfig, BrtCoreConfig, BrtData } from '@bruit/types';
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-import {
-  BrtConfig,
-  BrtCoreConfig,
-  BrtData,
-} from '@bruit/types';
-import {
-  BruitIoConfig,
-} from './models/bruit-io-config.class';
+import { BruitIoConfig } from './models/bruit-io-config.class';
 
 export namespace Components {
   interface BruitCore {
@@ -48,33 +42,46 @@ export namespace Components {
     'required': boolean;
     'value': string;
   }
+
+  interface BruitSelect {
+    'id': string;
+    'options': Array<string>;
+    'required': boolean;
+    'value': string;
+  }
+  interface BruitSelectAttributes extends StencilHTMLAttributes {
+    'id'?: string;
+    'options'?: Array<string>;
+    'required'?: boolean;
+    'value'?: string;
+  }
 }
 
 declare global {
 
 
-  interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement {}
+  interface HTMLBruitCoreElement extends Components.BruitCore, HTMLStencilElement { }
   var HTMLBruitCoreElement: {
     prototype: HTMLBruitCoreElement;
-    new (): HTMLBruitCoreElement;
+    new(): HTMLBruitCoreElement;
   };
 
-  interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement {}
+  interface HTMLBruitIoElement extends Components.BruitIo, HTMLStencilElement { }
   var HTMLBruitIoElement: {
     prototype: HTMLBruitIoElement;
-    new (): HTMLBruitIoElement;
+    new(): HTMLBruitIoElement;
   };
 
-  interface HTMLBruitRatingElement extends Components.BruitRating, HTMLStencilElement {}
+  interface HTMLBruitRatingElement extends Components.BruitRating, HTMLStencilElement { }
   var HTMLBruitRatingElement: {
     prototype: HTMLBruitRatingElement;
-    new (): HTMLBruitRatingElement;
+    new(): HTMLBruitRatingElement;
   };
 
-  interface HTMLBruitSelectElement extends Components.BruitSelect, HTMLStencilElement {}
+  interface HTMLBruitSelectElement extends Components.BruitSelect, HTMLStencilElement { }
   var HTMLBruitSelectElement: {
     prototype: HTMLBruitSelectElement;
-    new (): HTMLBruitSelectElement;
+    new(): HTMLBruitSelectElement;
   };
   interface HTMLElementTagNameMap {
     'bruit-core': HTMLBruitCoreElement;

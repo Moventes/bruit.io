@@ -1,12 +1,12 @@
-import { Component, h, Prop, Watch, State, EventEmitter, Method, Event, Element } from '@stencil/core';
-import { BrtCoreConfig, BrtError, BrtField, BrtData } from '@bruit/types';
+import { BrtCoreConfig, BrtData, BrtError, BrtField } from '@bruit/types';
 import { BrtFieldType } from '@bruit/types/dist/enums/brt-field-type';
-import { BruitCoreConfig } from '../../models/bruit-core-config.class';
-import { ConsoleTool } from '../../bruit-tools/console';
+import { Component, Element, Event, EventEmitter, h, Method, Prop, State, Watch } from '@stencil/core';
 import { Feedback } from '../../api/feedback';
-import { BruitIoConfig } from '../../models/bruit-io-config.class';
+import { ConsoleTool } from '../../bruit-tools/console';
 import { NavigatorTool } from '../../bruit-tools/navigator';
 import { SubmitButtonState } from '../../enums/submitButtonState.enum';
+import { BruitCoreConfig } from '../../models/bruit-core-config.class';
+import { BruitIoConfig } from '../../models/bruit-io-config.class';
 
 @Component({
   tag: 'bruit-core',
