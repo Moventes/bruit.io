@@ -21,5 +21,6 @@ export const config: Config = {
   plugins: [
     sass()
   ],
-  globalScript: 'src/start.ts'
+  globalScript: 'src/start.ts',
+  minifyJs: false,
 };

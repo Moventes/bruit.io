@@ -505,7 +505,8 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
+    <script type="module" src="https://unpkg.com/@bruit/component/dist/bruit/bruit.esm.js"></script>
+    <script nomodule src="https://unpkg.com/@bruit/component/dist/bruit/bruit.js"></script>
   </head>
   ...
 </html>
@@ -555,7 +556,7 @@ You may then add `bruit-io` component anywhere else.
 Using `bruit-io` component within an Angular project is a two-step process. You need to:
 
 1. Include the `CUSTOM_ELEMENTS_SCHEMA` in the modules that use the components
-2. Call `defineBruitElements()` from `main.ts` (or some other appropriate place)
+2. Call `defineCustomElements()` from `main.ts` (or some other appropriate place)
 
 ### Including the Custom Elements Schema
 
@@ -588,7 +589,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-import { defineBruitElements } from '@bruit/component/dist/init';
+import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
 
 if (environment.production) {
   enableProdMode();
@@ -597,7 +598,9 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch(err => console.log(err));
-defineBruitElements();
+applyPolyfills().then(() => {
+  defineCustomElements(window)
+})
 ```
 
 ### Using bruit.io in an Angular component
@@ -650,7 +653,7 @@ handleBruitError(error: BrtError){
 
 ## React
 
-With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineBruitElements()` method in the `index.js` file.
+With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineCustomElements()` method in the `index.js` file.
 
 ```tsx
 import React from 'react';
@@ -659,11 +662,13 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { defineBruitElements } from '@bruit/component/dist/init';
+import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
-defineBruitElements();
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});
 ```
 
 [_from stencil documentation_](https://github.com/ionic-team/stencil-site/blob/master/src/docs/framework-integration/react.md)
@@ -677,12 +682,14 @@ In order to use the `bruit-io` Web Component inside of a Vue application, it sho
 ```tsx
 import Vue from 'vue';
 import App from './App.vue';
-import { defineBruitElements } from '@bruit/component/dist/init';
+import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
 
 Vue.config.productionTip = false;
 Vue.config.ignoredElements = [/bruit-\w*/];
 
-defineBruitElements();
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});
 
 new Vue({
   render: h => h(App)
