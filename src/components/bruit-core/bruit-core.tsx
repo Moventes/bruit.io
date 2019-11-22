@@ -8,6 +8,8 @@ import { SubmitButtonState } from '../../enums/submitButtonState.enum';
 import { BruitCoreConfig } from '../../models/bruit-core-config.class';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
 
+const openAnimationDuration = 200;
+
 @Component({
   tag: 'bruit-core',
   styleUrl: 'bruit-core.scss',
@@ -101,6 +103,8 @@ export class BruitCore {
   @Element()
   bruitCoreElement: HTMLBruitCoreElement;
 
+  private _openOrCloseLock = Promise.resolve();
+
   /**
    * fired on component loading before render()
    */
@@ -121,8 +125,8 @@ export class BruitCore {
     }
   }
 
-  waitRendering() {
-    return new Promise(resolve => setTimeout(resolve));
+  waitRendering(time = 0) {
+    return new Promise(resolve => setTimeout(resolve, time));
   }
 
   /**
@@ -136,12 +140,11 @@ export class BruitCore {
     dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>
   ) {
     //if there's already a current feedback, we have a probleme!!! => destroy it
-    let preparePromise: Promise<void>;
+    let preparePromise = this.waitRendering(openAnimationDuration + 2);
     if (this._currentFeedback) {
-      preparePromise = this.destroyFeedback();
-    } else {
-      preparePromise = Promise.resolve();
+      preparePromise = preparePromise.then(() => this.destroyFeedback());
     }
+
     return preparePromise
       .then(() => {
         this._bruitIoConfig = bruitIoConfig;
@@ -157,8 +160,10 @@ export class BruitCore {
             // if the configuration says that the modal must be closed directly
             if (this._bruitIoConfig.closeModalOnSubmit) {
               // close the modal and send feedback
-              this.closeModal();
-              return this.hideVirtualKeyboard().then(() =>
+              return Promise.all([
+                this.closeModal(),
+                this.hideVirtualKeyboard()
+              ]).then(() =>
                 this.waitRendering().then(() =>
                   feedback.send(dataFromModal, data, dataFn)
                 )
@@ -191,8 +196,8 @@ export class BruitCore {
       })
       .catch(err => {
         if (err === 'close') {
-          this.destroyFeedback();
-          //console.log('feedback canceled');
+          //this.destroyFeedback();
+          // console.log('feedback canceled');
         } else {
           this.brtError.emit(err);
           if (err && err.text) {
@@ -289,13 +294,20 @@ export class BruitCore {
    * reset the modal values and open it
    */
   openModal(): Promise<void> {
-    this.modalOpened = true;
-    this.modalBrtField = JSON.parse(JSON.stringify(this._bruitIoConfig.form));
-    return new Promise(resolve => {
-      setTimeout(() => {
-        this.setSubmitButtonState(SubmitButtonState.SUBMIT);
-        resolve();
-      }, 300); // we have to wait for opening animation to be done
+    return this._openOrCloseLock.then(() => {
+      let unlock: (anyp: void) => void;
+      this._openOrCloseLock = new Promise((resolve) => { unlock = resolve });
+      this.modalOpened = true;
+      // console.log('openModal called');
+      // console.log('    set this.modalBrtField');
+      this.modalBrtField = JSON.parse(JSON.stringify(this._bruitIoConfig.form));
+      return new Promise(resolve => {
+        setTimeout(() => {
+          this.setSubmitButtonState(SubmitButtonState.SUBMIT);
+          unlock();
+          resolve();
+        }, openAnimationDuration + 1); // we have to wait for opening animation to be done
+      });
     });
   }
 
@@ -303,14 +315,22 @@ export class BruitCore {
    * empties values and close the feedback;
    */
   closeModal() {
-    this.modalOpened = false;
-    return new Promise(resolve => {
-      setTimeout(() => {
-        this.modalBrtField = [];
-        this.modalError = undefined;
-        resolve();
-      }, 250);
+    return this._openOrCloseLock.then(() => {
+      let unlock: (anyp: void) => void;
+      this._openOrCloseLock = new Promise((resolve) => { unlock = resolve });
+      this.modalOpened = false;
+      // console.log('close called');
+      return new Promise(resolve => {
+        setTimeout(() => {
+          // console.log('    unset this.modalBrtField');
+          this.modalBrtField = [];
+          this.modalError = undefined;
+          unlock()
+          resolve();
+        }, openAnimationDuration + 1);
+      });
     });
+
   }
 
   /**
@@ -350,18 +370,21 @@ export class BruitCore {
 
       //------------------ close modal ----------------------
 
-      const _closeModalFn = () => {
-        this.closeModal().then(() => {
-          // remove event listeners (for memory leaks and disable form)
-          button_close.removeEventListener('click', _closeModalFn, false);
-          modal_wrapper.removeEventListener('click', _closeModalFn, false);
+      const _closeModalFn = (name) => ((e) => {
+        // remove event listeners (for memory leaks and disable form)
+        button_close.removeEventListener('click', _closeModalFn, false);
+        modal_wrapper.removeEventListener('click', _closeModalFn, false);
+        // console.log('CLOSE MODAL FROM ', name);
+        e.preventDefault();
+        this.destroyFeedback().then(() => {
+
           form.removeEventListener('submit', _onSubmit, false);
 
           reject('close');
         });
-      };
-      button_close.addEventListener('click', _closeModalFn, { once: true });
-      modal_wrapper.addEventListener('click', _closeModalFn, { once: true });
+      });
+      button_close.addEventListener('click', _closeModalFn('button_close'), { once: true });
+      modal_wrapper.addEventListener('click', _closeModalFn('modal_wrapper'), { once: true });
     });
   }
 
@@ -543,6 +566,7 @@ export class BruitCore {
   }
 
   modalFields() {
+    // console.log('         brtField used = ', this.modalBrtField);
     return this.modalBrtField.map(field => {
       switch (field.type) {
         case BrtFieldType.TEXT:
