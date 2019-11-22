@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -34,7 +34,8 @@
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
     "prepublishOnly": "npm i && npm run build && node script/git-tag.js",
-    "postpublish": "node script/log-update-db.js"
+    "postpublish": "node script/log-update-db.js",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@stencil/core": "^1.8.1",
