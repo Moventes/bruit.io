@@ -370,7 +370,7 @@ export class BruitCore {
 
       //------------------ close modal ----------------------
 
-      const _closeModalFn = (name) => ((e) => {
+      const _closeModalFn = (/*name*/) => ((e) => {
         // remove event listeners (for memory leaks and disable form)
         button_close.removeEventListener('click', _closeModalFn, false);
         modal_wrapper.removeEventListener('click', _closeModalFn, false);
@@ -383,8 +383,8 @@ export class BruitCore {
           reject('close');
         });
       });
-      button_close.addEventListener('click', _closeModalFn('button_close'), { once: true });
-      modal_wrapper.addEventListener('click', _closeModalFn('modal_wrapper'), { once: true });
+      button_close.addEventListener('click', _closeModalFn(), { once: true });
+      modal_wrapper.addEventListener('click', _closeModalFn(), { once: true });
     });
   }
 
