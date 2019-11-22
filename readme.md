@@ -30,7 +30,7 @@ Available on all frameworks that support Web Components such as
     <img alt="Vue" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" height="40px">
     <img alt="Stencil" src="https://coryrylan.com/assets/images/posts/types/stenciljs.png" height="40px">
     <img alt="Polymer" src="https://www.polymer-project.org/images/logos/p-logo.png" height="40px">
-    <img alt="Ionic" src="https://d1eq8vvyuam4eq.cloudfront.net/tutorials/ionic/logo-ionic.svg?ver=1539283235" height="40px">
+    <img alt="Ionic" src="https://moventes.com/assets/img/techno/ionic_logo.png" height="40px">
     <img alt="Meteor" src="https://cdn.freebiesupply.com/logos/large/2x/meteor-icon-logo-png-transparent.png" height="40px">
     <img alt="Backbone" src="https://seeklogo.com/images/B/backbone-logo-5471D69D9B-seeklogo.com.png" height="40px">
     <img alt="Aurelia" src="https://banner2.kisspng.com/20180907/wko/kisspng-javascript-framework-javascript-library-software-f-aurelia-logo-svg-vector-amp-png-transparent-ve-5b9296d1bb6649.0695022115363335217676.jpg" height="40px">
@@ -75,14 +75,11 @@ The free bruit.io api allows to pass feedbacks on to tools such as
 **[Usage](#usage)**<br>
 **[Configuration](#Configuration)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtConfig](#BrtConfig)**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**[BrtCoreConfig](#BrtCoreConfig)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtField](#BrtField)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtLabels](#BrtLabels)**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;**[BrtColors](#BrtColors)**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;**[BrtLogCacheLength](#BrtLogCacheLength)**<br>
 **[Add data in feedbacks](#add-data-to-the-feedback)**<br>
 **[Handle errors](#handle-errors)**<br>
-**[Send a feedback without modal](#send-a-feedback-without-modal)**<br>
 **[Frameworks integration](#Framework-integrations)**<br>
 **[Contributing](#Contributing)**<br>
 **[Known issues](#known-issues)**<br>
@@ -99,7 +96,8 @@ npm install @bruit/component --save
 Or by directly modifying your `index.html` file
 
 ```html
-<script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
+    <script type="module" src="https://unpkg.com/@bruit/component/dist/bruit/bruit.esm.js"></script>
+    <script nomodule src="https://unpkg.com/@bruit/component/dist/bruit/bruit.js"></script>
 ```
 
 ---
@@ -133,10 +131,6 @@ Integration code examples are available for these platforms:
     <a href="#react">
     <img alt="React" src="https://camo.githubusercontent.com/98a9b62f324b8a13275cc57dc4293f0ee315f85f/68747470733a2f2f73616e6473746f726d2e64652f5f5265736f75726365732f50657273697374656e742f333238353431366538353033623263383335346333323162636436393063663535306238623264332f52656163742d4c6f676f2e737667" height="70px">
   </a>
-  <!-- &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#ember">
-    <img alt="Ember" src="https://upload.wikimedia.org/wikipedia/fr/6/69/Ember.js_Logo_and_Mascot.png" height="90px">
-  </a> -->
   &nbsp;&nbsp;&nbsp;&nbsp;
   <a href="#vue">
     <img alt="Vue" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" height="70px">
@@ -146,8 +140,6 @@ Integration code examples are available for these platforms:
 ## Configuration
 
 > `bruit-io` Web Component has a `config` attribute, which takes a value of [BrtConfig](#brtconfig) type.
-
-> `defineBruitElements` function which takes a configuration of [BrtCoreConfig](#brtcoreconfig) type.
 
 ### _BrtConfig_
 
@@ -193,28 +185,6 @@ Typescript import :
 
 ```javascript
 import { BrtConfig } from '@bruit/component';
-```
-
-### _BrtCoreConfig_
-
-Describes the options for the bruit core
-
-```ts
-interface BrtCoreConfig {
-  logCacheLength?: BrtLogCacheLength;
-  addQueryParamsToLog?: boolean;
-}
-```
-
-| Attribute      | Type                                    | Description                                                              | Mandatory | Default value             |
-| -------------- | --------------------------------------- | ------------------------------------------------------------------------ | --------- | ------------------------- |
-| logCacheLength | [BrtLogCacheLength](#brtlogcachelength) | Used to filter the logs to send by their level (debug, warn, error, etc) | no        | [see](#brtlogcachelength) |
-| addQueryParamsToLog | boolean | Used to tell wether the parameters of the query parameters should be displayed in the logs | no | false |
-
-Typescript import :
-
-```javascript
-import { BrtCoreConfig } from '@bruit/component';
 ```
 
 ### _BrtField_
@@ -310,45 +280,6 @@ Typescript import:
 import { BrtColors } from '@bruit/component';
 ```
 
-### _BrtLogCacheLength_
-
-By default, all log levels (log, warn, errors, ...) are sent in the feedback. `BrtLogCacheLength` allows to disable specific ones.
-
-To disable a type, just set the related type to 0 in the logCacheLength section of core configuration:
-
-```json
-{
-  "logCacheLength": {
-    "log": 0,
-    ...
-  }
-}
-```
-
-```ts
-interface BrtLogCacheLength {
-  log?: number;
-  debug?: number;
-  info?: number;
-  warn?: number;
-  error?: number;
-  network?: number;
-  click?: number;
-  url?: number;
-}
-```
-
-bruit.io adds special types of logs:
-
-- `network` type is for your fetch and xmlHttpRequest calls.
-- `click` type is for mouse click event.
-- `url` type logs all url changing
-
-Typescript import:
-
-```javascript
-import { BrtLogCacheLength } from '@bruit/component';
-```
 
 ### _BrtFeedback_
 
@@ -448,53 +379,6 @@ Typescript import:
 import { BrtError } from '@bruit/component';
 ```
 
-# Send a feedback silently
-
-You may want to skip bruit-io default modal, for example :
-
-- to send a feedback from an another modal
-- to send a feedback from a catched error
-- to send a feedback on a particular situation in your application
-
-To programatically send a feedback, use Bruit's `send` core function:
-
-import :
-
-```javascript
-import { Bruit } from '@bruit/component/dist/core';
-```
-
-usage :
-
-```javascript
-Bruit.send('myApiKey', true, myData, myDataFunction)
-  .then(() => console.log('success'))
-  .catch(error => console.error(error));
-```
-
-OR
-
-```javascript
-var Bruit = document.querySelector('bruit-core');
-```
-
-usage :
-
-```javascript
-Bruit.sendFeedback('myApiKey', true, myData, myDataFunction)
-  .then(() => console.log('success'))
-  .catch(error => console.error(error));
-```
-
-`send` (or `sendFeedback`) function take 4 parameters :
-
-| Parameter | Type                                  | Description                                                                              | Mandatory |
-| --------- | ------------------------------------- | ---------------------------------------------------------------------------------------- | --------- |
-| apiKey    | string                                | your api key                                                                             | **yes**   |
-| agreement | boolean                               | set to true to send user personal data (device, sreenshot, logs, ...)                    | no        |
-| data      | Array<[BrtData](#_BrtData_)>          | an array of additional data to show in feedback                                          | no        |
-| dataFn    | Promise<Array<[BrtData](#_BrtData_)>> | a Promise or a simple function returning an array of additional data to show in feedback | no        |
-
 # Framework integrations
 
 ## JavaScript
@@ -505,7 +389,8 @@ Integrating `bruit-io` component to a project without a JavaScript framework is 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://unpkg.com/@bruit/component/dist/bruit.js"></script>
+    <script type="module" src="https://unpkg.com/@bruit/component/dist/bruit/bruit.esm.js"></script>
+    <script nomodule src="https://unpkg.com/@bruit/component/dist/bruit/bruit.js"></script>
   </head>
   ...
 </html>
@@ -519,9 +404,7 @@ Then, you may add the `bruit-io` component directly:
   ...
   <script>
     var bruitCmp = document.querySelector('bruit-io');
-    bruitCmp.addEventListener('onReady', function () {
-      bruitCmp.start();
-    });
+
     bruitCmp.config = {
       // whatever your config is
     };
@@ -529,24 +412,6 @@ Then, you may add the `bruit-io` component directly:
 </body>
 ```
 
-Or, should you load different pages and the component would not be on the main one, you can include the `bruit-core` component and initialise the framework from the same location
-
-```html
-<body>
-  <bruit-core ></bruit-core>
-  ...
-  <script>
-    var bruitCore = document.querySelector('bruit-core');
-    if (bruitCore) {
-      bruitCore.config = {
-        // whatever your config is
-      };
-    }
-  </script>
-</body>
-```
-
-You may then add `bruit-io` component anywhere else.
 
 [_from stencil documentation_](https://github.com/ionic-team/stencil-site/blob/master/src/docs/framework-integration/javascript.md)
 
@@ -555,7 +420,7 @@ You may then add `bruit-io` component anywhere else.
 Using `bruit-io` component within an Angular project is a two-step process. You need to:
 
 1. Include the `CUSTOM_ELEMENTS_SCHEMA` in the modules that use the components
-2. Call `defineBruitElements()` from `main.ts` (or some other appropriate place)
+2. Call `defineCustomElements()` from `main.ts` (or some other appropriate place)
 
 ### Including the Custom Elements Schema
 
@@ -577,9 +442,9 @@ export class AppModule {}
 
 The `CUSTOM_ELEMENTS_SCHEMA` needs to be included in any module that uses bruit.io.
 
-### Calling defineBruitElements
+### Calling defineCustomElements
 
-bruit.io component includes a function used to load itself in the application window object. That function is called `defineBruitElements()` and needs to be executed once during the bootstrapping of your application. One convenient place to add it is in the `main.ts` file as follows:
+bruit.io component includes a function used to load itself in the application window object. That function is called `defineCustomElements()` and needs to be executed once during the bootstrapping of your application. One convenient place to add it is in the `main.ts` file as follows:
 
 ```ts
 import { enableProdMode } from '@angular/core';
@@ -588,7 +453,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-import { defineBruitElements } from '@bruit/component/dist/init';
+import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
 
 if (environment.production) {
   enableProdMode();
@@ -597,7 +462,9 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch(err => console.log(err));
-defineBruitElements();
+applyPolyfills().then(() => {
+  defineCustomElements(window)
+})
 ```
 
 ### Using bruit.io in an Angular component
@@ -650,7 +517,7 @@ handleBruitError(error: BrtError){
 
 ## React
 
-With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineBruitElements()` method in the `index.js` file.
+With an application built using React CLI (namely `create-react-app`), the easiest way is to include the `bruit-io` component by calling the `defineCustomElements()` method in the `index.js` file.
 
 ```tsx
 import React from 'react';
@@ -659,11 +526,13 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { defineBruitElements } from '@bruit/component/dist/init';
+import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
-defineBruitElements();
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});
 ```
 
 [_from stencil documentation_](https://github.com/ionic-team/stencil-site/blob/master/src/docs/framework-integration/react.md)
@@ -677,12 +546,14 @@ In order to use the `bruit-io` Web Component inside of a Vue application, it sho
 ```tsx
 import Vue from 'vue';
 import App from './App.vue';
-import { defineBruitElements } from '@bruit/component/dist/init';
+import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
 
 Vue.config.productionTip = false;
 Vue.config.ignoredElements = [/bruit-\w*/];
 
-defineBruitElements();
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});
 
 new Vue({
   render: h => h(App)
@@ -703,4 +574,3 @@ Contributing to bruit.io may involve writing TypeScript, TSX, Stencil, SCSS or M
 # Having troubles ?
 
 - [Github issues](https://github.com/Moventes/bruit.io/issues)
-- [StackOverflow](https://stackoverflow.com/questions/tagged/bruit.io)
