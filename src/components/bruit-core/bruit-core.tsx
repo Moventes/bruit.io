@@ -416,10 +416,12 @@ export class BruitCore {
         case SubmitButtonState.LOADING: {
           buttonClassList.add('bruit-on-click');
           buttonClassList.remove('bruit-validate');
+          submitButton.setAttribute('disabled', 'true');
           break;
         }
         default: {
           buttonClassList.remove('bruit-validate', 'bruit-on-click');
+          submitButton.removeAttribute('disabled');
           break;
         }
       }
