@@ -370,7 +370,7 @@ export class BruitCore {
 
       //------------------ close modal ----------------------
 
-      const _closeModalFn = (/*name*/) => ((e) => {
+      const _closeModalFn = (name) => ((e) => {
         // remove event listeners (for memory leaks and disable form)
         button_close.removeEventListener('click', _closeModalFn, false);
         modal_wrapper.removeEventListener('click', _closeModalFn, false);
@@ -383,8 +383,8 @@ export class BruitCore {
           reject('close');
         });
       });
-      button_close.addEventListener('click', _closeModalFn(), { once: true });
-      modal_wrapper.addEventListener('click', _closeModalFn(), { once: true });
+      button_close.addEventListener('click', _closeModalFn('button_close'), { once: true });
+      modal_wrapper.addEventListener('click', _closeModalFn('modal_wrapper'), { once: true });
     });
   }
 
@@ -404,7 +404,9 @@ export class BruitCore {
    * @param state state of the submit button
    */
   setSubmitButtonState(state: SubmitButtonState) {
-    const submitButton = document.getElementById('bruit-io-submit-button');
+    const submitButton = this.bruitCoreElement.shadowRoot.getElementById('bruit-io-submit-button');
+    //this.bruitCoreElement.shadowRoot.getElementById('bruit-io-submit-button').focus();
+    console.log('submit button ', submitButton);
     if (submitButton) {
       const buttonClassList = submitButton.classList;
       switch (state) {
