@@ -405,8 +405,6 @@ export class BruitCore {
    */
   setSubmitButtonState(state: SubmitButtonState) {
     const submitButton = this.bruitCoreElement.shadowRoot.getElementById('bruit-io-submit-button');
-    //this.bruitCoreElement.shadowRoot.getElementById('bruit-io-submit-button').focus();
-    console.log('submit button ', submitButton);
     if (submitButton) {
       const buttonClassList = submitButton.classList;
       switch (state) {
