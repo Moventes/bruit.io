@@ -1,5 +1,16 @@
 import { BrtCoreConfig, BrtError } from '@bruit/types';
 
+function objTrimed(obj) {
+  return Object.keys(obj).reduce((newObj, key) => {
+    const keyTrimmed = key.trim();
+    let value = obj[key];
+    if (typeof value === 'object') {
+      value = objTrimed(value);
+    }
+    newObj[keyTrimmed] = value;
+    return newObj;
+  }, {});
+}
 export class BruitCoreConfig implements BrtCoreConfig {
   logCacheLength = {
     log: 100,
@@ -14,14 +25,17 @@ export class BruitCoreConfig implements BrtCoreConfig {
   addQueryParamsToLog = false;
 
   constructor(config: BrtCoreConfig) {
-    if (config && config.logCacheLength) {
+    const configTrim: BrtCoreConfig = objTrimed(config);
+    // console.log('config : ', configTrim);
+    if (configTrim && configTrim.logCacheLength) {
       this.logCacheLength = {
         ...this.logCacheLength,
-        ...config.logCacheLength
+        ...configTrim.logCacheLength
       };
-      this.addQueryParamsToLog = config.addQueryParamsToLog || false;
+      this.addQueryParamsToLog = configTrim.addQueryParamsToLog || false;
     }
   }
+
 
   static haveError(config: BrtCoreConfig): BrtError | void {
     if (config) {

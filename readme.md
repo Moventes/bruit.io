@@ -66,7 +66,6 @@ The free bruit.io api allows to pass feedbacks on to tools such as
     <img alt="GitHub" src="https://banner2.kisspng.com/20180716/tza/kisspng-github-computer-icons-clip-art-gits-5b4d20ab1f4131.145288281531781291128.jpg" height="30px">
     <img alt="Slack" src="https://img.icons8.com/office/1600/slack.png" height="30px">
     <img alt="Basecamp" src="https://bruit.io/assets/imgs/basecamp-icon.png" height="30px">
-
 </p>
 
 # Table of Contents

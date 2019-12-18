@@ -21,7 +21,6 @@ export class ConsoleTool {
     } else {
       (<any>console).overloadable = true;
     }
-    (<any>console).overloadable = true;
 
     ConsoleTool.bruitCoreConfig = bruitCoreConfig;
     ConsoleTool.configure();
