@@ -1,5 +1,5 @@
-import { Component, h, Prop, Watch,  EventEmitter, State, Event, Element } from '@stencil/core';
-import { BrtConfig, BrtError, BrtData } from '@bruit/types';
+import { BrtConfig, BrtData, BrtError } from '@bruit/types';
+import { Component, Element, Event, EventEmitter, h, Prop, State, Watch } from '@stencil/core';
 import { BruitIoConfig } from '../../models/bruit-io-config.class';
 
 @Component({
@@ -34,6 +34,7 @@ export class BruitIo {
       }
     } else {
       _newConfig = newConfig as BrtConfig;
+      _newConfig.form[0].type = 'checkbox';
     }
     if (!configError) {
       configError = BruitIoConfig.haveError(_newConfig);

@@ -1,6 +1,7 @@
 import { BrtCoreConfig, BrtError } from '@bruit/types';
 
 function objTrimed(obj) {
+  if (!obj) return null;
   return Object.keys(obj).reduce((newObj, key) => {
     const keyTrimmed = key.trim();
     let value = obj[key];

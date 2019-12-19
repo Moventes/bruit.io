@@ -178,8 +178,6 @@ interface BrtConfig {
 | screenshot.imageType | image/png ; image/jpeg | the type of image to generate | no | image/png
 | screenshot.compression | number | the compression to apply to the screenshot between 1 (no compression) and 0 (fully compressed) ; only applies to image/jpeg type | no |0.9
 
-
-
 Typescript import :
 
 ```javascript
@@ -278,7 +276,6 @@ Typescript import:
 ```javascript
 import { BrtColors } from '@bruit/component';
 ```
-
 
 ### _BrtFeedback_
 
@@ -404,6 +401,7 @@ Then, you may add the `bruit-io` component directly:
   <script>
     var bruitCmp = document.querySelector('bruit-io');
 
+
     bruitCmp.config = {
       // whatever your config is
     };
@@ -453,6 +451,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
+// if you want set bruit config :
+// import BruitCoreConfig from '@bruit/component/dist/collection/start';
 
 if (environment.production) {
   enableProdMode();
@@ -463,6 +463,15 @@ platformBrowserDynamic()
   .catch(err => console.log(err));
 applyPolyfills().then(() => {
   defineCustomElements(window)
+
+    // if you want set bruit config :
+  // defineCustomElements(window).then(() => {
+  //   BruitCore({
+  //     logCacheLength: {
+  //       click: 5
+  //     }
+  //   });
+  // });
 })
 ```
 
@@ -526,11 +535,23 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
+// if you want set bruit config :
+// import BruitCoreConfig from '@bruit/component/dist/collection/start';
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
 applyPolyfills().then(() => {
   defineCustomElements(window);
+
+  // if you want set bruit config :
+  // defineCustomElements(window).then(() => {
+  //   BruitCore({
+  //     logCacheLength: {
+  //       click: 5
+  //     }
+  //   });
+  // });
 });
 ```
 
