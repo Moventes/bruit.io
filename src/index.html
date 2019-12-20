@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-    <title>Stencil Component Starter</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
 
-    <script type="module" src="/build/bruit.esm.js" data-brt-config='{" logCacheLength" :{" click" :5}}'></script>
-    <script nomodule src="/build/bruit.js"></script>
-    <!-- <script src="/init/start.js"></script> -->
-  </head>
+  <script type="module" src="/build/bruit.esm.js" data-brt-config='{" logCacheLength" :{" click" :5}}'></script>
+  <script nomodule src="/build/bruit.js"></script>
+  <!-- <script src="/init/start.js"></script> -->
+</head>
 
-  <body>
-    <img src="https://test.moventes.com/test/40001102-developer-wallpapers.jpg" alt="">
-    <div id="shadowDiv">
-    </div>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam molestiae earum repellendus corrupti distinctio
-      saepe iusto sapiente commodi deserunt expedita tempore dolorum autem, maxime dolor? Culpa ut nemo aspernatur
-      aliquid?
-    </p>
-    <bruit-io class="bruit-io"><i>test</i></bruit-io>
+<body>
+  <img src="https://test.moventes.com/test/40001102-developer-wallpapers.jpg" alt="">
+  <div id="shadowDiv">
+  </div>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam molestiae earum repellendus corrupti distinctio
+    saepe iusto sapiente commodi deserunt expedita tempore dolorum autem, maxime dolor? Culpa ut nemo aspernatur
+    aliquid?
+  </p>
+  <bruit-io class="bruit-io"><i>test</i></bruit-io>
 
-    <script>
+  <script>
     var shadowDiv = document.getElementById('shadowDiv');
     let shadow = shadowDiv.attachShadow({ mode: 'closed' });
     var para = document.createElement('p');
@@ -34,6 +34,7 @@
     // bruitCmp.addEventListener('onReady', function () {
     //     bruitCmp.start();
     // });
+
     bruitCmp.config = {
       apiKey: "44a63ba8-d93b-484f-b22f-15bcf45851c8",
       labels: {
@@ -76,7 +77,23 @@
         }
       ]
     };
+
+    setTimeout(() => {
+
+      bruitCmp.data = [{
+        label: 'verion',
+        value: '0.1.54'
+      }];
+
+      bruitCmp.setAttribute('brt-data-fn', new Promise(resolve => {
+        resolve([{
+          label: 'user',
+          value: '👾'
+        }]);
+      }));
+
+    }, 1000);
   </script>
-  </body>
+</body>
 
 </html>
