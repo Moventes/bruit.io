@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -38,7 +38,7 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@stencil/core": "^1.8.2",
+    "@stencil/core": "^1.8.5",
     "@stencil/sass": "^1.1.1",
     "chalk": "^3.0.0",
     "edit-json-file": "^1.3.2"
@@ -60,7 +60,7 @@
   "homepage": "https://bruit.io/",
   "dependencies": {
     "@bruit/types": "1.3.1",
-    "bowser": "^2.7.0",
+    "bowser": "^2.8.1",
     "html2canvas": "^1.0.0-rc.5",
     "lz-string": "^1.4.4"
   }

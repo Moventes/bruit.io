@@ -49,7 +49,10 @@ export class Feedback implements BrtFeedback {
 
       if (agreement) {
         const [screenShot, navigator, serviceWorkers] = await Promise.all([
-          ScreenTool.getScreenshot(this.bruitIoConfig),
+          ScreenTool.getScreenshot(this.bruitIoConfig).catch(err => {
+            console.error('!!! An error occured with the screeshot, we send feedback without it. err=', err);
+            return Promise.resolve(null);
+          }),
           NavigatorTool.getInfo(),
           NavigatorTool.getServiceWorkersList()
         ]);

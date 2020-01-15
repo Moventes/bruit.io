@@ -479,10 +479,10 @@ applyPolyfills().then(() => {
 
 ```html
 <bruit-io
-  [brt-config]="bruitConfig"
-  [brt-data]="bruitData"
-  [brt-dataFn]="bruitDataPromise()"
-  (brt-onError)="handleBruitError($event)"
+  [config]="bruitConfig"
+  [data]="bruitData"
+  [dataFn]="bruitDataPromise()"
+  (onError)="handleBruitError($event)"
 ></bruit-io>
 ```
 
