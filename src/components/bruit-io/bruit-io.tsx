@@ -34,7 +34,6 @@ export class BruitIo {
       }
     } else {
       _newConfig = newConfig as BrtConfig;
-      _newConfig.form[0].type = 'checkbox';
     }
     if (!configError) {
       configError = BruitIoConfig.haveError(_newConfig);

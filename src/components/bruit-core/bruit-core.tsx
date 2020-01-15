@@ -570,6 +570,7 @@ export class BruitCore {
   modalFields() {
     // console.log('         brtField used = ', this.modalBrtField);
     return this.modalBrtField.map(field => {
+      console.log(field);
       switch (field.type) {
         case BrtFieldType.TEXT:
         case BrtFieldType.EMAIL: {
