@@ -49,7 +49,8 @@
   /* active state */
   input:not([type="checkbox"]),
   textarea,
-  bruit-rating {
+  bruit-rating,
+  bruit-select {
     font-size: 14px;
 
     &:focus,
@@ -69,12 +70,13 @@
 
     }
 
-    &:required~label:after {
+    &:required, &[data-required]{
+    &~label:after {
       content: " *";
       color: rgb(175, 42, 42);
       font-weight: bold;
     }
-
+  }
     &:disabled {
       background-color: initial;
 
@@ -176,7 +178,7 @@
   }
 
   .bruit-checkbox-label {
-    width: 100%;
+    width: calc(100% - 32px);
     height: auto;
     background-color: transparent;
     margin-left: 32px;
@@ -199,6 +201,18 @@
   }
 
   input[type="checkbox"] {
-    display: none;
+    opacity: 0;
+    position: absolute;
+    top:10px;
+    left: 5px;
+    width: 18px;
+    height: 18px;
+
+    &:required~.bruit-checkbox-label:after {
+      content: " *";
+      color: rgb(175, 42, 42);
+      font-weight: bold;
+    }
+
   }
 }

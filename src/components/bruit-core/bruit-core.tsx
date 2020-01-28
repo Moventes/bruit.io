@@ -700,6 +700,7 @@ export class BruitCore {
           id={field.id}
           options={field.options}
           required={field.required}
+          data-required={field.required}
           value={field.value}
           onChange={e => {
             field.value = e.target['value'];

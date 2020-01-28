@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-    <title>Stencil Component Starter</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
 
-    <script type="module" src="/build/bruit.esm.js" data-brt-config='{" logCacheLength" :{" click" :5}}'></script>
-    <script nomodule src="/build/bruit.js"></script>
-    <!-- <script src="/init/start.js"></script> -->
-  </head>
+  <script type="module" src="/build/bruit.esm.js" data-brt-config='{" logCacheLength" :{" click" :5}}'></script>
+  <script nomodule src="/build/bruit.js"></script>
+  <!-- <script src="/init/start.js"></script> -->
+</head>
 
-  <body>
-    <img src="https://test.moventes.com/test/40001102-developer-wallpapers.jpg" alt="">
-    <div id="shadowDiv">
-    </div>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam molestiae earum repellendus corrupti distinctio
-      saepe iusto sapiente commodi deserunt expedita tempore dolorum autem, maxime dolor? Culpa ut nemo aspernatur
-      aliquid?
-    </p>
-    <bruit-io class="bruit-io"><i>test</i></bruit-io>
+<body>
+  <img src="https://test.moventes.com/test/40001102-developer-wallpapers.jpg" alt="">
+  <div id="shadowDiv">
+  </div>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam molestiae earum repellendus corrupti distinctio
+    saepe iusto sapiente commodi deserunt expedita tempore dolorum autem, maxime dolor? Culpa ut nemo aspernatur
+    aliquid?
+  </p>
+  <bruit-io class="bruit-io"><i>test</i></bruit-io>
 
-    <script>
+  <script>
     var shadowDiv = document.getElementById('shadowDiv');
     let shadow = shadowDiv.attachShadow({ mode: 'closed' });
     var para = document.createElement('p');
+    para.innerHTML = "text in shadowDom";
     shadow.appendChild(para);
 
 
@@ -42,7 +43,6 @@
         introduction: "Send us a feedback with bruit.io..."
       },
       form: [
-         
         {
           label: "Question ?",
           type: "text",
@@ -79,9 +79,18 @@
           id: "agreement",
           type: "checkbox",
           label: "I agree to send technical information in addition to my answers",
-          value: null
+          value: null,
+          required: true
         }
-      ]
+      ],
+      colors: {
+        header: '#2196f3',
+        body: '#eee',
+        background: '#444444ee',
+        errors: '#f44336',
+        focus: '#2196f3',
+      },
+      closeModalOnSubmit: true,
     };
 
     setTimeout(() => {
@@ -100,6 +109,6 @@
 
     }, 1000);
   </script>
-  </body>
+</body>
 
 </html>
