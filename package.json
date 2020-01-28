@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.3.12",
+  "version": "1.3.13",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -38,7 +38,7 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@stencil/core": "^1.8.5",
+    "@stencil/core": "^1.8.6",
     "@stencil/sass": "^1.1.1",
     "chalk": "^3.0.0",
     "edit-json-file": "^1.3.2"
