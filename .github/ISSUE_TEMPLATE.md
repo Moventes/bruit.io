@@ -1,16 +1,10 @@
-**Resources:**
-Before submitting an issue, please consult our [docs](https://stenciljs.com/).
 
-**Stencil version:** (run `npm list @stencil/core` from a terminal/cmd prompt and paste output below):
-
-```
- insert the output from npm list @stencil/core here
-```
+**Bruit version:** 
 
 **I'm submitting a ...**  (check one with "x")
 [ ] bug report
 [ ] feature request
-[ ] support request => Please do not submit support requests here, use one of these channels: https://forum.ionicframework.com/ or https://stencil-worldwide.slack.com
+[ ] support request
 
 **Current behavior:**
 <!-- Describe how the bug manifests. -->

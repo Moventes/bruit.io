@@ -66,7 +66,6 @@ The free bruit.io api allows to pass feedbacks on to tools such as
     <img alt="GitHub" src="https://banner2.kisspng.com/20180716/tza/kisspng-github-computer-icons-clip-art-gits-5b4d20ab1f4131.145288281531781291128.jpg" height="30px">
     <img alt="Slack" src="https://img.icons8.com/office/1600/slack.png" height="30px">
     <img alt="Basecamp" src="https://bruit.io/assets/imgs/basecamp-icon.png" height="30px">
-
 </p>
 
 # Table of Contents
@@ -179,8 +178,6 @@ interface BrtConfig {
 | screenshot.imageType | image/png ; image/jpeg | the type of image to generate | no | image/png
 | screenshot.compression | number | the compression to apply to the screenshot between 1 (no compression) and 0 (fully compressed) ; only applies to image/jpeg type | no |0.9
 
-
-
 Typescript import :
 
 ```javascript
@@ -279,7 +276,6 @@ Typescript import:
 ```javascript
 import { BrtColors } from '@bruit/component';
 ```
-
 
 ### _BrtFeedback_
 
@@ -405,6 +401,7 @@ Then, you may add the `bruit-io` component directly:
   <script>
     var bruitCmp = document.querySelector('bruit-io');
 
+
     bruitCmp.config = {
       // whatever your config is
     };
@@ -454,6 +451,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
+// if you want set bruit config :
+// import BruitCoreConfig from '@bruit/component/dist/collection/start';
 
 if (environment.production) {
   enableProdMode();
@@ -464,6 +463,15 @@ platformBrowserDynamic()
   .catch(err => console.log(err));
 applyPolyfills().then(() => {
   defineCustomElements(window)
+
+    // if you want set bruit config :
+  // defineCustomElements(window).then(() => {
+  //   BruitCore({
+  //     logCacheLength: {
+  //       click: 5
+  //     }
+  //   });
+  // });
 })
 ```
 
@@ -471,10 +479,10 @@ applyPolyfills().then(() => {
 
 ```html
 <bruit-io
-  [brt-config]="bruitConfig"
-  [brt-data]="bruitData"
-  [brt-dataFn]="bruitDataPromise()"
-  (brt-onError)="handleBruitError($event)"
+  [config]="bruitConfig"
+  [data]="bruitData"
+  [dataFn]="bruitDataPromise()"
+  (onError)="handleBruitError($event)"
 ></bruit-io>
 ```
 
@@ -527,11 +535,23 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 import { applyPolyfills, defineCustomElements } from '@bruit/component/loader';
+// if you want set bruit config :
+// import BruitCoreConfig from '@bruit/component/dist/collection/start';
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
 applyPolyfills().then(() => {
   defineCustomElements(window);
+
+  // if you want set bruit config :
+  // defineCustomElements(window).then(() => {
+  //   BruitCore({
+  //     logCacheLength: {
+  //       click: 5
+  //     }
+  //   });
+  // });
 });
 ```
 

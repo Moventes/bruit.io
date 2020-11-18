@@ -1,4 +1,4 @@
 {
   "BRUIT_IO_API_URL": "https://api.bruit.io/feedback/multipart",
-  "version": "1.3.5"
+  "version": "1.3.13"
 }

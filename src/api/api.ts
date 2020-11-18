@@ -2,7 +2,6 @@ import { BrtFeedback } from '@bruit/types';
 import LZString from 'lz-string';
 import { NavigatorTool } from '../bruit-tools/navigator.js';
 import * as Config from '../config/config.json';
-
 export class Api {
   static postFeedback(feedback: BrtFeedback, apiUrl?: string): Promise<any> {
     return new Promise((resolve, reject) => {

@@ -570,6 +570,7 @@ export class BruitCore {
   modalFields() {
     // console.log('         brtField used = ', this.modalBrtField);
     return this.modalBrtField.map(field => {
+      console.log(field);
       switch (field.type) {
         case BrtFieldType.TEXT:
         case BrtFieldType.EMAIL: {
@@ -699,6 +700,7 @@ export class BruitCore {
           id={field.id}
           options={field.options}
           required={field.required}
+          data-required={field.required}
           value={field.value}
           onChange={e => {
             field.value = e.target['value'];

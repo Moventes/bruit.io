@@ -49,7 +49,10 @@ export class Feedback implements BrtFeedback {
 
       if (agreement) {
         const [screenShot, navigator, serviceWorkers] = await Promise.all([
-          ScreenTool.getScreenshot(this.bruitIoConfig),
+          ScreenTool.getScreenshot(this.bruitIoConfig).catch(err => {
+            console.error('!!! An error occured with html2canvas screenshot, we send feedback without it. err=', err);
+            return Promise.resolve(null);
+          }),
           NavigatorTool.getInfo(),
           NavigatorTool.getServiceWorkersList()
         ]);
@@ -97,16 +100,20 @@ export class Feedback implements BrtFeedback {
    *
    * @return a promise of Array<Field>
    */
-  private async getDataFromFn(dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>): Promise<Array<BrtData>> {
+  private getDataFromFn<T = () => Array<BrtData> | Promise<Array<BrtData>>>(dataFn?: T | (() => T)): Promise<Array<BrtData>> {
     // dataFn (function or promise)
     if (dataFn) {
       if (typeof dataFn === 'function') {
-        return dataFn();
-      } else if (typeof dataFn === 'object' && (<Promise<Array<BrtData>>>dataFn).then) {
-        return <Promise<Array<BrtData>>>dataFn;
+        const dataFromFn = (dataFn as any)();
+        if (typeof dataFromFn === 'function' || (typeof dataFromFn === 'object' && (<Promise<Array<BrtData>>>dataFromFn).then)) {
+          return this.getDataFromFn(dataFromFn)
+        }
+        return Promise.resolve(dataFromFn);
+      } else if (typeof dataFn === 'object' && (dataFn as any).then) {
+        return <any>dataFn;
       }
     } else {
-      return [];
+      return Promise.resolve([]);
     }
   }
 
