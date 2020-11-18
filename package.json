@@ -1,6 +1,6 @@
 {
   "name": "@bruit/component",
-  "version": "1.3.13",
+  "version": "1.3.14",
   "description": "send your feedbacks with bruit.io",
   "keywords": [
     "bruit",
@@ -49,7 +49,7 @@
   },
   "author": {
     "name": "moventes",
-    "email": "dev@moventes.com",
+    "email": "dev@moventes.com",clone res
     "url": "https://moventes.com"
   },
   "license": "MIT",

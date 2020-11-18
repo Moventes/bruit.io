@@ -65,8 +65,7 @@ export class HttpTool {
           .apply(this, arguments)
           .then(res => {
             const now = new Date();
-            res
-              .json()
+            res.clone().json()
               .then(jsn => {
                 HttpTool.logResponse(req.method, res.url, res.status, jsn, now);
               })
