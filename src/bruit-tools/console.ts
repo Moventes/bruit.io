@@ -102,6 +102,8 @@ export class ConsoleTool {
                   const path = element.$ref;
                   if (typeof path === 'string' && px.test(path)) {
                     value[i] = eval(path);
+                    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/eval
+                    // value[i] = Function('"use strict";return ( path )')();
                   } else {
                     rez(element);
                   }
@@ -114,6 +116,8 @@ export class ConsoleTool {
                   const path = item.$ref;
                   if (typeof path === 'string' && px.test(path)) {
                     value[name] = eval(path);
+                    // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/eval
+                    // value[i] = Function('"use strict";return ( path )')();
                   } else {
                     rez(item);
                   }
