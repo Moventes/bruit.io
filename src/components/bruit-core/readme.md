@@ -21,7 +21,7 @@
 
 ## Methods
 
-### `newFeedback(bruitIoConfig: BruitIoConfig, data?: BrtData[], dataFn?: () => BrtData[] | Promise<BrtData[]>) => Promise<void>`
+### `newFeedback(bruitIoConfig: BruitIoConfig, data?: Array<BrtData>, dataFn?: () => Array<BrtData> | Promise<Array<BrtData>>) => Promise<void>`
 
 called on click on component
 init a feedback, wait user submit, send feedback
