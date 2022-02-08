@@ -28,7 +28,7 @@ export class Api {
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 || (xhr.readyState === 2 && xhr.status === 200)) {
           if (JSON.stringify(xhr.status).startsWith('2') || xhr.status === 304) {
-            resolve();
+            resolve(null);
           } else {
             try {
               const body = JSON.parse(xhr.responseText);

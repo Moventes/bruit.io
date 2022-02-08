@@ -1,11 +1,10 @@
 {
   "name": "bruit-loader",
   "typings": "./index.d.ts",
-  "module": "./index.mjs",
+  "module": "./index.js",
   "main": "./index.cjs.js",
-  "node:main": "./node-main.js",
-  "jsnext:main": "./index.es2017.mjs",
-  "es2015": "./index.es2017.mjs",
-  "es2017": "./index.es2017.mjs",
+  "jsnext:main": "./index.es2017.js",
+  "es2015": "./index.es2017.js",
+  "es2017": "./index.es2017.js",
   "unpkg": "./cdn.js"
 }

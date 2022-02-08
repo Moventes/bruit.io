@@ -7,7 +7,7 @@ import { Component, h, Prop, Watch, EventEmitter, State, Event } from '@stencil/
 })
 export class BruitRating {
 
-  @Prop({ mutable: true, reflectToAttr: true })
+  @Prop({ mutable: true, reflect: true })
   value: number = 0;
   @Watch('value')
   watchValue(newValue: number, oldValue: number) {
@@ -25,7 +25,7 @@ export class BruitRating {
   @Event()
   valueChange: EventEmitter;
 
-  @Prop({ mutable: true, reflectToAttr: true })
+  @Prop({ mutable: true, reflect: true })
   max: number = 5;
   @Watch('max')
   watchMax(newValue: number) {
