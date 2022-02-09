@@ -247,7 +247,7 @@ export class NavigatorTool {
         }
       }
       // IE10+ & Edge InPrivate
-      if (!window.indexedDB && (window.PointerEvent || window.MSPointerEvent)) {
+      if (!window.indexedDB && (window.PointerEvent)) {
         return yes();
       }
       // default navigation mode

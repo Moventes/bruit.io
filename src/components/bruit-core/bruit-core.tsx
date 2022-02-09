@@ -179,7 +179,7 @@ export class BruitCore {
                     this.setSubmitButtonState(SubmitButtonState.CHECKED);
                     return new Promise(resolve => {
                       setTimeout(
-                        () => resolve(),
+                        () => resolve(null),
                         this._bruitIoConfig.durationBeforeClosing
                       );
                     });
@@ -326,7 +326,7 @@ export class BruitCore {
           this.modalBrtField = [];
           this.modalError = undefined;
           unlock()
-          resolve();
+          resolve(null);
         }, openAnimationDuration + 1);
       });
     });
@@ -570,7 +570,6 @@ export class BruitCore {
   modalFields() {
     // console.log('         brtField used = ', this.modalBrtField);
     return this.modalBrtField.map(field => {
-      console.log(field);
       switch (field.type) {
         case BrtFieldType.TEXT:
         case BrtFieldType.EMAIL: {
@@ -657,7 +656,7 @@ export class BruitCore {
         <input
           id={field.id}
           name={field.id}
-          onChange={e => (field.value = e.target['checked'])}
+          onChange={(e) => this.updateFieldValue(field, e.target['checked'])}
           checked={field.value}
           required={!!field.required}
           type={field.type}
@@ -665,15 +664,20 @@ export class BruitCore {
         <label htmlFor={field.id} />
         <a
           class="bruit-checkbox-label"
-          onClick={() => {
-            field.value = !field.value;
-            this.bruitCoreElement.forceUpdate();
-          }}
+          onClick={() => this.updateFieldValue(field, !field.value)}
         >
           {field.label}
         </a>
       </div>
     );
+  }
+
+  // Force refresh state
+  updateFieldValue(field, value) {
+    field.value = value;
+    this.modalBrtField = [
+      ...this.modalBrtField,
+    ];
   }
 
   ratingField(field: BrtField) {
