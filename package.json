@@ -34,7 +34,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
     "prepublishOnly": "npm i && npm run build && node script/git-tag.js",
-    "postpublish": "node script/log-update-db.js",
+    "postpublish": "node script/log-update-db.mjs",
     "prepare": "npm run build"
   },
   "devDependencies": {
